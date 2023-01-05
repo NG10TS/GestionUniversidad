@@ -1,0 +1,550 @@
+<strong>
+  <h2 class="text-center text-bold text-light">GESTIONAR PLAN DE ESTUDIOS</h2>
+</strong>
+<hr class="border-warning">
+<!-- #region CRUD PRINCIPAL PLA E -->
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalAdd"
+  data-whatever="@getbootstrap">AGREGAR NUEVO</button>
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalGestionPlanes"
+data-whatever="@getbootstrap">GESTIONAR PLANES</button>
+
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input"
+      aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">CARRERA</th>
+        <th scope="col">SEMESTRE</th>
+        <th scope="col">MATERIA</th>
+        <!-- <th scope="col">PRERREQUISITO</th> -->
+        <th scope="col">CODIGO DE GESTION</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of carmat; let i= index">
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>
+          <span>{{a.nombre_carre}} - {{a.sigla_carre}}</span>
+        </td>
+        <td>
+          <span>{{a.numero}} - {{a.desc_sem}}</span>
+        </td>
+        <td>
+          <span>{{a.nombre_mat}} - {{a.codigo_mat}}</span>
+        </td>
+        <!-- <td>
+          <span>{{a.id_materia}} - {{a.id_materia}}</span>
+        </td> -->
+        <td>
+          <span>{{a.cod_gestE}}</span>
+        </td>
+        <td style="width: 200px;">
+          <div class="btn-group">
+            <button class="btn btn-success btn-sm" (click)="SeleccionarCarreMat(a,'Mostrar')"
+              type="button">
+              <i class="bi bi-eye"></i>
+            </button>
+
+            <button type="button" class="btn btn-sm btn-success dropdown-toggle dropdown-toggle-split"
+              data-toggle="dropdown" aria-expanded="false">
+            </button>
+            <div class="dropdown-menu">
+              <button class="dropdown-item" (click)="ObtenerPrerrequisitos(a.id_materia)">Visualizar
+                Prerrequisitos</button>
+              <button class="dropdown-item" data-toggle="modal">Ir a Gestionar Prerrequisitos</button>
+              <button class="dropdown-item" data-toggle="modal">Ir a Gestionar Carreras</button>
+            </div>
+          </div>
+          <button type="button" class="btn btn-warning" (click)="SeleccionarCarreMat(a,'Editar')"
+            style="margin-right: 10px;"><i class="bi bi-pencil"></i></button>
+
+          <button type="button" class="btn btn-danger" (click)="EliminarCarreMat(a.id_carre_mater)">
+            <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+
+
+
+<!-- MODAL DE ADICION CarreMat-->
+<div class="modal fade" id="ModalAdd" data-backdrop="static" data-keyboard="false" (keyup)="$event.keyCode == 27 ? filtroSemestre=false && filtroCarrera=false && filtroMateria=false: null" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> REGISTRAR CarreMat NUEVA</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newCarreMat">
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CARRERA: </label>
+            <div [formGroup]="filterCarreraForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control"/>
+              </div>
+              <div *ngIf="filtroCarrera" class="lcch-options" >
+                <span *ngFor="let a of carrFiltrado" class="form-control" (click)="newCarreMat.patchValue({id_carre:a.id_carre}); filterCarreraForm.patchValue({txt:a.nombre_carre})" (click)="filtroCarrera=false">{{a.nombre_carre}} - {{a.sigla_carre}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">SEMESTRE: </label>
+            <div [formGroup]="filterSemestreForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control"/>
+              </div>
+              <div *ngIf="filtroSemestre" class="lcch-options" >
+                <span *ngFor="let a of semFiltrado" class="form-control" (click)="newCarreMat.patchValue({id_sem:a.id_sem});  filterSemestreForm.patchValue({txt:a.desc_sem})" (click)="filtroSemestre=false;">{{a.desc_sem}}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">MATERIA: </label>
+            <!-- <input type="text" class="form-control col-sm-10" formControlName="id_materia"> -->
+            <div [formGroup]="filterMateriaForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control"/>
+              </div>
+              <div *ngIf="filtroMateria" class="lcch-options" >
+                <span *ngFor="let a of matFiltrado" class="form-control" (click)="newCarreMat.patchValue({id_materia:a.id_materia}); filterMateriaForm.patchValue({txt:a.nombre_mat})" (click)="filtroMateria=false">{{a.nombre_mat}} - {{a.codigo_mat}}</span>
+              </div>
+            </div>
+            <!-- <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_materia">
+              <optgroup label="Seleccione Materia">
+                <option *ngFor="let m of mat" value="{{m.id_materia}}">{{m.nombre_mat}} - {{m.codigo_mat}}</option>
+              </optgroup>
+            </select> -->
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CODIGO GESTION: </label>
+            <!-- <input type="text" class="form-control col-sm-10" formControlName="id_materia"> -->
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_planE">
+              <optgroup label="Seleccione Materia">
+                <option *ngFor="let m of codPlan" value="{{m.id_planE}}">{{m.cod_gestE}}</option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CRED MATERIA: </label>
+            <input type="number" class="form-control col-sm-4" formControlName="cred_materia">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">HT MATERIA: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="ht_materia">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">HP MATERIA: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="hp_materia">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TSE MATERIA: </label>
+            <input type="number" class="form-control col-sm-4" formControlName="tse_materia">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2"> TSM MATERIA: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="tsm_materia">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CATEGORIA: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="cat_materia">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">AREA MATERIA: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="are_materia">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">ORD MATERIA: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="ord_materia">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">POSICION EN X: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="pos_x_materia">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">POSICION EN Y: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="pos_y_materia">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">OBSERVACION MATERIA: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="obs_materia">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="AgregarCarreMat()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL_DE_MODIFICACION CarreMat-->
+<div class="modal fade" id="ModalModificacion" data-backdrop="static" data-keyboard="false" (keyup)="$event.keyCode == 27 ? filtroSemestre=false && filtroCarrera=false && filtroMateria=false: null" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">MODIFICAR PLAN DE ESTUDIOS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CARRERA: </label>
+            <!-- <input type="text" class="form-control col-sm-4" [(ngModel)]="CarreMatseleccionado.id_carre"> -->
+            <!-- FILTRADOR V3: NombreFiltro => Carrera-->
+            <div [formGroup]="filterCarreraForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control"/>
+                <!-- <input formControlName="txt" type="text" class="form-control" value="{{CarreraSelect.nombre_est}}"/> -->
+              </div>
+              <div *ngIf="filtroCarrera" class="lcch-options" >
+                <span *ngFor="let a of carrFiltrado" class="form-control" (click)="CarreMatseleccionado.id_carre=a.id_carre" (click)="filtroCarrera=false">{{a.nombre_carre}} - {{a.sigla_carre}}</span>
+                <!-- <span *ngFor="let a of semFiltrado" class="form-control" (click)="CarreraSelect=a" (click)="filtroCarrera=false">{{a.nombre_est}} {{a.ape_p_est}} {{a.ape_m_est}}</span> -->
+              </div>
+            </div>
+            <!-- <select class="custom-select col-sm-10 form-control" type="text"
+              [(ngModel)]="CarreMatseleccionado.id_carre">
+              <optgroup label="Seleccione Semestre">
+                <option *ngFor="let c of carr" value="{{c.id_carre}}">{{c.nombre_carre}} - {{c.sigla_carre}}</option>
+              </optgroup>
+            </select> -->
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">SEMESTRE: </label>
+            <div [formGroup]="filterSemestreForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control"/>
+              </div>
+              <div *ngIf="filtroSemestre" class="lcch-options" >
+                <span *ngFor="let a of semFiltrado" class="form-control" (click)="CarreMatseleccionado.id_sem=a.id_sem" (click)="filtroSemestre=false;">{{a.desc_sem}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">MATERIA: </label>
+            <div [formGroup]="filterMateriaForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control" />
+              </div>
+              <div *ngIf="filtroMateria" class="lcch-options" >
+                <span *ngFor="let a of matFiltrado" class="form-control" (click)="CarreMatseleccionado.id_materia=a.id_materia" (click)="filtroMateria=false">{{a.nombre_mat}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CODIGO DE GESTION: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" [(ngModel)]="CarreMatseleccionado.id_planE">
+              <optgroup label="SELECCIONE CODIGO DE GESTION" >
+                <option *ngFor="let a of codPlan" value="{{a.id_planE}}">{{a.cod_gestE}}</option>
+              </optgroup>
+             </select>
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CRED MATERIA: </label>
+            <input type="number" class="form-control col-sm-4" [(ngModel)]="CarreMatseleccionado.cred_materia">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">HT MATERIA: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="CarreMatseleccionado.ht_materia">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">HP MATERIA: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="CarreMatseleccionado.hp_materia">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TSE MATERIA: </label>
+            <input type="number" class="form-control col-sm-4" [(ngModel)]="CarreMatseleccionado.tse_materia">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2"> TSM MATERIA: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="CarreMatseleccionado.tsm_materia">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CATEGORIA: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="CarreMatseleccionado.cat_materia">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">AREA MATERIA: </label>
+            <input type="text" class="form-control col-sm-4" [(ngModel)]="CarreMatseleccionado.are_materia">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">ORD MATERIA: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="CarreMatseleccionado.ord_materia">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">POSICION EN X: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="CarreMatseleccionado.pos_x_materia">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">POSICION EN Y: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="CarreMatseleccionado.pos_y_materia">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">OBSERVACION MATERIA: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="CarreMatseleccionado.obs_materia">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal"
+          (click)="ModificarCarreMat(CarreMatseleccionado)">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE VISUALIZACION -->
+<div class="modal fade" id="ModalVisualizacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> VISUALIZANDO DOCENTE</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CARRERA: </label>
+            <!-- <input type="text" class="form-control col-sm-4" [(ngModel)]="CarreMatseleccionado.id_carre"> -->
+            <select class="custom-select col-sm-10 form-control" type="text"
+              [(ngModel)]="CarreMatseleccionado.id_carre">
+              <optgroup label="Seleccione Semestre">
+                <option *ngFor="let c of carr" value="{{c.id_carre}}">{{c.nombre_carre}} - {{c.sigla_carre}}</option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">SEMESTRE: </label>
+            <!-- <input type="text" class="form-control col-sm-10" [(ngModel)]="CarreMatseleccionado.id_sem"> -->
+            <select class="custom-select col-sm-10 form-control" type="text" [(ngModel)]="CarreMatseleccionado.id_sem">
+              <optgroup label="Seleccione Semestre">
+                <option *ngFor="let s of sem" value="{{s.id_sem}}">{{s.numero}} - {{s.desc_sem}}</option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">MATERIA: </label>
+            <!-- <input type="text" class="form-control col-sm-10" [(ngModel)]="CarreMatseleccionado.id_materia"> -->
+            <select class="custom-select col-sm-10 form-control" type="text"
+              [(ngModel)]="CarreMatseleccionado.id_materia">
+              <optgroup label="Seleccione Semestre">
+                <option *ngFor="let m of mat" value="{{m.id_materia}}">{{m.nombre_mat}} - {{m.codigo_mat}}</option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CRED MATERIA: </label>
+            <input type="number" class="form-control col-sm-4" [(ngModel)]="CarreMatseleccionado.cred_materia">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">HT MATERIA: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="CarreMatseleccionado.ht_materia">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">HP MATERIA: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="CarreMatseleccionado.hp_materia">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TSE MATERIA: </label>
+            <input type="number" class="form-control col-sm-4" [(ngModel)]="CarreMatseleccionado.tse_materia">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2"> TSM MATERIA: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="CarreMatseleccionado.tsm_materia">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CATEGORIA: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="CarreMatseleccionado.cat_materia">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">AREA MATERIA: </label>
+            <input type="text" class="form-control col-sm-4" [(ngModel)]="CarreMatseleccionado.are_materia">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">ORD MATERIA: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="CarreMatseleccionado.ord_materia">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">POSICION EN X: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="CarreMatseleccionado.pos_x_materia">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">POSICION EN Y: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="CarreMatseleccionado.pos_y_materia">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">OBSERVACION MATERIA: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="CarreMatseleccionado.obs_materia">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- MODAL DE VISUALIZACION - PRERREQUISITOS -->
+<div class="modal fade" id="ModalVisualizacionPrerreq" tabindex="-1" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> VISUALIZANDO PRERREQUISITOS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped table-hover table-danger">
+            <thead class="bg-danger ">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">MATERIA</th>
+                <th scope="col">PRERREQUISITO</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let a of prerreq; let i= index">
+                <td style="width: 20px;">{{i+1}}</td>
+                <td>
+                  <span>{{a.cod_prin}} - {{a.mat_prin}} </span>
+                </td>
+                <td>
+                  <span>{{a.cod_sec}} - {{a.materia_sec}} </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalMod" data-toggle="modal"
+  data-target="#ModalModificacion" style="width: 0px;">Abrir Modal Modificacion</button>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalMos" data-toggle="modal"
+  data-target="#ModalVisualizacion" style="width: 0px;">Abrir Modal Visualizacion</button>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalMosPrerreq"
+  data-toggle="modal" data-target="#ModalVisualizacionPrerreq" style="width: 0px;">Abrir Modal Visualizacion
+  Prerrequisitos</button>
+<!-- #endregion CRUP PRINCIPAL PLAN E -->
+
+<!-- MODAL DE GESTION COD PLANES-->
+<div class="modal fade" id="ModalGestionPlanes" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> GESTION DE CODIGOS PLANES</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal"
+          data-target="#ModalCrudPlanes" data-whatever="@getbootstrap">AGREGAR NUEVO CODIGO</button>
+
+        <form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+            </div>
+            <input type="text" class="form-control" aria-label="Sizing example input"
+              aria-describedby="inputGroup-sizing-default">
+          </div>
+        </form>
+        <br>
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped table-hover table-danger">
+            <thead class="bg-danger ">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Codigo de Plan</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let a of codPlan; let i= index">
+                <td style="width: 20px;">{{i+1}}</td>
+                <td>
+                  <span *ngIf="!a.Editando">{{a.cod_gestE}}</span>
+                </td>
+                <td style="width: 200px;">
+                  <button (click)="SeleccionarCodPlanes(a.id_planE)" data-toggle="modal" data-target="#ModalCrudPlanes"
+                    class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+                  <button type="button" class="btn btn-danger" (click)="EliminarCodPlanes(a.id_planE)">
+                    <i class="bi bi-trash"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- MODAL DE CRUD ADD MOD DE CODIGO DE PLANES-->
+<div class="modal fade" id="ModalCrudPlanes" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> {{!newCodPlanes.get('id_planE').value ? 'REGISTRAR NUEVA' : 'MODIFICAR'}} CARRERA</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newCodPlanes" >
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CODIGO DE GESTION: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="cod_gestE">
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="resetCodPlanes()">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" [disabled]="!newCodPlanes.valid" (click)="AgregarModificarCodPlanes()">{{!newCodPlanes.get('id_planE').value ? 'CREAR PLAN' : 'MODIFICAR PLAN'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+

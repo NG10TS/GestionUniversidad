@@ -1,0 +1,117 @@
+<strong>
+  <h2 class="text-center text-bold text-light">GESTIONAR DETALLE DE CALENDARIOS</h2>
+</strong>
+
+<hr class="border-warning">
+<!-- CRUD V3: idPK=> id_det_cal, TITULO=> DETALLE DE CALENDARIO, nombreCRUD=> DetalleCalendarios,  dataP=> detcal -->
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalCrudDetalleCalendarios"
+  data-whatever="@getbootstrap">AGREGAR DETALLE DE CALENDARIO</button>
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input"
+      aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">CALENDARIO </th>
+        <th scope="col">TURNO</th>
+        <th scope="col">PARALELO</th>
+        <th scope="col">AULA</th>
+        <!-- <th scope="col">TIPO DE CALENDARIO</th> -->
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of detcal; let i= index">
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.id_calend}}{{a.nombre_calend}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.turno_det}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.paralelo_det}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.aula_det}}</span>
+        </td>
+        <!-- <td>
+          <span *ngIf="!a.Editando">{{a.id_tipo_cal}}</span>
+        </td>
+       -->
+        <td style="width: 200px;">
+          <button class="btn btn-success btn-sm" (click)="SeleccionarCalendarios(a.id_calend,'Mostrar')" type="button">
+            <i class="bi bi-eye"></i>
+          </button>
+          <button type="button" class="btn btn-sm btn-success dropdown-toggle dropdown-toggle-split"
+            data-toggle="dropdown" aria-expanded="false">
+          </button>
+          <button (click)="SeleccionarDetalleCalendarios(a.id_det_cal)"
+            class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+          <button type="button" class="btn btn-danger" (click)="EliminarDetalleCalendarios(a.id_det_cal)">
+            <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- MODAL DE CRUD ADD MOD DE CODIGO DE DetalleCalendarios-->
+<div class="modal fade" id="ModalCrudDetalleCalendarios" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          {{!newDetalleCalendarios.get('id_det_cal').value ? 'REGISTRAR' : 'MODIFICAR'}} DETALLE DE CALENDARIO</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newDetalleCalendarios">
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CALENDARIO: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_calend">
+              <optgroup label="SELECCIONE CALENDARIO" >
+                <option *ngFor="let a of calend" value="{{a.id_calend}}">{{a.nombre_calend}}</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TURNO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="turno_det">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">PARALELO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="paralelo_det">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">AULA: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="aula_det">
+          </div>
+          <!-- <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TIPO DE CALENDARIO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="id_tipo_cal">
+          </div> -->
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="resetDetalleCalendarios()">Cancelar</button>
+        <button type="button" class="btn {{!newDetalleCalendarios.get('id_det_cal').value ? 'btn-succes' : 'btn-warning'}}" data-dismiss="modal" [disabled]="!newDetalleCalendarios.valid"
+          (click)="AgregarModificarDetalleCalendarios()">{{!newDetalleCalendarios.get('id_det_cal').value ? 'CREAR PLAN' : 'MODIFICAR PLAN'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudDetalleCalendarios" data-toggle="modal"
+  data-target="#ModalCrudDetalleCalendarios" style="width: 0px;">Abrir Modal Crud</button>

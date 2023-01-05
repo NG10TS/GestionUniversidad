@@ -1,0 +1,213 @@
+<!-- INTRODUCIR nombre CRUD, nombreID,nombre dataPrincipal, TITULOS(Eventos,id_evento,even,PROGRAMACIÓN DE EVENTOS Y PUBLICACIONES)-->
+<strong>
+  <h2 class="text-center text-bold text-light">GESTIONAR PROGRAMACIÓN DE EVENTOS Y PUBLICACIONES</h2>
+</strong>
+<hr class="border-warning">
+
+<button type="button" (click)="LimpiarEventos()" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalAdd" data-whatever="@getbootstrap">AGREGAR EVENTOS</button>
+
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">NOMBRE DE EVENTO</th>
+        <th scope="col">CATEGORIA</th>
+        <th scope="col">ARCHIVO SUBIDO</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of even; let i= index"  >
+        <td style="width: 40px; height: 50px;">{{i+1}}</td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.nombre_evento}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.nombre_categ}}</span>
+        </td>
+        <td>
+          <!-- <span *ngIf="!a.Editando">{{a.archivo}}</span> -->
+          <img [src]="ruta+a.archivo" width="50px" height="40px">
+
+        </td>
+        <td style="width: 200px;">
+          <div class="btn-group">
+            <button class="btn btn-success " (click)="SeleccionarEventos(a.id_evento,'Mostrar')" type="button">
+              <i class="bi bi-eye"></i>
+            </button>
+
+            <button type="button" class="btn btn-sm btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false" style="margin-right: 6px;">
+            </button>
+            <div class="dropdown-menu">
+              <!-- <button class="dropdown-item" data-toggle="modal" data-target="#ModalModificacion">Editar Datos Personales</button> -->
+              <button class="dropdown-item" data-toggle="modal" >Agregar Datos Curriculares</button>
+              <button class="dropdown-item" data-toggle="modal" >Hoja de Datos de Docente</button>
+              <button class="dropdown-item" data-toggle="modal" data-target="#ModalHitorialDesig">Historial de Designaciones</button>
+            </div>
+          </div>
+          <button type="button" class="btn btn-warning" 
+          (click)="SeleccionarEventos(a.id_evento,'Editar')" style="margin-right: 10px;"><i class="bi bi-pencil"></i></button>
+
+         <button type="button" class="btn btn-danger" (click)="EliminarEventos(a.id_evento)">
+           <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- MODAL DE ADICION Eventos-->
+<div class="modal fade" id="ModalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> REGISTRAR PROGRAMACIÓN DE EVENTOS Y PUBLICACIONES</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newEventos" >
+          <div class="form-group row">
+            <label class="form-label  col-sm-2">NOMBRE: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="nombre_evento" oninput="this.value= this.value.toUpperCase()"placeholder="INGRESE NOMBRE">
+          </div>
+        <div class="form-group row">
+          <label class="form-label  col-sm-2">CATEGORIA: </label>
+          <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_categ">
+            <optgroup label="SELECCIONE CATEGORIA" >
+              <option *ngFor="let c of cate" value="{{c.id_categ}}">{{c.nombre_categ}}</option>
+            </optgroup>
+           </select>
+        </div>
+        <div class="form-group row">
+          <label class="form-label  col-sm-2">ARCHIVO: </label>
+          <!-- <input type="text" class="form-control col-sm-10" formControlName="archivo"> -->
+          <input type="file" class="form-control col-sm-10" title="Foto de Evento." #FOTO_IMG_ADD accept="image/jpg, image/png, image/jpeg" (change)="VerificarFormatoFoto(FOTO_IMG_ADD);"  (change)="onFileChangeFoto($event)">
+        </div>
+
+        <!--{{newEventos.value|json}}-->
+      </div>
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="AgregarEventos()">Guardar</button>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE MODIFICACION Eventos-->
+<div class="modal fade" id="ModalModificacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">MODIFICAR PROGRAMACIÓN DE EVENTOS Y PUBLICACIONES</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+
+            <div class="form-group row">
+              <label class="form-label  col-sm-2">NOMBRE: </label>
+              <input type="text" class="form-control col-sm-10" [(ngModel)]="EventosSeleccionado.nombre_evento" oninput="this.value= this.value.toUpperCase()"placeholder="INGRESE NOMBRE">
+            </div>
+
+            <div class="form-group row">
+              <label class="form-label  col-sm-2">CATEGORIA: </label>
+              <select class="custom-select col-sm-10 form-control" type="text" [(ngModel)]="EventosSeleccionado.id_categ">
+                <optgroup label="SELECCIONE CATEGORIA" >
+                  <option *ngFor="let c of cate" value="{{c.id_categ}}">{{c.nombre_categ}}</option>
+                </optgroup>
+               </select>
+            </div>
+
+            <div class="form-group row">
+              <label class="form-label  col-sm-2">ARCHIVO: </label>
+              <!-- <input type="text" class="form-control col-sm-10" formControlName="archivo"> -->
+              <input type="file" class="form-control col-sm-10" title="Foto de Evento." #FOTO_IMG_ADD accept="image/jpg, image/png, image/jpeg" (change)="VerificarFormatoFoto(FOTO_IMG_ADD);"  (change)="onFileChangeFoto($event)">
+            </div>
+            <div class="form-group row">
+              <label class="form-label  col-sm-2">VISTA PREVIA: </label>
+            <div class="col-sm-3">
+              <img [src]="ruta+EventosSeleccionado.archivo" width="250px" height="240px">
+            </div>
+            </div>
+            <!--{{EventosSeleccionado|json}}-->
+            <hr>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="ModificarEventos(EventosSeleccionado)">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- MODAL DE VISUALIZACION Eventos-->
+<div class="modal fade" id="ModalVisualizacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> VISUALIZANDO PROGRAMACIÓN DE EVENTOS Y PUBLICACIONES</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOMBRE: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="EventosSeleccionado.nombre_evento">
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CATEGORIA: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" [(ngModel)]="EventosSeleccionado.id_categ">
+              <optgroup label="SELECCIONE CATEGORIA" >
+                <option *ngFor="let c of cate" value="{{c.id_categ}}">{{c.nombre_categ}}</option>
+              </optgroup>
+             </select>
+          </div>
+          <!-- <div class="form-group row">
+            <label class="form-label text-right col-sm-2">ARCHIVO: </label>
+            <input type="file" class="form-control col-sm-4" title="Foto de Evento." #FOTO_IMG_ADD accept="image/jpg, image/png, image/jpeg" (change)="VerificarFormatoFoto(FOTO_IMG_ADD);"  (change)="onFileChangeFoto($event)">
+          </div> -->
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">VISTA PREVIA: </label>
+          <div class="col-sm-6">
+            <img [src]="ruta+EventosSeleccionado.archivo" width="250px" height="240px">
+          </div>
+          </div>
+          <hr>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+        </div>
+        </div>
+      </div>
+    </div>
+
+    </div>
+  </div>
+
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalMod" data-toggle="modal"
+  data-target="#ModalModificacion" style="width: 0px;">Abrir Modal Modificacion</button>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalMos" data-toggle="modal"
+  data-target="#ModalVisualizacion" style="width: 0px;">Abrir Modal Visualizacion</button>
+

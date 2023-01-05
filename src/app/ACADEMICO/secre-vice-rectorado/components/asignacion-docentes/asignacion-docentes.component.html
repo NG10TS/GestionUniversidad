@@ -1,0 +1,263 @@
+
+
+<strong>
+  <h2 class="text-center text-bold text-light">GESTIONAR ASIGNACION DOCENTES</h2>
+</strong>
+<hr class="border-warning">
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalCrudAsignacionMat"
+  data-whatever="@getbootstrap">AGREGAR ASIGNACION DOCENTES</button>
+<button type="button" class="btn btn-outline-light font-weight-bold"
+data-toggle="modal" data-target="#ModalGestionGestiones" data-whatever="@getbootstrap">VENTANA DE GESTIONES</button>
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input"
+      aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<!-- #region CRUD PRINCIPAL ASIGNACION DOCENTE -->
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nombre Docente</th>
+        <th scope="col">Carnet</th>
+        <th scope="col">Gestion</th>
+        <th scope="col">Materia</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of asignacionMat; let i= index">
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.ape_p_doc}} {{a.ape_m_doc}} {{a.nombre_doc}} ({{a.cod_doc}})</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.ci}} {{a.expedido}}</span>
+        </td>
+        <td>
+          <!-- <span *ngIf="!a.Editando">{{a.numero}} - {{a.desc_sem}}</span> -->
+          <span *ngIf="!a.Editando">{{a.gestion_asig_mat}}/{{a.periodo_asig_mat}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.nombre_mat}} ➤ {{a.paralelo_asig_mat}}</span>
+        </td>
+        <td style="width: 200px;">
+          <div class="btn-group">
+            <button (click)="SeleccionarAsignacionMat(a.id_asig_mat)"
+            class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+
+            <button type="button" class="btn btn-sm btn-success dropdown-toggle dropdown-toggle-split"
+              data-toggle="dropdown" aria-expanded="false">
+            </button>
+            <div class="dropdown-menu">
+              <!-- <button class="dropdown-item" data-toggle="modal" data-target="#ModalModificacion">Editar Datos Personales</button> -->
+              <button routerLink="/semestre" class="dropdown-item">Ir a Gestionar Semestres</button>
+              <button routerLink="/materias" class="dropdown-item">Ir a Gestionar Materias</button>
+              <button routerLink="/prerrequisitos" class="dropdown-item">Ir a Gestionar Prerrequisitos</button>
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-danger" (click)="EliminarAsignacionMat(a.id_asig_mat)">
+            <i class="bi bi-trash"></i></button>
+
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- MODAL DE CRUD ADD MOD DE CODIGO DE AsignacionMat-->
+<div class="modal fade" id="ModalCrudAsignacionMat" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{!newAsignacionMat.get('id_asig_mat').value ? 'REGISTRAR' : 'MODIFICAR'}} ASIGNACION DOCENTES</h5>
+        <button type="button" class="close" (click)="resetAsignacionMat()" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newAsignacionMat">
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">DOCENTE: </label>
+            <div [formGroup]="filterDocenteForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control"/>
+              </div>
+              <div *ngIf="filtroDocente" class="lcch-options" >
+                <span *ngFor="let a of docFiltrado" class="form-control" (click)="filterDocenteForm.patchValue({txt:a.ape_p_doc+' '+a.ape_m_doc+' '+a.nombre_doc}); newAsignacionDocente.patchValue({id_doc:a.id_doc}) "(click)="filtroDocente=false">{{a.ape_p_doc}} {{a.ape_m_doc}} {{a.nombre_doc}} - {{a.cod_doc}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">CARRERA:  </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_carre">
+              <optgroup label="SELECCIONE CARRERA" >
+                <option *ngFor="let a of carr" value="{{a.id_carre}}">{{a.nombre_carre}} - {{a.sigla_carre}}</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">SEMESTRE: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_sem">
+              <optgroup label="SELECCIONE SEMESTRE" >
+                <option *ngFor="let a of sem" value="{{a.id_sem}}">{{a.desc_sem}}</option>
+              </optgroup>
+             </select>
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">MATERIA: </label>
+            <div [formGroup]="filterMateriaForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control"/>
+              </div>
+              <div *ngIf="filtroMateria" class="lcch-options" >
+                <span *ngFor="let a of matFiltrado" class="form-control {{(a.habi_mat=='INHABILITADO')?'bg-warning':''}}" (click)="(a.habi_mat=='INHABILITADO')?'': filterMateriaForm.patchValue({txt:a.nombre_mat}) || newAsignacionDocente.patchValue({id_materia:a.id_materia}) || filtroMateria=false" >{{a.nombre_mat}} - {{a.codigo_mat}} <span class="text-danger font-weight-bold text-right float-right">{{(a.habi_mat=='INHABILITADO')?'Inhabilitado':''}}</span></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label col-sm-2">PARALELO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="paralelo_asig_mat">
+          </div>
+
+
+          <div class="form-group row">
+            <label class="form-label col-sm-2">TURNO: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_turno">
+              <optgroup label="SELECCIONE TURNO" >
+                <option *ngFor="let a of turno" value="{{a.id_turno}}">{{a.desc_turno}}</option>
+              </optgroup>
+             </select>
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label col-sm-2">NUMERO MODULO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="nro_modulo">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">CRO TIPO_MAT_CARR: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="cro_tipo_mat_carr">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">SUELDO DOCENTE: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="doc_suel">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">BOLIVIANOS: </label>
+            <input type="checkbox" class="form-control col-sm-10" formControlName="doc_bs">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">ESTADO MATERIA: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="doc_hab">
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label col-sm-2">FECHA DE INICIO: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="fec_ini">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">FECHA DE FIN: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="fec_fin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">OBSERVACION DE ASIGNACION: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="obs_asig_mat">
+          </div>
+
+
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="resetAsignacionMat()">Cancelar</button>
+        <button type="button" class="btn {{!newAsignacionMat.get('id_asig_mat').value ? 'btn-success' : 'btn-warning'}}" data-dismiss="modal" [disabled]="!newAsignacionMat.valid"
+          (click)="AgregarModificarAsignacionMat()">{{!newAsignacionMat.get('id_asig_mat').value ? 'CREAR ASIGNACION DOCENTES' : 'MODIFICAR ASIGNACION DOCENTES'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudAsignacionMat" data-toggle="modal"
+  data-target="#ModalCrudAsignacionMat" style="width: 0px;">Abrir Modal Crud</button>
+
+<!-- #endregion CRUP PRINCIPAL ASIG DOCENTES -->
+
+
+<!-- #region GESTIONAR GESTIONES -->
+<!-- MODAL DE GESTIONES-->
+<div class="modal fade" id="ModalGestionGestiones" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"> GESTIONES</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+          <button type="button" class="btn btn-outline-light font-weight-bold" (click)="ShowAddGestion=true">AGREGAR GESTION</button>
+          <hr>
+          <div class="card" [formGroup]="newGestion" *ngIf="ShowAddGestion">
+            <label class="form-text text-center" style="bottom:0px; left:0px">INTRODUCIR GESTION</label>
+            <button class="btn btn-success" style="position: absolute; top:0px; right:0px" (click)="AgregarModificarGestion()" (click)="ShowAddGestion=false">GUARDAR</button>
+            <button class="btn btn-secondary" style="position: absolute; top:0px; left:0px" (click)="ShowAddGestion=false">CANCELAR</button>
+            <div class="card-body">
+              <div class="row">
+                <label class="form-label col-sm-6">AÑO Y PERIODO DE GESTION: </label>
+                <input type="text" class="form-control col-sm-2" formControlName="anio_gestion" placeholder="2022">
+                <label class="form-text text-center col-sm-1">/</label>
+                <input type="text" class="form-control col-sm-2 " formControlName="periodo_gestion" placeholder="0">
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover table-danger">
+              <thead class="bg-danger ">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">GESTION</th>
+                  <th scope="col">Acciones</th>
+                </tr>
+              </thead>
+              <tbody  [formGroup]="newGestion">
+                <tr *ngFor="let a of gest; let i= index"  >
+                  <td style="width: 20px;">{{i+1}}</td>
+                  <td >
+                    <!-- esto es sin el control name -->
+                    <!-- <span *ngIf="!a.Editando">{{a.anio_gestion}}/{{a.periodo_gestion}}</span>
+                    <input type="text" [(ngModel)]="a.anio_gestion" *ngIf="a.Editando"><input type="text" [(ngModel)]="a.periodo_gestion" *ngIf="a.Editando"> -->
+                    <span *ngIf="!a.Editando">{{a.anio_gestion}}/{{a.periodo_gestion}}</span>
+                    <input type="text" formControlName="anio_gestion" [(ngModel)]="a.anio_gestion" *ngIf="a.Editando"><input type="text" formControlName="periodo_gestion" [(ngModel)]="a.periodo_gestion" *ngIf="a.Editando">
+                  </td>
+                  <td style="width: 200px;">
+                    <button class="btn btn-warning" type="button" *ngIf="!a.Editando" (click)="SeleccionarGestion(a.id_gestion)"  (click)="a.Editando=true" ><i class="bi bi-pencil"></i></button>
+                    <button class="btn btn-success" type="button" *ngIf="a.Editando" (click)="AgregarModificarGestion()" (click)="a.Editando=false"><i class="bi bi-save"></i></button>
+                    <button class="btn btn-secondary" type="button" *ngIf="a.Editando" (click)="CargarGestion()" (click)="resetGestion()" (click)="a.Editando=false"><i class="bi bi-box-arrow-left"></i></button>
+                    <button type="button" class="btn btn-danger" (click)="EliminarGestion(a.id_gestion)">
+                      <i class="bi bi-trash"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- #endregion GESTIONAR GESTIONES -->
+
+

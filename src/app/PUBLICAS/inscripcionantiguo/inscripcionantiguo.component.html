@@ -1,0 +1,188 @@
+<p>inscripcionantiguo works!</p>
+<!-- CRUD V3: idPK=> id_ins_ant, TITULO=> INSCRIPCIONES DE ESTUDIANTES ANTIGUO, nombreCRUD=> Inscripcionantiguo,  dataP=> insant -->
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalCrudInscripcionantiguo"
+  data-whatever="@getbootstrap">AGREGAR INSCRIPCIONES DE ESTUDIANTES ANTIGUO</button>
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input"
+      aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">PLAN</th>
+        <th scope="col">ESTUDIANTE</th>
+        <th scope="col">CARRERA</th>
+        <th scope="col">FECHA DE INSCRIPCIÓN</th>
+        <th scope="col">ACCIONES</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of insant; let i= index">
+        <td style="width: 20px;">{{i+1}}</td>
+         <td>
+          <span *ngIf="!a.Editando">{{a.id_plan_ins}} - {{a.nombre_plan}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.ape_p_est}} {{a.ape_m_est}} {{a.nombre_est}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.nombre_carre}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.fec_ins}}</span>
+        </td>
+
+        <td style="width: 200px;">
+          <button (click)="SeleccionarInscripcionantiguo(a.id_ins_ant)"
+            class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+          <button type="button" class="btn btn-danger" (click)="EliminarInscripcionantiguo(a.id_ins_ant)">
+            <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- MODAL DE CRUD ADD MOD DE CODIGO DE Inscripcionantiguo-->
+<div class="modal fade" id="ModalCrudInscripcionantiguo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          {{!newInscripcionantiguo.get('id_ins_ant').value ? 'REGISTRAR' : 'MODIFICAR'}} INSCRIPCIONES DE ESTUDIANTES ANTIGUO</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <label class="form-label text-right col-sm-2">COD ESTUDIANTE: </label>
+    <input type="text" [(ngModel)]="CODEst">
+    <button (click)="AutocompletarEstudiantes()" class="btn btn-success">AUTOCOMPLETAR</button>
+    <BR>
+      <BR>
+        <div class="mb-4" [formGroup]="newInscripcionantiguo">
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">ESTUDIANTE: </label>
+            <div [formGroup]="filterEstudianteForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control" value="{{EstudianteSelect.NomC}}"/>
+                <!-- <input formControlName="txt" type="text" class="form-control" value="{{EstudianteSelect.nombre_est}}"/> -->
+              </div>
+              <div *ngIf="filtroEstudiante" class="lcch-options" >
+                <span *ngFor="let a of semFiltrado" class="form-control" (click)="EstudianteSelect=a" (click)="filtroEstudiante=false" (click)="AutoCompletarDatosEst(a.id_est)">{{a.NomC}}</span>
+                <!-- <span *ngFor="let a of semFiltrado" class="form-control" (click)="EstudianteSelect=a" (click)="filtroEstudiante=false">{{a.nombre_est}} {{a.ape_p_est}} {{a.ape_m_est}}</span> -->
+              </div>
+            </div>
+            <label class="form-label text-right col-sm-2">CARRERA: </label>
+            <div [formGroup]="filterCarreraForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control" value="{{CarreraSelect.NomCarre}}"/>
+                <!-- <input formControlName="txt" type="text" class="form-control" value="{{EstudianteSelect.nombre_est}}"/> -->
+              </div>
+              <div *ngIf="filtroCarrera" class="lcch-options" >
+                <span *ngFor="let a of semFiltrado2" class="form-control" (click)="InscripcionSelect=a" (click)="filtroInscripcion=false">{{a.NomIns}}</span>
+                <span *ngFor="let a of semFiltrado1" class="form-control" (click)="CarreraSelect=a" (click)="filtroCarrera=false">{{a.NomCarre}}</span>
+                <!-- <span *ngFor="let a of semFiltrado" class="form-control" (click)="EstudianteSelect=a" (click)="filtroEstudiante=false">{{a.nombre_est}} {{a.ape_p_est}} {{a.ape_m_est}}</span> -->
+              </div>
+            </div>
+            <label class="form-label text-right col-sm-2">INSCRITO: </label>
+            <div [formGroup]="filterInscripcionForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control" value="{{InscripcionSelect.NomIns}}"/>
+                <!-- <input formControlName="txt" type="text" class="form-control" value="{{EstudianteSelect.nombre_est}}"/> -->
+              </div>
+              <div *ngIf="filtroInscripcion" class="lcch-options" >
+                <span *ngFor="let a of semFiltrado2" class="form-control" (click)="InscripcionSelect=a" (click)="filtroInscripcion=false">{{a.NomIns}}</span>
+                <!-- <span *ngFor="let a of semFiltrado" class="form-control" (click)="EstudianteSelect=a" (click)="filtroEstudiante=false">{{a.nombre_est}} {{a.ape_p_est}} {{a.ape_m_est}}</span> -->
+              </div>
+            </div>
+            <!-- <select class="custom-select col-sm-8" type="text" formControlName="id_est">
+              <optgroup label="Seleccione Estudiante " >
+                  <option *ngFor="let e of est " value="{{e.id_est}}">{{e.nombre_est}}  {{e.ape_p_est}}  {{e.ape_m_est}}</option>
+              </optgroup>
+            </select> -->
+            </div>
+            <!-- <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CARRERA: </label>
+            <select class="custom-select col-sm-8" type="text" formControlName="id_carre">
+              <optgroup label="Seleccione su Carrera " >
+                  <option *ngFor="let c of carre " value="{{c.id_carre}}">{{c.nombre_carre}} </option>
+              </optgroup>
+            </select>
+        </div> -->
+        <div class="form-group row">
+          <label class="form-label text-right col-sm-2">PLAN DE INSCRIPCIÓN: </label>
+          <select class="custom-select  col-sm-8" type="text" formControlName="id_plan_ins">
+            <optgroup label="Seleccione su Plan " >
+                <option *ngFor="let p of planins " value="{{p.id_plan_ins}}">{{p.nombre_plan}} </option>
+            </optgroup>
+          </select>
+        </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">PERIODO: </label>
+            <select class="custom-select  col-sm-2" type="text" formControlName="ins_periodo">
+              <optgroup label="Seleccione el Periodo " >
+                <option value="1">1</option>
+                <option value="2">2</option>
+            </optgroup>
+            </select>
+            <label class="form-label text-right col-sm-2">GESTIÓN: </label>
+            <input type="number" class="form-control col-sm-4" formControlName="ins_gestion ">
+          </div>
+          <div class="form-group row">
+          <label class="form-label text-right col-sm-2">TURNO: </label>
+          <select class="custom-select col-sm-2" type="text" formControlName="turno_ins">
+            <optgroup label="Seleccione el Periodo " >
+              <option value="MAÑANA">MAÑANA</option>
+              <option value="TARDE">TARDE</option>
+              <option value="NOCHE">NOCHE</option>
+          </optgroup>
+          </select>
+          <label class="form-label text-right col-sm-2">HABILITACIÓN: </label>
+          <select class="custom-select col-sm-4" type="text" formControlName="habi_ins">
+            <optgroup label="Seleccione el Periodo " >
+              <option value="HABILITADO">HABILITADO</option>
+              <option value="NO HABILITADO">NO HABILITADO</option>
+          </optgroup>
+          </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">OBSERVACIONES: </label>
+            <input type="text" class="form-control col-sm-8" formControlName="obs_ins">
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NIVEL: </label>
+            <input type="text" class="form-control col-sm-3" formControlName="nivel">
+            <label class="form-label text-right col-sm-2">CONVENIO </label>
+            <input type="text" class="form-control col-sm-3" formControlName="convenio">
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA DE INSCRIPCIÓN: </label>
+            <input type="date" class="form-control col-sm-3" formControlName="fec_ins">
+            <label class="form-label text-right col-sm-2">TIPO DE PAGO: </label>
+            <input type="text" class="form-control col-sm-3" formControlName="tipo_de_pago">
+          </div>
+
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="resetInscripcionantiguo()">Cancelar</button>
+        <button type="button" class="btn {{!newInscripcionantiguo.get('id_ins_ant').value ? 'btn-succes' : 'btn-warning'}}" data-dismiss="modal" [disabled]="!newInscripcionantiguo.valid"
+          (click)="AgregarModificarInscripcionantiguo()">{{!newInscripcionantiguo.get('id_ins_ant').value ? 'CREAR PLAN' : 'MODIFICAR PLAN'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudInscripcionantiguo" data-toggle="modal"
+  data-target="#ModalCrudInscripcionantiguo" style="width: 0px;">Abrir Modal Crud</button>

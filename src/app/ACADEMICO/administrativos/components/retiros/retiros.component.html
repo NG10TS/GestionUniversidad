@@ -1,0 +1,95 @@
+<strong>
+    <h2 class="text-center text-bold text-light">GESTIONAR Retiros</h2>
+  </strong>
+<hr class="border-warning">
+<!-- CRUD V3: idPK=> id_retiro, TITULO=> RETIRO, nombreCRUD=> Retiros,  dataP=> ret -->
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalCrudRetiros"
+  data-whatever="@getbootstrap">AGREGAR RETIRO</button>
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input"
+      aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">GESTION</th>
+        <th scope="col">OBSERVACION</th>
+        <th scope="col">FECHA</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of ret; let i= index">
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>
+            <spam> *ngIf="!a.Editando">{{a.periodo_fin}}  | {{a.gestion_fin}} </spam>
+        </td>
+        <td>
+            <spam> *ngIf="!a.Editando">{{a.obs_retiro}} </spam>
+        </td>
+        <td>
+            <spam> *ngIf="!a.Editando">{{a.fec_trans}} </spam>
+        </td>
+        <td style="width: 200px;">
+          <button (click)="SeleccionarRetiros(a.id_retiro)"
+            class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+          <button type="button" class="btn btn-danger" (click)="EliminarRetiros(a.id_retiro)">
+            <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- MODAL DE CRUD ADD MOD DE CODIGO DE Retiros-->
+<div class="modal fade" id="ModalCrudRetiros" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{!newRetiros.get('id_retiro').value ? 'REGISTRAR' : 'MODIFICAR'}} RETIRO</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newRetiros">
+         <div class="form-group row">
+           <label class="form-label col-sm-2">MOTIVO: </label>
+           <input type="text" class="form-control col-sm-10" formControlName="motivo_retiro">
+         </div>
+         <div class="form-group row">
+           <label class="form-label col-sm-2">PERIODO: </label>
+           <input type="number" class="form-control col-sm-4" formControlName="periodo_fin">
+           <label class="form-label col-sm-2">GESTION: </label>
+           <input type="number" class="form-control col-sm-4" formControlName="gestion_fin">
+         </div>
+         <div class="form-group row">
+           <label class="form-label col-sm-2">OBSERVACIONES: </label>
+           <input type="text" class="form-control col-sm-10" formControlName="obs_retiro">
+         </div>
+         <div class="form-group row">
+           <label class="form-label col-sm-2">FECHA RETIRO: </label>
+           <input type="date" class="form-control col-sm-10" formControlName="fec_trans">
+         </div>
+         
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="resetRetiros()">Cancelar</button>
+        <button type="button" class="btn {{!newRetiros.get('id_retiro').value ? 'btn-success' : 'btn-warning'}}" data-dismiss="modal" [disabled]="!newRetiros.valid"
+          (click)="AgregarModificarRetiros()">{{!newRetiros.get('id_retiro').value ? 'CREAR RETIRO' : 'MODIFICAR RETIRO'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudRetiros" data-toggle="modal"
+  data-target="#ModalCrudRetiros" style="width: 0px;">Abrir Modal Crud</button>

@@ -1,0 +1,215 @@
+
+<strong>
+  <h2 class="text-center text-bold text-light">GESTIONAR MATRICULAS</h2>
+</strong>
+<hr class="border-warning">
+<!-- #region CRUD PRINCIPAL MATRICULAS -->
+<!-- CRUD V3: idPK=> id_matricula, TITULO=> MATRICULA, nombreCRUD=> Matricula,  dataP=> matricula -->
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalCrudMatricula"
+  data-whatever="@getbootstrap">AGREGAR MATRICULA</button>
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalGestionMensualidades"
+  data-whatever="@getbootstrap">GESTIONAR MENSUALIDAD</button>
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input"
+      aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">CODIGO DE MATRICULA</th>
+        <th scope="col">DESCRIPCION MATRICULA</th>
+        <th scope="col">MONTO DE MATRICULA</th>
+        <th scope="col">MENSUALIDAD</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of matricula; let i= index">
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>{{a.cod_matricula}}</td>
+        <td>{{a.desc_matricula}}</td>
+        <td>{{a.monto_matricula}}</td>
+        <td>{{a.desc_mensualidad}}</td>
+        <td style="width: 200px;">
+          <button (click)="SeleccionarMatricula(a.id_matricula)"
+            class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+          <button type="button" class="btn btn-danger" (click)="EliminarMatricula(a.id_matricula)">
+            <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- MODAL DE CRUD ADD MOD DE CODIGO DE Matricula-->
+<div class="modal fade" id="ModalCrudMatricula" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{!newMatricula.get('id_matricula').value ? 'REGISTRAR' : 'MODIFICAR'}} MATRICULA</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newMatricula">
+          <div class="form-group row">
+            <label class="form-label col-sm-2">CODIGO DE MATRICULA: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="cod_matricula">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">DESCRIPCION DE MATRICULA: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="desc_matricula">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">MONTO DE MATRICULA: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="monto_matricula">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">FECHA MATRICULA: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="fec_matricula">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">MENSUALIDAD: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_mensualidad">
+              <optgroup label="SELECCIONE MENSUALIDAD" >
+                <option *ngFor="let a of mensualidad" value="{{a.id_mensualidad}}">{{a.desc_mensualidad}} - {{a.cod_mensualidad}}</option>
+              </optgroup>
+             </select>
+          </div>
+          
+          
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="resetMatricula()">Cancelar</button>
+        <button type="button" class="btn {{!newMatricula.get('id_matricula').value ? 'btn-success' : 'btn-warning'}}" data-dismiss="modal" [disabled]="!newMatricula.valid"
+          (click)="AgregarModificarMatricula()">{{!newMatricula.get('id_matricula').value ? 'CREAR MATRICULA' : 'MODIFICAR MATRICULA'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudMatricula" data-toggle="modal"
+  data-target="#ModalCrudMatricula" style="width: 0px;">Abrir Modal Crud</button>
+<!-- #endregion CRUD PRINCIPAL MATRICULAS -->
+
+<!-- #region MENSUALIDADES -->
+
+<!-- MODAL DE GESTION MENSUALIDADES-->
+<div class="modal fade" id="ModalGestionMensualidades" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"> GESTION DE MENSUALIDADES</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+            <!-- CRUD V3: idPK=> id_mensualidad, TITULO=> MENSUALIDAD, nombreCRUD=> Mensualidad,  dataP=> mensualidad -->
+            <button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalCrudMensualidad"
+              data-whatever="@getbootstrap">AGREGAR MENSUALIDAD</button>
+            <form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Sizing example input"
+                  aria-describedby="inputGroup-sizing-default">
+              </div>
+            </form>
+            <br>
+            <div class="table-responsive">
+              <table class="table table-bordered table-striped table-hover table-danger">
+                <thead class="bg-danger ">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">cod_mensualidad</th>
+                    <th scope="col">desc_mensualidad</th>
+                    <th scope="col">monto_mensualidad</th>
+                    <th scope="col">fec_mensualidad</th>
+                    <th scope="col">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let a of mensualidad; let i= index">
+                    <td style="width: 20px;">{{i+1}}</td>
+                    <td>{{a.cod_mensualidad}}</td>
+                    <td>{{a.desc_mensualidad}}</td>
+                    <td>{{a.monto_mensualidad}}</td>
+                    <td>{{a.fec_mensualidad}}</td>
+                    <td style="width: 200px;">
+                      <button (click)="SeleccionarMensualidad(a.id_mensualidad)"
+                        class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+                      <button type="button" class="btn btn-danger" (click)="EliminarMensualidad(a.id_mensualidad)">
+                        <i class="bi bi-trash"></i></button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+            <!-- MODAL DE CRUD ADD MOD DE CODIGO DE Mensualidad-->
+            <div class="modal fade" id="ModalCrudMensualidad" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">
+                        {{!newMensualidad.get('id_mensualidad').value ? 'REGISTRAR' : 'MODIFICAR'}} MENSUALIDAD</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="mb-4" [formGroup]="newMensualidad">
+                        <div class="form-group row">
+                          <label class="form-label col-sm-2">CODIGO DE MENSUALIDAD: </label>
+                          <input type="text" class="form-control col-sm-10" formControlName="cod_mensualidad">
+                        </div>
+                        <div class="form-group row">
+                          <label class="form-label col-sm-2">DESCRIPCION MENSUALIDAD: </label>
+                          <input type="text" class="form-control col-sm-10" formControlName="desc_mensualidad">
+                        </div>
+                        <div class="form-group row">
+                          <label class="form-label col-sm-2">MONTO MENSUALIDAD: </label>
+                          <input type="text" class="form-control col-sm-10" formControlName="monto_mensualidad">
+                        </div>
+                        <div class="form-group row">
+                          <label class="form-label col-sm-2">FECHA MENSUALIDAD: </label>
+                          <input type="date" class="form-control col-sm-10" formControlName="fec_mensualidad">
+                        </div>
+                        
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                        (click)="resetMensualidad()">Cancelar</button>
+                      <button type="button" class="btn {{!newMensualidad.get('id_mensualidad').value ? 'btn-success' : 'btn-warning'}}" data-dismiss="modal" [disabled]="!newMensualidad.valid"
+                        (click)="AgregarModificarMensualidad()">{{!newMensualidad.get('id_mensualidad').value ? 'CREAR MENSUALIDAD' : 'MODIFICAR MENSUALIDAD'}}</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudMensualidad" data-toggle="modal"
+                data-target="#ModalCrudMensualidad" style="width: 0px;">Abrir Modal Crud</button>
+<!-- #endregion MENSUALIDADES -->
+

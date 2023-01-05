@@ -1,0 +1,293 @@
+<strong>
+  <h2 class="text-center text-bold text-light">GESTIONAR INGRESOS</h2>
+</strong>
+<hr class="border-warning">
+
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalCrudIngreso"
+  data-whatever="@getbootstrap">AGREGAR INGRESOS</button>
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalGestionCuentas"data-whatever="@getbootstrap">GESTIONAR CUENTAS</button>
+
+<!-- #region CRUD PRINCIPAL INGRESOS -->
+<!-- CRUD V3: idPK=> id_ingreso, TITULO=> INGRESOS, nombreCRUD=> Ingreso,  dataP=> ingreso -->
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input"
+      aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">NOMBRE ADMIN</th>
+        <th scope="col">NOMBRE DOCENTE</th>
+        <th scope="col">NOMBRE PERSONA </th>
+        <th scope="col">NOMBRE ESTUDIANTE</th>
+        <th scope="col">MONTO INGRESO</th>
+        <th scope="col">FECHA INGRESO</th>
+        <th scope="col">FECHA TRANSFERENCIA</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of ingreso; let i= index">
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>{{a.nombre_admin}}</td>
+        <td>{{a.nombre_doc}}</td>
+        <td>{{a.nombre_per}}</td>
+        <td>{{a.nombre_est}}</td>
+        <td>{{a.monto_ingreso}}</td>
+        <td>{{a.fec_transf}}</td>
+        <td style="width: 200px;">
+          <button (click)="SeleccionarIngreso(a.id_ingreso)"
+            class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+          <button type="button" class="btn btn-danger" (click)="EliminarIngreso(a.id_ingreso)">
+            <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- MODAL DE CRUD ADD MOD DE CODIGO DE Ingreso-->
+<div class="modal fade" id="ModalCrudIngreso" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{!newIngreso.get('id_ingreso').value ? 'REGISTRAR' : 'MODIFICAR'}} INGRESOS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newIngreso">
+          <div class="form-group row">
+            <label class="form-label col-sm-2">FECHA INGRESO: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="fec_ingreso">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">REFERENCIA INGRESO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="refere_ingreso">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">DETALLE INGRESO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="detalle_ingreso">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">MONTO INGRESO: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="monto_ingreso">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">CUENTA: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_cuenta">
+              <optgroup label="SELECCIONE CUENTA" >
+                <option *ngFor="let a of cuenta" value="{{a.id_cuenta}}">{{a.nro_cuenta}}</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">NOMBRE ADMINISTRATIVO: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_administrativo">
+              <optgroup label="SELECCIONE NOMBRE ADMINISTRATIVO" >
+                <option *ngFor="let a of admin" value="{{a.id_administrativo}}">{{a.nombre_admin}}</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">NOMBRE DOCENTE: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_doc">
+              <optgroup label="SELECCIONE NOMBRE DOCENTE" >
+                <option *ngFor="let a of doc" value="{{a.id_doc}}">{{a.nombre_doc}}</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">NOMBRE PERSONA: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_persona">
+              <optgroup label="SELECCIONE NOMBRE PERSONA" >
+                <option *ngFor="let a of persona" value="{{a.id_persona}}">{{a.nombre_per}}</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">NOMBRE ESTUDIANTE: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_est">
+              <optgroup label="SELECCIONE NOMBRE ESTUDIANTE" >
+                <option *ngFor="let a of est" value="{{a.id_est}}">{{a.nombre_est}}</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">NOMBRE EMPRESA: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_empresa">
+              <optgroup label="SELECCIONE NOMBRE EMPRESA" >
+                <option *ngFor="let a of emp" value="{{a.id_empresa}}">{{a.nombre_emp}}</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">TIPO INGRESO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="tipo_ingreso">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">FECHA TRANSFERENCIA: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="fec_transf">
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="resetIngreso()">Cancelar</button>
+        <button type="button" class="btn {{!newIngreso.get('id_ingreso').value ? 'btn-success' : 'btn-warning'}}" data-dismiss="modal" [disabled]="!newIngreso.valid"
+          (click)="AgregarModificarIngreso()">{{!newIngreso.get('id_ingreso').value ? 'CREAR INGRESOS' : 'MODIFICAR INGRESOS'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudIngreso" data-toggle="modal"
+  data-target="#ModalCrudIngreso" style="width: 0px;">Abrir Modal Crud</button>
+<!-- #endregion CRUD PRINCIPAL INGRESOS -->
+<!-- #region CUENTAS -->
+<!-- MODAL DE GESTIONAR CUENTAS-->
+<div class="modal fade" id="ModalGestionCuentas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"> GESTIONAR CUENTAS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+          <button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalCrudCuenta"
+            data-whatever="@getbootstrap">AGREGAR CUENTAS</button>
+          <form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+              </div>
+              <input type="text" class="form-control" aria-label="Sizing example input"
+                aria-describedby="inputGroup-sizing-default">
+            </div>
+          </form>
+          <br>
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover table-danger">
+              <thead class="bg-danger ">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">BANCO</th>
+                  <th scope="col">NUMERO CUENTA</th>
+                  <th scope="col">AB CUENTA</th>
+                  <th scope="col">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let a of cuenta; let i= index">
+                  <td style="width: 20px;">{{i+1}}</td>
+                  <td>{{a.banco}}</td>
+                  <td>{{a.nro_cuenta}}</td>
+                  <td>{{a.ab_cuenta}}</td>
+                  <td style="width: 200px;">
+                    <button (click)="SeleccionarCuenta(a.id_cuenta)"
+                      class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+                    <button type="button" class="btn btn-danger" (click)="EliminarCuenta(a.id_cuenta)">
+                      <i class="bi bi-trash"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- MODAL DE CRUD ADD MOD DE CODIGO DE Cuenta-->
+<div class="modal fade" id="ModalCrudCuenta" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{!newCuenta.get('id_cuenta').value ? 'REGISTRAR' : 'MODIFICAR'}} CUENTAS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newCuenta">
+          <div class="form-group row">
+            <label class="form-label col-sm-2">BANCO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="banco">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">NUMERO CUENTA: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="nro_cuenta">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">AB CUENTA: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="ab_cuenta">
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="resetCuenta()">Cancelar</button>
+        <button type="button" class="btn {{!newCuenta.get('id_cuenta').value ? 'btn-success' : 'btn-warning'}}" (click)="AgregarModificarCuenta()" [disabled]="!newCuenta.valid" data-dismiss="modal">{{!newCuenta.get('id_cuenta').value ? 'AGREGAR' : 'MODIFICAR'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudCuenta" data-toggle="modal"
+  data-target="#ModalCrudCuenta" style="width: 0px;">Abrir Modal Crud</button>
+
+
+
+<!-- #endregion CUENTAS  -->
+
+<!-- #region CUENTA BANCOS (VINCULAR BANCO) -->
+<!-- MODAL DE VINCULACION CUENTA BANCOS-->
+<div class="modal fade" id="ModalCuentaBancos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"> VINCULAR CUENTA A BANCO</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newCuentaBanco">
+            <div class="form-group row">
+              <label class="form-label col-sm-2">NOMBRE DE BANCO: </label>
+              <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_banco">
+                <optgroup label="SELECCIONE NOMBRE DE BANCO" >
+                  <option *ngFor="let a of banco" value="{{a.id_banco}}">{{a.nombre_banco}}</option>
+                </optgroup>
+               </select>
+            </div>
+            
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" [disabled]="!newCuentaBanco.valid" (click)="AgregarModificarCuenta()" (click)="AgregarModificarCuentaBanco()" data-dismiss="modal">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- #endregion CUENTA BANCOS -->
+

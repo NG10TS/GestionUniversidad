@@ -1,0 +1,111 @@
+<strong>
+    <h2 class="text-center text-bold text-light">GESTIONAR Pagopendest</h2>
+  </strong>
+<hr class="border-warning">
+<!-- CRUD V3: idPK=> id_pago_pend_est, TITULO=> PAGOS PENDIENTES DE MATERIAS, nombreCRUD=> Pagopendest,  dataP=> pagopendest -->
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalCrudPagopendest"
+  data-whatever="@getbootstrap">AGREGAR PAGOS PENDIENTES DE MATERIAS</button>
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input"
+      aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Estudiantes</th>
+        <th scope="col">Tipo de pago</th>
+        <th scope="col">materia Pendiente</th>
+        <th scope="col">Estado</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of pagopendest; let i= index">
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>
+            <spam> *ngIf="!a.Editando">{{a.id_est_reg}} </spam>
+        </td>
+        <td>
+            <spam> *ngIf="!a.Editando">{{a.id_tipo_pago}} </spam>
+        </td>
+        <td>
+            <spam> *ngIf="!a.Editando">{{a.id_mat_pend}} </spam>
+        </td>
+        <td>
+            <spam> *ngIf="!a.Editando">{{a.estado_pago_pend}} </spam>
+        </td>
+        <td style="width: 200px;">
+          <button (click)="SeleccionarPagopendest(a.id_pago_pend_est)"
+            class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+          <button type="button" class="btn btn-danger" (click)="EliminarPagopendest(a.id_pago_pend_est)">
+            <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- MODAL DE CRUD ADD MOD DE CODIGO DE Pagopendest-->
+<div class="modal fade" id="ModalCrudPagopendest" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{!newPagopendest.get('id_pago_pend_est').value ? 'REGISTRAR' : 'MODIFICAR'}} PAGOS PENDIENTES DE MATERIAS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newPagopendest">
+
+          <div class="form-group row">
+            <label class="form-label col-sm-2">ESTUDIANTE: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_est_reg">
+              <optgroup label="SELECCIONE ESTUDIANTE" >
+                <option *ngFor="let a of estreg" value="{{a.id_est_reg}}">{{a.id_est_reg}}</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">MATERIA PENDIENTE: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_mat_pend">
+              <optgroup label="SELECCIONE MATERIA PENDIENTE" >
+                <option *ngFor="let a of matpend" value="{{a.id_mat_pend}}">{{a.id_mat_pend}}</option>
+              </optgroup>
+             </select>
+          </div>
+          
+          <div class="form-group row">
+            <label class="form-label col-sm-2">TIPO DE PAGO: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_tipo_pago_pend">
+              <optgroup label="SELECCIONE TIPO DE PAGO" >
+                <option *ngFor="let a of tipopago" value="{{a.id_tipo_pago_pend}}">{{a.id_tipo_pago_pend}}</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">ESTADO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="estado_pago_pend">
+          </div>
+          
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="resetPagopendest()">Cancelar</button>
+        <button type="button" class="btn {{!newPagopendest.get('id_pago_pend_est').value ? 'btn-success' : 'btn-warning'}}" data-dismiss="modal" [disabled]="!newPagopendest.valid"
+          (click)="AgregarModificarPagopendest()">{{!newPagopendest.get('id_pago_pend_est').value ? 'CREAR PAGOS PENDIENTES DE MATERIAS' : 'MODIFICAR PAGOS PENDIENTES DE MATERIAS'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudPagopendest" data-toggle="modal"
+  data-target="#ModalCrudPagopendest" style="width: 0px;">Abrir Modal Crud</button>

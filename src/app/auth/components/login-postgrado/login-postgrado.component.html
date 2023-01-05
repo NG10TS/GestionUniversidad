@@ -1,0 +1,48 @@
+<div class="hold-transition login-page">
+  <div class="login-box">
+    <!-- /.login-logo -->
+    <div class="card card-outline card-primary">
+      <div class="card-header text-center">
+        <a class="h1"><b>LOGIN </b>EGRESADOS e INSCRITOS</a>
+      </div>
+      <div class="card-body">
+        <p class="login-box-msg">Ingrese Carnet y Contraseña</p>
+
+        <form [formGroup]="FormAutenticacion">
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Carnet" formControlName="ci_ins">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-indent"></span>
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <input type="password" class="form-control" placeholder="Contraseña" formControlName="contrasenia">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <button type="button" (click)="autenticarEgresado()" class="btn btn-primary btn-block" >Ingresar</button>
+            </div>
+          </div>
+        </form>
+
+        <hr>
+        <p class="mb-1">
+          <a>Si olvidó su contraseña contactarse con secretaria</a>
+        </p>
+        <p class="mb-0">
+          <a routerLink="/inscripcionespostgrado" class="text-center ">Inscribirse</a>
+        </p>
+      </div>
+      <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+  </div>
+
+</div>

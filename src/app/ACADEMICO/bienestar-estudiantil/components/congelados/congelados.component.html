@@ -1,0 +1,150 @@
+<strong>
+  <h2 class="text-center text-bold text-light">GESTIONAR ESTUDIANTES CONGELADOS</h2>
+</strong>
+<hr class="border-warning">
+
+<!-- CRUD V3: idPK=> id_cong, TITULO=> ESTUDIANTES CONGELADOS, nombreCRUD=> Congelados,  dataP=> cong -->
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal"
+  data-target="#ModalCrudCongelados" data-whatever="@getbootstrap">AGREGAR ESTUDIANTES CONGELADOS</button>
+
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input"
+      aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Carrera</th>
+        <th scope="col">Motivo</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of cong; let i=index">
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.nombre_est}} {{a.ape_p_est}} {{a.ape_m_est}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.nombre_carre}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.motivo_cong}}</span>
+        </td>
+
+        <td style="width: 200px;">
+          <button class="btn btn-success" (click)="SeleccionarCongelados(a)" type="button" data-toggle="modal"
+            data-target="#ModalVisualizacion"> <i class="bi bi-eye"></i> </button>
+
+          <button (click)="SeleccionarCongelados(a)" class="btn btn-warning"><i
+              class="bi bi-pencil"></i></button>
+
+          <button type="button" class="btn btn-danger" (click)="EliminarCongelados(a.id_cong)">
+            <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- CRUD V3: idPK=> id_cong, TITULO=> CONGELADOS, nombreCRUD=> Congelados,  dataP=> cong -->
+<!-- MODAL DE CRUD ADD MOD DE CODIGO DE Congelados-->
+<div class="modal fade" id="ModalCrudCongelados" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          {{!newCongelados.get('id_cong').value ? 'REGISTRAR' : 'MODIFICAR'}} CONGELADOS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+          <div class="mb-4" [formGroup]="newCongelados">
+
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">ESTUDIANTE: </label>
+              <!-- FILTRADOR V3: NombreFiltro => Estudiante-->
+              <div [formGroup]="filterEstudianteForm" class="lcch-select col-sm-10">
+                <div>
+                  <input formControlName="txt" type="text" class="form-control" value="{{EstudianteSelect.NomC }}"/>
+                </div>
+                <div *ngIf="filtroEstudiante" class="lcch-options" >
+                  <span *ngFor="let a of estFiltrado" class="form-control" (click)="autoCompletar(a)" (click)="filtroEstudiante=false">{{a.NomC}}</span>
+                </div>
+              </div>
+              <!-- FILTRADOR V3: NombreFiltro => Estudiante-->
+              <!-- <div [formGroup]="filterEstudianteForm" class="lcch-select col-sm-10">
+                <div>
+                  <input formControlName="txt" type="text" class="form-control" value="{{EstudianteSelect.NomC }}"/>
+                </div>
+                <div *ngIf="filtroEstudiante" class="lcch-options" >
+                  <span *ngFor="let a of estFiltrado" class="form-control" (click)="EstudianteSelect.NomC=a.NomC; CongeladosSeleccionado.id_est = a.id_est" (click)="filtroEstudiante=false">{{a.NomC}}</span>
+                </div>
+              </div> -->
+            </div>
+
+            <div class="form-group row">
+              <label class="form-label  col-sm-2">CARRERA: </label>
+              <!-- <input type="text" class="form-control col-sm-10" [(ngModel)]="AsignacionEstudianteSeleccionado.id_doc"> -->
+              <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_carre">
+                <optgroup label="Seleccione un Estudiante">
+                  <option *ngFor="let a of carre" value="{{a.id_carre}}">{{a.nombre_carre}}</option>
+                </optgroup>
+              </select>
+            </div>
+            <div class="form-group row">
+              <label class="form-label  col-sm-2">MATERIA ASIGNADA: </label>
+              <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_asig_mat_est">
+                <optgroup label="Seleccione un Estudiante">
+                  <option *ngFor="let a of AEst" value="{{a.id_asig_mat_est}}">{{a.materia_asig}}</option>
+                </optgroup>
+              </select>
+            </div>
+
+          <div class="form-group row">
+            <label class="form-label  col-sm-2">TIPO: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="tipo_cong">
+              <optgroup label="Seleccione Tipo">
+                <option value="TEMPORAL">TEMPORAL</option>
+                <option value="DOS MATERIAS">DOS MATERIAS</option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label  col-sm-2">MOTIVO: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="motivo_cong">
+            <optgroup label="Seleccione el Motivo" >
+                <option value="TRABAJO">TRABAJO </option>
+                <option value="FACTORES ECONÓMICOS">FACTORES ECONÓMICOS</option>
+                <option value="SALUD">SALUD</option>
+                <option value="OTROS">OTROS</option>
+            </optgroup>
+          </select>
+          </div>
+          </div>
+         <!--{{newCongelados.value|json}}-->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="resetCongelados()">Cancelar</button>
+        <button type="button" class="btn {{!newCongelados.get('id_cong').value ? 'btn-success' : 'btn-warning'}}"
+          data-dismiss="modal" [disabled]="!newCongelados.valid"
+          (click)="AgregarModificarCongelados()">{{!newCongelados.get('id_cong').value ? 'CREAR PLAN' : 'MODIFICAR PLAN'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudCongelados" data-toggle="modal"
+  data-target="#ModalCrudCongelados" style="width: 0px;">Abrir Modal Crud</button>

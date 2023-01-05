@@ -1,0 +1,180 @@
+
+<strong>
+  <h2 class="text-center text-bold text-light">FILE ESTUDIANTE</h2>
+</strong>
+<hr class="border-warning">
+<div class="modal-content">
+  <!-- <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel"> FILE ESTUDIANTE</h5>
+   </div> -->
+  <div class="modal-body" style="color:slategray; background-color:snow; border:darkgray;">
+
+    <div class="mb-4">
+    <table >
+      <tr>
+          <td rowspan="3" style="text-align:center;" class="text-bold">ESTUDIANTE
+          <div class="form-group row"><img [src]="ruta+'fijos/foto.jpeg'" width="110px" height="150px"></div>
+          </td>
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CODIGO:</label>
+            <input type="text" class="form-control col-sm-4" formControlName="cod_est">
+            <label class="form-label text-right col-sm-2">MATRICULA:</label>
+            <input type="text" class="form-control col-sm-4" formControlName="matricula_est">
+          </div>
+      </tr>
+      <tr>
+        <div class="form-group row">
+          <label class="form-label text-right col-sm-2">NOMBRE: </label>
+        <input type="text" class="form-control col-sm-10" formControlName="nombre_est">
+        </div>
+        <div class="form-group row">
+          <label class="form-label text-right col-sm-2">CARRERA: </label>
+          <input type="text" class="form-control col-sm-10" formControlName="nombre_carre">
+        </div>
+      </tr>
+      <tr>
+        <div class="form-group row">
+          <label class="form-label text-right col-sm-2">PERIODO:</label>
+          <input type="text" class="form-control col-sm-4" formControlName="periodo">
+          <label class="form-label text-right col-sm-2">GESTIÓN: </label>
+          <input type="text" class="form-control col-sm-4" formControlName="gestion">
+        </div>
+      </tr>
+     </table>
+
+    </div>
+  </div>
+</div>
+<br>
+
+<br>
+
+
+
+<!-- CRUD V3: idPK=> id_est, TITULO=> FILE ESTUDIANTE, nombreCRUD=> FILE ESTUDIANTE,  dataP=> file_est -->
+<!-- <button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalCrudFILE ESTUDIANTE"
+  data-whatever="@getbootstrap">AGREGAR FILE ESTUDIANTE</button> -->
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input"
+      aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">PERIODO</th>
+        <th scope="col">GESTIÓN</th>
+        <th scope="col">SIGLA</th>
+        <th scope="col">MATERIA</th>
+        <th scope="col">PARC1</th>
+        <th scope="col">PARC2</th>
+        <th scope="col">EXFIN</th>
+        <th scope="col">2TEMP</th>
+        <th scope="col">NOTA</th>
+        <th scope="col">LITERAL</th>
+        <th scope="col">ESTADO</th>
+        <th scope="col">TURNO</th>
+        <th scope="col">PARALELO</th>
+        <!-- <th scope="col">Acciones</th> -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of nota;  let i= index">
+        <!-- let e of AEst;let b of est; let c of carre; let d of nota ;let e of mat; -->
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>
+          <span *ngIf="!a.Editando">1</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">2022</span>
+        </td>
+        <!-- <td>
+          <span *ngIf="!a.Editando">{{a.ape_p_est}} {{a.ape_m_est}}⠀{{a.nombre_est}} </span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.nombre_carre}}</span>
+        </td> -->
+        <!-- <td>
+          <span *ngIf="!a.Editando">{{a.nombre_mat}} <span *ngIf="ShowSigla">{{a.codigo_mat}} </span></span>
+        </td> -->
+        <td>
+          <span *ngIf="!a.Editando">{{a.codigo_mat}} </span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.nombre_mat}} </span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.eval_p1}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.eval_p2}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.eval_fin}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.eval_2t}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.nota_final}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.nota_literal}}</span>
+        </td>
+        <!-- <td>
+          <span *ngIf="!a.Editando">{{a.obs_nota_eval}}</span>
+        </td> -->
+        <td>
+          <span *ngIf="!a.Editando">APROBADO</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">MAÑANA</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">B</span>
+        </td>
+        <!-- <td style="width: 200px;">
+          <button (click)="SeleccionarFILE ESTUDIANTE(a.id_est)"
+            class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+          <button type="button" class="btn btn-danger" (click)="EliminarFILE ESTUDIANTE(a.id_est)">
+            <i class="bi bi-trash"></i></button>
+        </td> -->
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- MODAL DE CRUD ADD MOD DE CODIGO DE FILE ESTUDIANTE-->
+<!-- <div class="modal fade" id="ModalCrudFILE ESTUDIANTE" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          {{!newFILE ESTUDIANTE.get('id_est').value ? 'REGISTRAR' : 'MODIFICAR'}} FILE ESTUDIANTE</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newFILE ESTUDIANTE">
+          ...
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="resetFILE ESTUDIANTE()">Cancelar</button>
+        <button type="button" class="btn {{!newFILE ESTUDIANTE.get('id_est').value ? 'btn-succes' : 'btn-warning'}}" data-dismiss="modal" [disabled]="!newFILE ESTUDIANTE.valid"
+          (click)="AgregarModificarFILE ESTUDIANTE()">{{!newFILE ESTUDIANTE.get('id_est').value ? 'CREAR PLAN' : 'MODIFICAR PLAN'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudFILE ESTUDIANTE" data-toggle="modal"
+  data-target="#ModalCrudFILE ESTUDIANTE" style="width: 0px;">Abrir Modal Crud</button> -->

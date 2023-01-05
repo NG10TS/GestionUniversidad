@@ -1,0 +1,139 @@
+<strong>
+  <h2 class="text-center text-bold text-light">GESTIONAR FACTURAS</h2>
+</strong>
+<hr class="border-warning">
+<!-- CRUD V3: idPK=> id_factura, TITULO=> FACTURAS, nombreCRUD=> Facturas,  dataP=> factu -->
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalCrudFacturas"
+  data-whatever="@getbootstrap">AGREGAR FACTURAS</button>
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input"
+      aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nro</th>
+        <th scope="col">Nombre de Factura</th>
+        <th scope="col">Monto</th>
+        <th scope="col">Fecha</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of factu; let i= index">
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.nro_factura}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.nombre_factura}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.monto_factura}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.fec_factura}}</span>
+        </td>
+        <td style="width: 200px;">
+          <button class="btn btn-success" (click)="SeleccionarFacturas(a,'Mostrar')" type="button">
+            <i class="bi bi-eye"></i>
+          </button>
+          <button type="button" class="btn btn-warning"
+          (click)="SeleccionarFacturas(a,'Editar')" style="margin-right: 10px;"><i class="bi bi-pencil"></i></button>
+
+         <button type="button" class="btn btn-danger" (click)="EliminarFacturas(a.id_factura)">
+           <i class="bi bi-trash"></i></button>
+        </td>
+        <!-- <td style="width: 200px;">
+          <button class="btn btn-success" (click)="SeleccionarFacturas(a,'Mostrar')" type="button">
+            <i class="bi bi-eye"></i>
+          </button>
+          <button type="button" class="btn btn-warning"
+          (click)="SeleccionarFacturas(a,'Editar')" style="margin-right: 10px;"><i class="bi bi-pencil"></i></button>
+
+         <button type="button" class="btn btn-danger" (click)="EliminarFacturas(a.id_factura)">
+           <i class="bi bi-trash"></i></button>
+
+            // CREATE TABLE tb_facturas
+            // (
+            //   id_factura int unsigned not null auto_increment primary key,
+            //   nro_factura int(20),
+            //   fec_factura date,
+            //   nit_factura int(25),
+            //   nombre_factura varchar(200),
+            //   monto_factura float,
+            //   detalle_factura varchar(200),
+            //   aut_factura varchar(100),
+            //   imag_factura varchar(255),
+            //   created_at timestamp NULL DEFAULT NULL,
+            //   updated_at timestamp NULL DEFAULT NULL
+            // );
+
+        </td> -->
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- MODAL DE CRUD ADD MOD DE CODIGO DE Facturas-->
+<div class="modal fade" id="ModalCrudFacturas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          {{!newFacturas.get('id_factura').value ? 'REGISTRAR' : 'MODIFICAR'}} FACTURAS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newFacturas">
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NÚMERO DE FACTURA: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="nro_factura">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOMBRE DE FACTURA: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="nombre_factura">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="fec_factura">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NIT: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="nit_factura">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">MONTO: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="monto_factura">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">DETALLE: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="detalle_factura">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">AUT FACTURA: </label>
+            <input type="checkbox" class="form-control col-sm-10" formControlName="aut_factura">
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="resetFacturas()">Cancelar</button>
+        <button type="button" class="btn {{!newFacturas.get('id_factura').value ? 'btn-success' : 'btn-warning'}}" data-dismiss="modal" [disabled]="!newFacturas.valid"
+          (click)="AgregarModificarFacturas()">{{!newFacturas.get('id_factura').value ? 'CREAR FACTURA' : 'MODIFICAR FACTURA'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudFacturas" data-toggle="modal"
+  data-target="#ModalCrudFacturas" style="width: 0px;">Abrir Modal Crud</button>

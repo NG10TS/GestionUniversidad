@@ -1,0 +1,316 @@
+<style>
+  .dropdown-submenu {
+    position: relative;
+  }
+  .dropdown-submenu:hover {
+    background-color: aqua;
+  }
+  .dropdown-item:hover {
+    background-color: aqua;
+  }
+  .dropdown-submenu .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -1px;
+  }
+</style>
+<div class="container">
+  <div class="dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Tutorials</button>
+    <ul class="dropdown-menu">
+      <li class="dropdown-item"><a tabindex="-1"  >HTML</a></li>
+      <li class="dropdown-item"><a tabindex="-1"  >CSS</a></li>
+      <li class="dropdown-submenu ">
+        <a class="test dropdown-item" tabindex="-1"  >otorrinolaringologia xdxxd <i class="bi bi-caret-right-fill"></i></a>
+        <ul class="dropdown-menu">
+          <li class="dropdown-item"><a tabindex="-1"  >2nd level dropdown</a></li>
+          <li class="dropdown-item"><a tabindex="-1"  >2nd level dropdown</a></li>
+          <li class="dropdown-item">dfdf</li>
+          <li class="dropdown-submenu">
+            <a class="test dropdown-item"  >Another dropdown <i class="bi bi-caret-right-fill"></i></a>
+            <ul class="dropdown-menu">
+              <li class="dropdown-item"><a  >3rd level dropdown</a></li>
+              <li class="dropdown-item"><a  >3rd level dropdown</a></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel"> REGISTRAR ESTUDIANTE NUEVO</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form id="frmform" class="mb-4" [formGroup]="newEstudiante" (submit)="AgregarEstudiante()" >
+      <div class="form-group row">
+        <label class="form-label text-right col-sm-2">CODIGO: </label>
+        <input type="text" class="form-control col-sm-4" formControlName="cod_est"
+        oninput="this.value= this.value.toUpperCase()"placeholder="NUMERO DEL DOC EJ: 542">
+        </div>
+      <div class="form-group row">
+        <label class="form-label text-right col-sm-2">NOMBRE: </label>
+        <input type="text" class="form-control col-sm-10" formControlName="nombre_est"
+        oninput="this.value= this.value.toUpperCase()"placeholder="EJ. MARCELO">
+        </div>
+      <div class="form-group row">
+      <label class="form-label text-right col-sm-2">A. PATERNO: </label>
+      <input type="text" class="form-control col-sm-10" formControlName="ape_p_est"
+      oninput="this.value= this.value.toUpperCase()"placeholder="ALANES">
+      </div>
+      <div class="form-group row">
+        <label class="form-label text-right col-sm-2">A. MATERNO: </label>
+        <input type="text" class="form-control col-sm-10" formControlName="ape_m_est"
+        oninput="this.value= this.value.toUpperCase()"placeholder="GUZMAN">
+      </div>
+
+
+      <div class="form-group row">
+        <label class="form-label text-right col-sm-2">CI: </label>
+        <input type="number" class="form-control col-sm-4" formControlName="ci_est"
+        oninput="this.value= this.value.toUpperCase()"placeholder="NUMERO DE CI EJ: 123456">
+        <label class="form-label text-right col-sm-2">EXPEDIDO EN: </label>
+        <input type="text" class="form-control col-sm-4" >
+      </div>
+      <div class="form-group row">
+        <label class="form-label text-right col-sm-2">SEXO: </label>
+        <input type="text" class="form-control col-sm-4" formControlName="sexo_est"
+        oninput="this.value= this.value.toUpperCase()"placeholder="M O F">
+        <label class="form-label text-right col-sm-2">DIRECCIÓN: </label>
+        <input type="text" class="form-control col-sm-4" formControlName="dir_est"
+        oninput="this.value= this.value.toUpperCase()"placeholder="CALLE ENTRE CALLE 1 Y CALLE 2">
+      </div>
+      <div class="form-group row">
+        <label class="form-label text-right col-sm-2">TEL. DOMICILIO: </label>
+        <input type="number" class="form-control col-sm-4" formControlName="tel_dom_est"
+        oninput="this.value= this.value.toUpperCase()"placeholder="NUMERO DE TELF EJ: 2 52 23456">
+        <label class="form-label text-right col-sm-2">CELULAR: </label>
+        <input type="number" class="form-control col-sm-4" formControlName="cel_est"
+        oninput="this.value= this.value.toUpperCase()"placeholder="NUMERO DE CI EJ: 68123456">
+      </div>
+      <div class="form-group row">
+        <label class="form-label  text-right col-sm-2">E-MAIL: </label>
+        <input type="text" class="form-control col-sm-10" formControlName="email_est"
+        oninput="this.value= this.value.toUpperCase()"placeholder="CORREO: Ej: EJEMPLO@GMAIL.COM">
+      </div>
+      <div class="form-group row">
+        <label class="form-label text-right col-sm-2">FECHA DE NACIMIENTO: </label>
+        <input type="date" class="form-control col-sm-4" formControlName="fec_nac_est">
+        <label class="form-label text-right col-sm-2">LUGAR: </label>
+        <input type="text" class="form-control col-sm-4" formControlName="lug_nac_est"
+        oninput="this.value= this.value.toUpperCase()"placeholder="EJ: ORURO">
+      </div>
+
+      <div class="form-group row">
+        <label class="form-label  text-right col-sm-2">DIRECCIÓN DE TRABAJO : </label>
+        <input type="text" class="form-control col-sm-10" formControlName="trab_dir_est"
+        oninput="this.value= this.value.toUpperCase()"placeholder="CALLE ENTRE CALLE 1 Y CALLE 2">
+      </div>
+      <div class="form-group row">
+        <label class="form-label  text-right col-sm-2">TELEFONO DE TRABAJO: </label>
+        <input type="text" class="form-control col-sm-10" formControlName="trab_fono_est"
+        oninput="this.value= this.value.toUpperCase()"placeholder="2 5212345">
+      </div>
+      <div class="form-group row">
+        <label class="form-label  text-right col-sm-2">NOMBRE DEL TRABAJO: </label>
+        <input type="text" class="form-control col-sm-10" formControlName="trab_nombre_est"
+        oninput="this.value= this.value.toUpperCase()"placeholder="NOM. DE TRABAJO EJ: COMERCIALIZADORA POLAR">
+      </div>
+      <div class="form-group row">
+        <label class="form-label  text-right col-sm-2">COLEGIO: </label>
+        <input type="text" class="form-control col-sm-10" formControlName="cole_est"
+        oninput="this.value= this.value.toUpperCase()"placeholder="EJ: PANTALEON DALENCE">
+      </div>
+      <div class="form-group row">
+        <label class="form-label  text-right col-sm-2">TIPO DE COLEGIO: </label>
+        <input type="text" class="form-control col-sm-10" formControlName="tipo_cole_est"
+        oninput="this.value= this.value.toUpperCase()"placeholder="EJ: PRIVADO">
+      </div>
+      <div class="form-group row">
+        <label class="form-label  text-right col-sm-2">AÑO DE BACHILLERATO: </label>
+        <input type="date" class="form-control col-sm-10" formControlName="dato_bachi_est"
+        oninput="this.value= this.value.toUpperCase()"placeholder="2010">
+      </div>
+      <div class="form-group row">
+        <label class="form-label  text-right col-sm-2">CÓDIGO DE PAIS </label>
+        <input type="number" class="form-control col-sm-10" formControlName="pais_cod_est"
+        oninput="this.value= this.value.toUpperCase()"placeholder="EJ: +591(BOLIVIA)">
+      </div>
+      <div class="form-group row">
+        <label class="form-label  text-right col-sm-2">FECHA DE REGISTO: </label>
+        <input type="date" class="form-control col-sm-10" formControlName="fec_regis_est">
+      </div>
+      <div class="form-group row">
+        <label class="form-label  text-right col-sm-2">FECHA DE EMITB: </label>
+        <input type="date" class="form-control col-sm-10" formControlName="fec_emitb_est">
+      </div>
+      <div class="form-group row">
+        <label class="form-label  text-right col-sm-2">SEDE DE EMITB: </label>
+        <input type="text" class="form-control col-sm-10" formControlName="sede_emit_est"
+        oninput="this.value= this.value.toUpperCase()"placeholder="LUGAR DE MITB">
+      </div>
+      <div class="form-group row">
+        <label class="form-label  text-right col-sm-2">FECHA DE TRANSFERENCIA: </label>
+        <input type="date" class="form-control col-sm-10" formControlName="fec_tranf_est">
+      </div>
+      <div class="form-group row">
+        <label class="form-label  text-right col-sm-2">PADRE DEL ESTUDIANTE: </label>
+        <input type="text" class="form-control col-sm-10" formControlName="padre_del_est"
+        oninput="this.value= this.value.toUpperCase()"placeholder="EJ: FILEMON ALANES ARIAS">
+      </div>
+      <div class="form-group row">
+        <label class="form-label  text-right col-sm-2">MADRE DEL ESTUDIANTE: </label>
+        <input type="text" class="form-control col-sm-10" formControlName="madre_del_est"
+        oninput="this.value= this.value.toUpperCase()"placeholder="EJ: MARIA GUZMAN FLORES">
+      </div>
+      <div class="form-group row">
+        <label class="form-label  text-right col-sm-2">NOMBRE TRABAJO DEL PADRE: </label>
+        <input type="text" class="form-control col-sm-10" formControlName="nombre_trab_padre_est"
+        oninput="this.value= this.value.toUpperCase()"placeholder="NOM. DE TRABAJO EJ: COMERCIALIZADORA GAMALTA">
+      </div>
+
+
+      <div class="form-group row">
+        <label class="form-label text-right col-sm-2">DIRECCIÓN TRABAJO DEL PADRE:</label>
+        <input type="text" class="form-control col-sm-10" formControlName="dir_trab_padre_est"
+        oninput="this.value= this.value.toUpperCase()"placeholder="CALLE ENTRE CALLE 1 Y CALLE 2">
+      </div>
+
+      <div class="form-group row">
+        <label class="form-label text-right col-sm-2">TELEFONO TRABAJO DEL PADRE: </label>
+        <input type="number" class="form-control col-sm-4" formControlName="tel_trab_padre_est"
+        oninput="this.value= this.value.toUpperCase()"placeholder="2 5212345">
+        <label class="form-label text-right col-sm-2">FOTO: </label>
+        <!-- <input type="file" class="form-control col-sm-4" (change)="onFileChangeFoto($event)" #InputFoto> -->
+        <input type="file" class="form-control col-sm-4" title="Foto de Perfil." #InputFoto accept="image/jpg, image/png, image/jpeg" (change)="VerificarFormatoFoto(InputFoto);"  (change)="onFileChangeFoto($event)">
+        <!-- <input type="file" class="form-control" #PDFBoleta accept=".pdf" (change)="VerificarFormatoPDFBoleta(PDFBoleta)" (change)="onFileChangeBoleta($event)" formControlName="Boleta"> -->
+      </div>
+      <div class="form-group row">
+        <label class="form-label text-right col-sm-2">FACT TIPO DE DOCUMENTO:</label>
+        <input type="text" class="form-control col-sm-10" formControlName="fact_doc_tipo_est">
+      </div>
+      <div class="form-group row">
+        <label class="form-label text-right col-sm-2">FACT NÚMERO DE DOCUMENTO:</label>
+        <input type="text" class="form-control col-sm-10" formControlName="fact_doc_numero_est">
+      </div>
+      <div class="form-group row">
+        <label class="form-label text-right col-sm-2">FACT NOMBRE DE ESTUDIANTE:</label>
+        <input type="text" class="form-control col-sm-10" formControlName="fact_nombre_est">
+      </div>
+      <div class="form-group row">
+        <label class="form-label text-right col-sm-2">OBSERVACIONES </label>
+        <input name="obs" type="text" class="form-control col-sm-10" formControlName="observaciones">
+      </div>
+      <!-- <div class="form-group row"></div> -->
+      <div class="card-footer">
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+    <button type="submit" class="btn btn-primary" data-dismiss="modal">Guardar</button>
+    <!-- <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="AddAdministrativo()">Guardar</button>-->
+  </div>
+</div>
+
+
+<button id="btnModalFormatoInvalido" type="button" class="btn btn-primary position-absolute invisible" data-toggle="modal" data-target="#modalformato">
+  Abrir Modal Validacion
+</button>
+<div class="modal fade black" id="modalformato" tabindex="-1" aria-labelledby="modalformatoLabel" aria-hidden="true">
+  <div class="modal-dialog  modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color: rgb(168, 4, 4);">
+        <h5 class="modal-title text-center text-bold" style="color: lightcyan; font-size: 25px; font-weight: bold;">¡ADVERTENCIA!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="background-color: lightcoral;">
+        <label class="text-center" style="font-size: 15px; font-weight: bold;">{{Mensaje}}</label>
+      </div>
+      <div class="modal-footer" style="background-color: rgb(141, 12, 12);">
+        <button type="button" class="btn btn-warning" data-dismiss="modal" >ENTENDIDO</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- MODAL DE VALIDACION -->
+<div class="modal fade black" id="modalvalidacion" tabindex="-1" aria-labelledby="modalvalidacionLabel" aria-hidden="true">
+  <div class="modal-dialog  modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color: rgb(168, 4, 4);">
+        <h5 class="modal-title text-center text-bold" style="color: lightcyan; font-size: 25px; font-weight: bold;">¡ADVERTENCIA!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="background-color: lightcoral;">
+        <label class="text-center" style="font-size: 15px; font-weight: bold;">SE DEBE INTRODUCIR O COMPLETAR LOS DATOS REQUERIDOS CORRECTAMENTE</label>
+      </div>
+      <div class="modal-footer" style="background-color: rgb(141, 12, 12);">
+        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+        <button type="button" class="btn btn-warning" data-dismiss="modal" >ENTENDIDO</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <!-- left column -->
+      <div class="col-md-12">
+        <!-- jquery validation -->
+        <div class="card card-primary">
+          <div class="card-header">
+            <h3 class="card-title">Quick Example <small>jQuery Validation</small></h3>
+          </div>
+          <!-- /.card-header -->
+          <!-- form start -->
+          <form id="idform" >
+            <div class="card-body">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Email address</label>
+                <input type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">NAMED</label>
+                <input type="email" name="named" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">Password</label>
+                <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+              </div>
+              <div class="form-group mb-0">
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" name="terms" class="custom-control-input" id="exampleCheck1">
+                  <label class="custom-control-label" for="exampleCheck1">I agree to the <a href="#">terms of service</a>.</label>
+                </div>
+              </div>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+        </div>
+        <!-- /.card -->
+        </div>
+      <!--/.col (left) -->
+      <!-- right column -->
+      <div class="col-md-6">
+
+      </div>
+      <!--/.col (right) -->
+    </div>
+    <!-- /.row -->
+  </div><!-- /.container-fluid -->
+</section>

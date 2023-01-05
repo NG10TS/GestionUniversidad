@@ -1,0 +1,705 @@
+<strong>
+  <h2 class="text-center text-bold text-light">GESTIONAR ESTUDIANTES CON CONVALIDACION</h2>
+</strong>
+<button class="btn btn-outline-info botonInfo" (click)="MensajeInformacion('INFORMACION DE USO',
+'EN ESTA PAGINA SE PUEDE CONVALIDAR   ESTUDIANTES','info')"><abbr title="SOBRE ESTA PAGINA"
+style="text-decoration: none">?</abbr></button>
+<button class="btn btn-outline-info botonInfo" (click)="MensajeInformacion('ACLARACIONES',
+'EN EL CASO QUE NO ENCUENTRE LA INFORMACION DESEADA PUEDE AGREGAR MAS INFORMACION HACIENDO CLICK EN EL BOTON AGREGAR','info')">
+<abbr title="¿FALTA DE DATOS?" style="text-decoration: none">?</abbr></button>
+<button class="btn btn-outline-info botonInfo" (click)="MensajeInformacion('PASOS PARA AGREGAR CORRECTAMENTE',
+'PARA AGREGAR EN EL BOTON AGREGAR ESTUDIANTE','info')">
+<abbr title="¿Agregar Info Correctamente?" style="text-decoration: none">?</abbr></button>
+
+
+<hr class="border-warning">
+
+<button type="button" class="btn btn-outline-light font-weight-bold"
+  data-toggle="modal" data-target="#ModalAdd" data-whatever="@getbootstrap">AGREGAR ESTUDIANTE</button>
+<button type="button" class="btn btn-outline-light font-weight-bold"
+  data-toggle="modal" data-target="#ModalGestionEst" data-whatever="@getbootstrap">GESTIONAR ESTUDIANTES</button>
+
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input"
+      aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<!-- #region DEL CRUD PRINCIPAL-->
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Estudiante</th>
+        <th scope="col">Carrera - Unior</th>
+        <th scope="col">Nro Formulario</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of dataP; let i= index">
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>
+          <span>{{a.ape_p_est}}⠀{{a.ape_m_est}}⠀{{a.nombre_est}}</span>
+        </td>
+        <td>
+          <span>{{a.nombre_carre}}</span>
+        </td>
+        <td>
+          <span>{{a.nro_form}}</span>
+        </td>
+        <td style="width: 200px;">
+          <div class="btn-group">
+            <button class="btn btn-success" (click)="SeleccionarConvEstudiante(a,'Mostrar')" type="button">
+              <i class="bi bi-eye"></i>
+            </button>
+
+            <button type="button" class="btn btn-sm btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false">
+            </button>
+            <div class="dropdown-menu">
+              <button class="dropdown-item" (click)="SeleccionarConvEstudiante(a,'InfoConv')">Visualizar Informacion de Convalidación</button>
+              <button class="dropdown-item" (click)="SeleccionarConvEstudiante(a,'EstadoConv')">Visualizar Estado de Convalidaciones</button>
+              <button class="dropdown-item" (click)="SeleccionarConvEstudiante(a,'GestConv')">Gestionar Convalidaciones</button>
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-warning" (click)="SeleccionarConvEstudiante(a,'Editar')"
+            style="margin-right: 10px;"><i class="bi bi-pencil"></i></button>
+
+          <button type="button" class="btn btn-danger" (click)="EliminarConvEstudiante(a.id_conv_est)">
+            <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- MODAL DE ADICION ConvEstudiante-->
+<div class="modal fade" id="ModalAdd" tabindex="-1" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> REGISTRAR NUEVA MATERIA</h5>
+        <button type="button" class="close" (click)="LimpiarConvEstudiante()" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newConvEstudiante">
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">ESTUDIANTE: </label>
+
+            <div [formGroup]="filterEstudianteForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control" value="{{EstudianteSelect.NomC }}"/>
+              </div>
+              <div *ngIf="filtroEstudiante" class="lcch-options" >
+                <span *ngFor="let a of estFiltrado" class="form-control" (click)="autoCompletar(a)" (click)="filtroEstudiante=false">{{a.NomC}}</span>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CARRERA: </label>
+            <!-- FILTRADOR V3: NombreFiltro => Carrera-->
+            <div [formGroup]="filterCarreraForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control" value="{{CarreraSelect.nombre_carre }}" disabled/>
+              </div>
+              <div *ngIf="filtroCarrera" class="lcch-options" >
+                <span *ngFor="let a of carrFiltrado" class="form-control" (click)="CarreraSelect=a; newConvEstudiante.patchValue({id_carre:a.id_carre}) " (click)="filtroCarrera=false">{{a.nombre_carre}}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NUMERO DE FORMULARIO: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="nro_form">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA DE CONVALIDACION: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="fec_conv">
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-secondary" (click)="LimpiarConvEstudiante()" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal"
+          (click)="AgregarConvEstudiante()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL_DE_MODIFICACION ConvEstudiante-->
+<div class="modal fade" id="ModalModificacion" tabindex="-1" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">MODIFICAR ConvEstudiante</h5>
+        <button type="button" class="close" (click)="LimpiarConvEstudiante()" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">ESTUDIANTE: </label>
+            <div [formGroup]="filterEstudianteForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control" value="{{EstudianteSelect.NomC }}" disabled/>
+              </div>
+              <div *ngIf="filtroEstudiante" class="lcch-options" >
+                <span *ngFor="let a of estFiltrado" class="form-control" (click)="ConvEstudianteSeleccionado.id_est=a.id_est; EstudianteSelect.NomC=a.ape_p_est+' '+a.ape_m_est+' '+a.nombre_est" (click)="filtroEstudiante=false">{{a.NomC}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CARRERA: </label>
+            <div [formGroup]="filterCarreraForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control" value="{{CarreraSelect.nombre_carre }}"/>
+              </div>
+              <div *ngIf="filtroCarrera" class="lcch-options" >
+                <span *ngFor="let a of carrFiltrado" class="form-control" (click)="CarreraSelect.nombre_carre=a.nombre_carre; ConvEstudianteSeleccionado.id_carre=a.id_carre" (click)="filtroCarrera=false">{{a.nombre_carre}}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2"> NUMERO DE FORMULARIO: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="ConvEstudianteSeleccionado.nro_form">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA DE CONVALIDACION: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="ConvEstudianteSeleccionado.fec_conv">
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="LimpiarConvEstudiante()" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="ModificarConvEstudiante(ConvEstudianteSeleccionado)"
+          data-dismiss="modal">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE VISUALIZACION -->
+<div class="modal fade" id="ModalVisualizacion" tabindex="-1" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> VISUALIZANDO DOCENTE</h5>
+        <button type="button" class="close" (click)="LimpiarConvEstudiante()" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">ESTUDIANTE: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" [(ngModel)]="ConvEstudianteSeleccionado.id_est">
+              <optgroup label="SELECCIONE ESTUDIANTE" >
+                <option *ngFor="let a of est" value="{{a.id_est}}">{{a.ape_p_est}}⠀{{a.ape_m_est}}⠀{{a.nombre_est}}</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CARRERA: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" [(ngModel)]="ConvEstudianteSeleccionado.id_carre">
+              <optgroup label="SELECCIONE CARRERA" >
+                <option *ngFor="let a of carr" value="{{a.id_carre}}">{{a.nombre_carre}}</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NUMERO DE FORMULARIO: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="ConvEstudianteSeleccionado.nro_form">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TIPO DE MATERIA: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="ConvEstudianteSeleccionado.fec_conv">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="LimpiarConvEstudiante()" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalMod" data-toggle="modal"
+  data-target="#ModalModificacion" style="width: 0px;">Abrir Modal Modificacion</button>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalMos" data-toggle="modal"
+  data-target="#ModalVisualizacion" style="width: 0px;">Abrir Modal Visualizacion</button>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnCerrarModal" style="width: 0px;"
+  data-dismiss="modal">Data Dimiss</button>
+
+
+<!-- #endregion CRUD PRINCIPAL-->
+
+
+
+<!-- #region VISUALIZACIONES CONV EST-->
+<!-- MODAL DE VISUALIZAR INFORMACION DE CONVALIDACION-->
+<div class="modal fade" id="ModalInfoConvEst" tabindex="-1" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> INFORMACION DE CONVALIDACION</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" >
+            ...
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- MODAL DE VISUALIZACION DE ESTADO DE CONVALIDACION-->
+<div class="modal fade" id="ModalEstadoConvEst" tabindex="-1" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> ESTADO DE CONVALIDACION</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- #region MODAL DE GESTION DE CONVALIDACIONES-->
+<div class="modal fade" id="ModalGestConvEst" tabindex="-1" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> GESTIONAR CONVALIDACIONES</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+            <strong>
+              <h2 class="text-center text-bold text-light">GESTIONAR UNIVERSIDAD, CARRERA ORIGEN</h2>
+            </strong>
+            <hr class="border-warning">
+            <button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalAddestunicarr" data-whatever="@getbootstrap">AGREGAR Conv_Est_Uni_Carreras</button>
+            <form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+              </div>
+            </form>
+            <br>
+            <div class="table-responsive">
+              <table class="table table-bordered table-striped table-hover table-danger">
+                <thead class="bg-danger ">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">UNIVERSIDAD DE ORIGEN</th>
+                    <th scope="col">CARRERA DE ORIGEN</th>
+                    <th scope="col">ESTUDIANTE</th>
+                    <th scope="col">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let a of estunicarr; let i= index"  >
+                    <td style="width: 20px;">{{i+1}}</td>
+                    <td>
+                      <span>{{a.nombre_univ}}</span>
+                    </td>
+                    <td>
+                      <span>{{a.nombre_carr_conv}}</span>
+                    </td>
+                    <td>
+                      <span>{{a.ape_p_est}} {{a.ape_m_est}} {{a.nom_est}}</span>
+                    </td>
+                    <td style="width: 200px;">
+
+                      <button type="button" class="btn btn-warning"
+                      (click)="SeleccionarConv_Est_Uni_Carreras(a.id_conv_est_uni_carre,'Editar')" style="margin-right: 10px;"><i class="bi bi-pencil"></i></button>
+
+                     <button type="button" class="btn btn-danger" (click)="EliminarConv_Est_Uni_Carreras(a.id_conv_est_uni_carre)">
+                       <i class="bi bi-trash"></i></button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- MODAL DE ADICION Conv_Est_Uni_Carreras-->
+<div class="modal fade" id="ModalAddestunicarr" tabindex="-1" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"> REGISTRAR UNIVERSIDAD, CARRERA ORIGEN</h5>
+        <button type="button" class="close" (click)="LimpiarConv_Est_Uni_Carreras()" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newConv_Est_Uni_Carreras" >
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">UNIVERSIDAD DE ORIGEN: </label>
+              <!-- FILTRADOR V3: NombreFiltro => UniversidadO-->
+              <div [formGroup]="filterUniversidadOForm" class="lcch-select col-sm-10">
+                <div>
+                  <input formControlName="txt" type="text" class="form-control" value="{{UniversidadOSelect.nombre_univ }}"/>
+                </div>
+                <div *ngIf="filtroUniversidadO" class="lcch-options" >
+                  <span *ngFor="let a of univOFiltrado" class="form-control" (click)="UniversidadOSelect=a; newConv_Est_Uni_Carreras.patchValue({id_univ:a.id_univ})" (click)="filtroUniversidadO=false">{{a.nombre_univ}}</span>
+                </div>
+              </div>
+              <!-- <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_univ">
+                <optgroup label="SELECCIONE UNIVERSIDAD DE ORIGEN" >
+                  <option *ngFor="let a of universidadO" value="{{a.id_univ}}">{{a.nombre_univ}}</option>
+                </optgroup>
+                </select> -->
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">CARRERA DE ORIGEN: </label>
+              <!-- FILTRADOR V3: NombreFiltro => CarreraO-->
+              <div [formGroup]="filterCarreraOForm" class="lcch-select col-sm-10">
+                <div>
+                  <input formControlName="txt" type="text" class="form-control" value="{{CarreraOSelect.nombre_carr_conv }}"/>
+                </div>
+                <div *ngIf="filtroCarreraO" class="lcch-options" >
+                  <span *ngFor="let a of carrOFiltrado" class="form-control" (click)="CarreraOSelect=a; newConv_Est_Uni_Carreras.patchValue({id_convcarr:a.id_convcarr})" (click)="filtroCarreraO=false">{{a.nombre_carr_conv}}</span>
+                </div>
+              </div>
+              <!-- <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_convcarr">
+                <optgroup label="SELECCIONE CARRERA DE ORIGEN" >
+                  <option *ngFor="let a of carreraO" value="{{a.id_convcarr}}">{{a.nombre_carr_conv}}</option>
+                </optgroup>
+                </select> -->
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">ESTUDIANTE: </label>
+              <span>{{EstudianteSelect.NomC}}</span>
+            </div>
+
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="LimpiarConv_Est_Uni_Carreras()" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="AgregarConv_Est_Uni_Carreras()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- MODAL DE MODIFICACION Conv_Est_Uni_Carreras-->
+<div class="modal fade" id="ModalModificacionestunicarr" tabindex="-1" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">MODIFICAR UNIVERSIDAD, CARRERA ORIGEN</h5>
+        <button type="button" class="close" (click)="LimpiarConv_Est_Uni_Carreras()" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">UNIVERSIDAD DE ORIGEN: </label>
+              <select class="custom-select col-sm-10 form-control" type="text" [(ngModel)]="Conv_Est_Uni_CarrerasSeleccionado.id_univ">
+                <optgroup label="SELECCIONE UNIVERSIDAD DE ORIGEN" >
+                  <option *ngFor="let a of universidadO" value="{{a.id_univ}}">{{a.nombre_univ}}</option>
+                </optgroup>
+                </select>
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">CARRERA DE ORIGEN: </label>
+              <select class="custom-select col-sm-10 form-control" type="text" [(ngModel)]="Conv_Est_Uni_CarrerasSeleccionado.id_convcarr">
+                <optgroup label="SELECCIONE CARRERA DE ORIGEN" >
+                  <option *ngFor="let a of carreraO" value="{{a.id_convcarr}}">{{a.nombre_carr_conv}}</option>
+                </optgroup>
+                </select>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="LimpiarConv_Est_Uni_Carreras()" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="ModificarConv_Est_Uni_Carreras(Conv_Est_Uni_CarrerasSeleccionado)">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalModificacionestunicarr" data-toggle="modal"
+  data-target="#ModalModificacionestunicarr" style="width: 0px;">Abrir Modal Modificacion</button>
+<!-- #endregion MODAL DE GESTION DE CONVALIDACIONES-->
+
+
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalInfoConv" data-toggle="modal"
+  data-target="#ModalInfoConvEst" style="width: 0px;">Visualizar Informacion de Convalidación</button>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalEstadoConv" data-toggle="modal"
+  data-target="#ModalEstadoConvEst" style="width: 0px;">Visualizacion Estado de Convalidaciones</button>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalGestConv" data-toggle="modal"
+  data-target="#ModalGestConvEst" style="width: 0px;">Gestionar Convalidaciones</button>
+<!-- #endregion VISUALIZACIONES CONV EST-->
+
+<!-- #region DEL CRUD ESTUDIANTES-->
+<!-- MODAL DE GESTION DE ESTUDIANTES-->
+<div class="modal fade" id="ModalGestionEst" tabindex="-1" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> GESTIONAR ESTUDIANTES</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+
+        <strong>
+          <!-- <h2 class="text-center text-bold text-light">GESTIONAR ESTUDIANTES</h2> -->
+        </strong>
+        <hr class="border-warning">
+
+        <button type="button" class="btn btn-outline-light font-weight-bold"
+          data-toggle="modal" data-target="#ModalAddEst" data-whatever="@getbootstrap">AGREGAR ESTUDIANTE</button>
+
+        <form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+          <div class="input-group mb-3"  [formGroup]="filterSearchEstudianteForm">
+            <div class="input-group-prepend">
+              <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+            </div>
+            <input type="text" oninput="this.value= this.value.toUpperCase()" class="form-control" aria-label="Sizing example input"
+              aria-describedby="inputGroup-sizing-default" formControlName="txt">
+          </div>
+        </form>
+        <br>
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped table-hover table-danger">
+            <thead class="bg-danger ">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">NOMBRE COMPLETO</th>
+                <th scope="col">CARNET</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let a of est; let i= index">
+                <td style="width: 20px;">{{i+1}}</td>
+                <td>
+                  <span *ngIf="!a.Editando">{{a.ape_p_est}}⠀{{a.ape_m_est}}⠀{{a.nombre_est}}</span>
+                </td>
+                <td>
+                  <span *ngIf="!a.Editando">{{a.ci_est}}-{{a.exp_est}}</span>
+                </td>
+                <td style="width: 100px;">
+                  <button type="button" class="btn btn-danger" (click)="EliminarEstudiante(a.id_est)">
+                    <i class="bi bi-trash"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- MODAL DE ADICION Estudiante-->
+        <div class="modal fade" id="ModalAddEst" tabindex="-1" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"> REGISTRAR ESTUDIANTES</h5>
+                <button type="button" class="close" (click)="LimpiarEstudiante()" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="mb-4" [formGroup]="newEstudiante">
+                  <div class="form-group row">
+                    <label class="form-label text-right col-sm-2">CODIGO: </label>
+                    <input type="text" class="form-control col-sm-4" formControlName="cod_est">
+                  </div>
+                  <div class="form-group row">
+                    <label class="form-label text-right col-sm-2">NOMBRE: </label>
+                    <input type="text" class="form-control col-sm-10" formControlName="nombre_est">
+                  </div>
+                  <div class="form-group row">
+                    <label class="form-label text-right col-sm-2">A. PATERNO: </label>
+                    <input type="text" class="form-control col-sm-10" formControlName="ape_p_est">
+                  </div>
+                  <div class="form-group row">
+                    <label class="form-label text-right col-sm-2">A. MATERNO: </label>
+                    <input type="text" class="form-control col-sm-10" formControlName="ape_m_est">
+                  </div>
+
+
+                  <div class="form-group row">
+                    <label class="form-label text-right col-sm-2">CI: </label>
+                    <input type="number" class="form-control col-sm-4" formControlName="ci_est">
+                    <label class="form-label text-right col-sm-2">exp_est EN: </label>
+                    <input type="text" class="form-control col-sm-4">
+                  </div>
+                  <div class="form-group row">
+                    <label class="form-label text-right col-sm-2">SEXO: </label>
+                    <input type="text" class="form-control col-sm-4" formControlName="sexo_est">
+                    <label class="form-label text-right col-sm-2">DIRECCIÓN: </label>
+                    <input type="text" class="form-control col-sm-4" formControlName="dir_est">
+                  </div>
+                  <div class="form-group row">
+                    <label class="form-label text-right col-sm-2">TEL. DOMICILIO: </label>
+                    <input type="number" class="form-control col-sm-4" formControlName="tel_dom_est">
+                    <label class="form-label text-right col-sm-2">CELULAR: </label>
+                    <input type="number" class="form-control col-sm-4" formControlName="cel_est">
+                  </div>
+                  <div class="form-group row">
+                    <label class="form-label  text-right col-sm-2">E-MAIL: </label>
+                    <input type="text" class="form-control col-sm-10" formControlName="email_est">
+                  </div>
+                  <div class="form-group row">
+                    <label class="form-label text-right col-sm-2">FECHA DE NACIMIENTO: </label>
+                    <input type="date" class="form-control col-sm-4" formControlName="fec_nac_est">
+                    <label class="form-label text-right col-sm-2">LUGAR: </label>
+                    <input type="text" class="form-control col-sm-4" formControlName="lug_nac_est">
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="form-label  text-right col-sm-2">DIRECCIÓN DE TRABAJO : </label>
+                    <input type="text" class="form-control col-sm-10" formControlName="trab_dir_est">
+                  </div>
+                  <div class="form-group row">
+                    <label class="form-label  text-right col-sm-2">TELEFONO DE TRABAJO: </label>
+                    <input type="text" class="form-control col-sm-10" formControlName="trab_fono_est">
+                  </div>
+                  <div class="form-group row">
+                    <label class="form-label  text-right col-sm-2">NOMBRE DEL TRABAJO: </label>
+                    <input type="text" class="form-control col-sm-10" formControlName="trab_nombre_est">
+                  </div>
+                  <div class="form-group row">
+                    <label class="form-label  text-right col-sm-2">COLEGIO: </label>
+                    <input type="text" class="form-control col-sm-10" formControlName="cole_est">
+                  </div>
+                  <div class="form-group row">
+                    <label class="form-label  text-right col-sm-2">TIPO DE COLEGIO: </label>
+                    <input type="text" class="form-control col-sm-10" formControlName="tipo_cole_est">
+                  </div>
+                  <div class="form-group row">
+                    <label class="form-label  text-right col-sm-2">AÑO DE BACHILLERATO: </label>
+                    <input type="date" class="form-control col-sm-10" formControlName="dato_bachi_est">
+                  </div>
+                  <div class="form-group row">
+                    <label class="form-label  text-right col-sm-2">CÓDIGO DE PAIS </label>
+                    <input type="number" class="form-control col-sm-10" formControlName="pais_cod_est">
+                  </div>
+                  <div class="form-group row">
+                    <label class="form-label  text-right col-sm-2">FECHA DE REGISTO: </label>
+                    <input type="date" class="form-control col-sm-10" formControlName="fec_regis_est">
+                  </div>
+                  <div class="form-group row">
+                    <label class="form-label  text-right col-sm-2">FECHA DE EMITB: </label>
+                    <input type="date" class="form-control col-sm-10" formControlName="fec_emitb_est">
+                  </div>
+                  <div class="form-group row">
+                    <label class="form-label  text-right col-sm-2">SEDE DE EMITB: </label>
+                    <input type="text" class="form-control col-sm-10" formControlName="sede_emit_est">
+                  </div>
+                  <div class="form-group row">
+                    <label class="form-label  text-right col-sm-2">FECHA DE TRANSFERENCIA: </label>
+                    <input type="date" class="form-control col-sm-10" formControlName="fec_tranf_est">
+                  </div>
+                  <div class="form-group row">
+                    <label class="form-label  text-right col-sm-2">PADRE DEL ESTUDIANTE: </label>
+                    <input type="text" class="form-control col-sm-10" formControlName="padre_del_est">
+                  </div>
+                  <div class="form-group row">
+                    <label class="form-label  text-right col-sm-2">MADRE DEL ESTUDIANTE: </label>
+                    <input type="text" class="form-control col-sm-10" formControlName="madre_del_est">
+                  </div>
+                  <div class="form-group row">
+                    <label class="form-label  text-right col-sm-2">NOMBRE TRABAJO DEL PADRE: </label>
+                    <input type="text" class="form-control col-sm-10" formControlName="nombre_trab_padre_est">
+                  </div>
+
+
+                  <div class="form-group row">
+                    <label class="form-label text-right col-sm-2">DIRECCIÓN TRABAJO DEL PADRE:</label>
+                    <input type="text" class="form-control col-sm-10" formControlName="dir_trab_padre_est">
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="form-label text-right col-sm-2">TELEFONO TRABAJO DEL PADRE: </label>
+                    <input type="number" class="form-control col-sm-4" formControlName="tel_trab_padre_est">
+                    <label class="form-label text-right col-sm-2">FOTO: </label>
+                    <input type="file" class="form-control col-sm-4" title="Foto de Perfil." #FOTO_IMG_ADD
+                      accept="image/jpg, image/png, image/jpeg" (change)="VerificarFormatoFoto(FOTO_IMG_ADD);"
+                      (change)="onFileChangeFoto($event)">
+                  </div>
+                  <div class="form-group row">
+                    <label class="form-label text-right col-sm-2">FACT TIPO DE DOCUMENTO:</label>
+                    <input type="text" class="form-control col-sm-10" formControlName="fact_doc_tipo_est">
+                  </div>
+                  <div class="form-group row">
+                    <label class="form-label text-right col-sm-2">FACT NÚMERO DE DOCUMENTO:</label>
+                    <input type="text" class="form-control col-sm-10" formControlName="fact_doc_numero_est">
+                  </div>
+                  <div class="form-group row">
+                    <label class="form-label text-right col-sm-2">FACT NOMBRE DE ESTUDIANTE:</label>
+                    <input type="text" class="form-control col-sm-10" formControlName="fact_nombre_est">
+                  </div>
+                  <div class="form-group row">
+                    <label class="form-label text-right col-sm-2">obs_est </label>
+                    <input name="obs" type="text" class="form-control col-sm-10" formControlName="obs_est">
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="LimpiarEstudiante()" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal"
+                  (click)="AgregarEstudiante()">Guardar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">SALIR</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- #endregion CRUD ESTUDIANTES-->

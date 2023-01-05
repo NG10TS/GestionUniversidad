@@ -1,0 +1,224 @@
+/* #region PARA EL SELECT PERSONALIZADO*/
+.lcch-select div span
+{
+  border-radius: 0;
+  border-width: 0;
+  /* text-align: center; */
+  border-right-width: 3px;
+  border-left-width: 3px;
+}
+.lcch-select div span:hover
+{
+  border-radius: 0;
+  border-width: 0;
+  background-color: aquamarine;
+  font-weight: bold;
+  cursor: pointer;
+}
+.lcch-options{
+  position: absolute;
+  width:98%;
+  z-index: 5;
+}
+/*PARA DISTINGIR LOS FILTRADORES*/
+div .lcch-select div input:focus{
+  border-color: rgb(241, 210, 170);
+  box-shadow: 0 1px 1px rgba(229, 103, 23, 0.075)inset, 0 0 8px rgba(255,144,0,0.6);
+  outline: 0 none;
+  background-color: rgb(205, 251, 249);
+}
+/* #endregion PARA EL SELECT PERSONALIZADO*/
+
+/* #region  PARA EL SELECT PERSONALIZADO*/
+.dropdown-submenu {
+  position: relative;
+  text-align: center;
+}
+.dropdown-submenu:hover {
+
+}
+.dropdown-item:hover {
+  background-color: rgb(183, 185, 185);
+  font-weight: bold;
+  cursor: pointer;
+}
+.dropdown-submenu .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -1px;
+
+}
+/* PARA LOS BOTONES */
+.dropdown-menu .dropdown-item button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  /* margin: 4px 2px; */
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+.dropdown-menu .dropdown-item button {
+  background-color: white;
+  color: black;
+  outline: none;
+  width: 100%;
+}
+
+.dropdown-menu .dropdown-item button:hover {
+  background-color: #555555;
+  color: white;
+}
+/* //PARA LOS NO BOTONOES Q SON A */
+.dropdown-submenu a{
+  font-size: 16px;
+  padding: 10px 25px;
+}
+/* #endregion  PARA EL SELECT PERSONALIZADO*/
+
+/* #region ALGUNAS GENERALIZACIONES */
+/*PARA QUE EL BOTON DE INFORMACION SE SITUE ARRIBA A LA DERECHA DE UNA PAGINA*/
+.botonInfo{
+  float:right;
+  position:relative;
+  bottom: 40px;
+  font-weight: bold;
+  border-radius: 40px;
+  background-color: rgba(161, 208, 193, 0.335);
+  padding: 3px 14px;
+  color: rgb(143, 143, 244);
+  font-size: 25px;
+
+  border-width: 2px;
+  border-color: rgb(241, 210, 170);
+  box-shadow: 0 1px 1px rgba(229, 103, 23, 0.075)inset, 0 0 8px rgb(255, 255, 255);
+  /* top: 70px;
+  right: 10px; */
+  /* z-index: 5 */
+}
+/*BOTON INFO EN MODAL*/
+.modal-content .modal-header button{
+  border-radius: 80px;
+  padding: 2px 6px;
+  border-width: 2px;
+  border-color: rgb(241, 210, 170);
+  box-shadow: 0 1px 1px rgba(229, 103, 23, 0.075)inset, 0 0 8px rgb(255, 255, 255);
+  /* outline: 0 none; */
+  /* background-color: rgb(205, 251, 249); */
+}
+.modal-content .modal-header button img{
+  width: 20px;
+  height: 20px;
+}
+/*MODAL TITULO*/
+.modal div .modal-content .modal-header h5{
+  font-weight: bold;
+  color: rgb(255, 255, 255);
+
+  /*PARA PONER EN EL CENTRO*/
+  width: 100%;
+  /* position: inherit; */
+  text-align: center;
+  margin: 0 auto;
+  /* left:40%; */
+
+}
+
+.modal .modal-header h5{
+  font-weight: bold;
+  color: rgb(255, 255, 255);
+  /* position: relative; */
+  width: 100%;
+  text-align: center;
+  margin: 0 auto;
+}
+
+/* PARA TODOS LOS MODALs EN GENERAL */
+.modal .modal-dialog .modal-content {
+  -webkit-border-radius: 80px !important;
+    -moz-border-radius: 80px !important;
+    border-radius: 40px !important;
+}
+.modal div .modal-content .modal-header{
+  background-color: rgb(182, 35, 35);
+}
+/* BOTONES DE MODALS INFERIORES*/
+.modal-footer button{
+  border-radius: 30px;
+  border-width: 3px;
+  background-color: transparent;
+  color: #555555;
+  font-weight: bold;
+  padding: 7px 40px;
+  margin-right: 5%;
+}
+/* BOTONES DE MODALS CAJA */
+.card button{
+  border-radius: 30px;
+  border-width: 3px;
+  background-color: transparent;
+  color: #555555;
+  font-weight: bold;
+}
+/* BOTON X DE MODAL */
+.modal-header .close{
+  color: rgb(255, 255, 255);
+  font-size: 40px;
+  font-weight: bold;
+}
+
+/*BOTONES DEL CRUD DENTRO DE UN MODAL*/
+.modal-body .card .card-body a{
+  border-radius: 30px;
+  border-width: 3px;
+  background-color: transparent;
+  color: #555555;
+  font-weight: bold;
+  padding: 7px 40px;
+} /*BOTONES DE LA TABLA*/
+.modal-body button{
+  border-radius: 30px;
+  border-width: 3px;
+  background-color: transparent;
+  color: #555555;
+  font-weight: bold;
+  /* padding: 7px 40px; */
+}
+
+/* LABELS MODALS */
+.modal-body .form-group label{
+  text-align: right;
+}
+/* BUSCARDOR */
+.form-inline .input-group input{
+  border-radius: 40px;
+  border-color: rgb(185, 129, 129);
+}
+.form-inline .input-group .input-group-prepend span{
+  border-top-left-radius: 40px;
+  border-bottom-left-radius: 40px;
+  font-weight: bold;
+  border-color: rgb(185, 129, 129);
+  color: blue;
+}
+
+
+/*CELULARES*/
+@media (max-width:768px){
+  /* BOTONES DE MODALS */
+  .modal-footer button{
+    border-radius: 30px;
+    background-color: transparent;
+    color: #555555;
+    width: 100%;
+  }
+  /* LABELS MODALS */
+  .modal-body .form-group label{
+    text-align: left;
+  }
+}

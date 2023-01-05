@@ -1,0 +1,244 @@
+<strong>
+  <h2 class="text-center text-bold text-light">GESTIONAR PERSONAS</h2>
+</strong>
+<hr class="border-warning">
+
+<button type="button" (click)="LimpiarPersonas()" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalAdd" data-whatever="@getbootstrap">AGREGAR Persona</button>
+
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">NOMBRE</th>
+        <th scope="col">C.I.</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of per; let i= index"  >
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.nombre_per}}⠀{{a.ape_p_per}}⠀{{a.ape_m_per}}⠀</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.ci_per}}</span>
+        </td>
+        <td style="width: 200px;">
+          <div class="btn-group">
+            <button class="btn btn-success btn-sm" (click)="SeleccionarPersona(a.id_persona,'Mostrar')" type="button">
+              <i class="bi bi-eye"></i>
+            </button>
+
+            <button type="button" class="btn btn-sm btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false">
+            </button>
+            <div class="dropdown-menu">
+              <!-- <button class="dropdown-item" data-toggle="modal" data-target="#ModalModificacion">Editar Datos Personales</button> -->
+              <button class="dropdown-item" data-toggle="modal" >Agregar Datos Curriculares</button>
+              <button class="dropdown-item" data-toggle="modal" >Hoja de Datos de Docente</button>
+              <button class="dropdown-item" data-toggle="modal" data-target="#ModalHitorialDesig">Historial de Designaciones</button>
+            </div>
+          </div>
+          <button type="button" class="btn btn-warning"
+          (click)="SeleccionarPersona(a.id_persona,'Editar')" style="margin-right: 10px;"><i class="bi bi-pencil"></i></button>
+
+         <button type="button" class="btn btn-danger" (click)="EliminarPersona(a.id_persona)">
+           <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- MODAL DE ADICION Persona-->
+<div class="modal fade" id="ModalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> REGISTRAR PERSONA NUEVA</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+
+      <div class="modal-body">
+        <div id="frmform" class="mb-4" [formGroup]="newPersona" >
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">APELLIDO PATERNO: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="ape_p_per">
+            </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">APELLIDO MATERNO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="ape_m_per">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOMBRES: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="nombre_per">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">C.I.: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="ci_per">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CELULAR: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="cel_per">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">DIRECCIÓN: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="dir_per">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">EMAIL: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="email_per">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">EMPRESA ID: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="dir_per">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NIT: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="nit_persona">
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="AgregarPersona()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL_DE_MODIFICACION Persona-->
+<div class="modal fade" id="ModalModificacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">MODIFICAR PERSONA</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="frmform" class="mb-4">
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">APELLIDO PATERNO: </label>
+            <input type="text" class="form-control col-sm-4" [(ngModel)]="PersonaSeleccionado.ape_p_per">
+            </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">APELLIDO MATERNO: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="PersonaSeleccionado.ape_m_per">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOMBRES: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="PersonaSeleccionado.nombre_per">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">C.I.: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="PersonaSeleccionado.ci_per">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CELULAR: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="PersonaSeleccionado.cel_per">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">DIRECCIÓN: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="PersonaSeleccionado.dir_per">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">EMAIL: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="PersonaSeleccionado.email_per">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">EMPRESA ID: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="PersonaSeleccionado.id_empresa">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NIT: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="PersonaSeleccionado.nit_persona">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="ModificarPersona(PersonaSeleccionado)">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE VISUALIZACION -->
+<div class="modal fade" id="ModalVisualizacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> VISUALIZANDO PERSONA</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="frmform" class="mb-4">
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">APELLIDO PATERNO: </label>
+            <input type="text" class="form-control col-sm-4" [(ngModel)]="PersonaSeleccionado.ape_p_per">
+            </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">APELLIDO MATERNO: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="PersonaSeleccionado.ape_m_per">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOMBRES: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="PersonaSeleccionado.nombre_per">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">C.I.: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="PersonaSeleccionado.ci_per">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CELULAR: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="PersonaSeleccionado.cel_per">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">DIRECCIÓN: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="PersonaSeleccionado.dir_per">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">EMAIL: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="PersonaSeleccionado.email_per">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">EMPRESA ID: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="PersonaSeleccionado.id_empresa">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NIT: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="PersonaSeleccionado.nit_persona">
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalMod" data-toggle="modal"
+  data-target="#ModalModificacion" style="width: 0px;">Abrir Modal Modificacion</button>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalMos" data-toggle="modal"
+  data-target="#ModalVisualizacion" style="width: 0px;">Abrir Modal Visualizacion</button>
+

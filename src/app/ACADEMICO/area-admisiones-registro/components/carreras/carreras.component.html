@@ -1,0 +1,131 @@
+<strong>
+  <h2 class="text-center text-bold text-light">GESTIONAR CARRERAS</h2>
+</strong>
+<hr class="border-warning">
+
+<!--<button type="button" (click)="LimpiarCarreras()" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalAdd" data-whatever="@getbootstrap">AGREGAR CARRERA</button>-->
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal"
+  data-target="#ModalAdicion" data-whatever="@getbootstrap" (click)=" newCarrera.patchValue({fec_carre:NowDate})">AGREGAR CARRERA</button>
+
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input"
+      aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Sigla</th>
+        <th scope="col">Acciones</th>
+        <!-- <th scope="col">Habilitación</th>
+        <th scope="col">Fecha de registro</th>-->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of carr; let i= index">
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>
+          <!-- <span *ngIf="!a.Editando">{{a.ape_p_carr}}⠀</span>
+          <span *ngIf="!a.Editando">{{a.ape_m_carr}}⠀</span>
+          <span *ngIf="!a.Editando">{{a.nombre_carr}}</span> -->
+          <span *ngIf="!a.Editando">{{a.nombre_carre}}⠀</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.sigla_carre}}</span>
+        </td>
+        <td style="width: 200px;">
+          <div class="btn-group">
+
+            <button class="btn btn-success" (click)="CarreraSeleccionado=a" type="button" data-toggle="modal"
+              data-target="#ModalVisualizacion">
+              <i class="bi bi-eye"></i>
+            </button>
+
+            <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split"
+              data-toggle="dropdown" aria-expanded="false">
+
+            </button>
+            <div class="dropdown-menu">
+              <!-- <button class="dropdown-item" data-toggle="modal" data-target="#ModalModificacion">Editar Datos Personales</button> -->
+              <button class="dropdown-item" data-toggle="modal">Agregar Carrera</button>
+              <button class="dropdown-item" data-toggle="modal">Mostrar Carrera</button>
+              <button class="dropdown-item" data-toggle="modal" data-target="#ModalHitorialDesig">Historial de
+                Designaciones</button>
+            </div>
+          </div>
+            <button (click)="SeleccionarCarrera(a.id_carre)" data-toggle="modal"
+            data-target="#ModalAdicion" class="btn btn-warning" ><i
+            class="bi bi-pencil"></i></button>
+            <button type="button" class="btn btn-danger" (click)="EliminarCarrera(a.id_carre)">
+              <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<!--MODAL_DE_ADICION_DE_CARRERA-->
+
+<div class="modal fade" id="ModalAdicion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{!newCarrera.get('id_carre').value ? 'REGISTRAR NUEVA' : 'MODIFICAR'}} CARRERA</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+          <div class="mb-4" [formGroup]="newCarrera">
+            <div class="form-group row" [ngClass]="{'has-error': isSubmitted && newCarrera.get('nombre_carre').errors}">
+              <label class="form-label text-right col-sm-2">NOMBRE: </label>
+              <input type="text" class="form-control col-sm-10" formControlName="nombre_carre" id="nombre_carre"
+                oninput="this.value= this.value.toUpperCase()" placeholder="NOMBRE EJ: GASTRONOMIA">
+                <span *ngIf="isSubmitted && newCarrera.get('nombre_carre').errors" class="text-danger text-sm text-center float-right">el nombre es requerido</span>
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">SIGLA: </label>
+              <input type="text" class="form-control col-sm-10" formControlName="sigla_carre"
+                oninput="this.value= this.value.toUpperCase()" placeholder="SIGLAS CARRERA EJ: GTM">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">HABILITACIÓN DE CARRERA: </label>
+              <input type="checkbox" class="form-control col-sm-1" [checked]="newCarrera.get('habi_carre').value ==1 ? 1 : 0" (change)="ControlChecked($event)">
+              <!-- <input type="checkbox" class="form-control col-sm-1" formControlName="habi_carre"> -->
+            </div>
+
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">FECHA DE REGISTRO: </label>
+              <input type="date" class="form-control col-sm-4" formControlName="fec_carre">
+            </div>
+            <div class="form-group row">
+              <label class="form-label col-sm-2">IMP CARRERA: </label>
+              <input type="text" class="form-control col-sm-10" oninput="this.value= this.value.toUpperCase()" formControlName="imp_carre">
+            </div>
+            <div class="form-group row">
+              <label class="form-label col-sm-2">RESOLUCION CARRERA: </label>
+              <input type="text" class="form-control col-sm-10" oninput="this.value= this.value.toUpperCase()" formControlName="res_carre">
+            </div>
+
+
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="resetCarrera()">Cancelar</button>
+          <button type="button" class="{{!newCarrera.get('id_carre').value ? 'btn btn-success' : 'btn btn-warning'}}" data-dismiss="modal" [disabled]="!newCarrera.valid" (click)="AgregarModificarCarrera()">{{!newCarrera.get('id_carre').value ? 'CREAR CARRERA' : 'MODIFICAR CARRERA'}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

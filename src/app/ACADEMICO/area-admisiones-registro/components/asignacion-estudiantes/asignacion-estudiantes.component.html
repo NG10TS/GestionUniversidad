@@ -1,0 +1,336 @@
+<strong>
+  <h2 class="text-center text-bold text-light">GESTION DE ASIGNACION DE ESTUDIANTES - MATERIAS</h2>
+</strong>
+<hr class="border-warning">
+
+<button type="button" class="btn btn-outline-light font-weight-bold"
+  data-toggle="modal" data-target="#ModalAdd" data-whatever="@getbootstrap">AGREGAR NUEVA ASIGNACION DE ESTUDIANTE</button>
+
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input"
+      aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nombre Estudiante</th>
+        <th scope="col">Carnet</th>
+        <th scope="col">Gestion</th>
+        <th scope="col">Materia</th>
+        <th scope="col">Observacion Asignacion Estudiante</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of AEst; let i= index">
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.ape_p_est}} {{a.ape_m_est}} {{a.nombre_est}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.ci_est}}-{{a.exp_est}}</span>
+        </td>
+        <td>
+          <!-- <span *ngIf="!a.Editando">{{a.numero}} - {{a.desc_sem}}</span> -->
+          <span *ngIf="!a.Editando">{{a.gestion_asig_mat}}/{{a.periodo_mat_carr}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.nombre_mat}}-{{a.paralelo_asig_mat}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.obs_asig}}</span>
+        </td>
+        <td style="width: 200px;">
+          <div class="btn-group">
+            <button class="btn btn-success btn-sm" (click)="SeleccionarAsignacionEstudiante(a,'Mostrar')" type="button">
+              <i class="bi bi-eye"></i>
+            </button>
+
+            <button type="button" class="btn btn-sm btn-success dropdown-toggle dropdown-toggle-split"
+              data-toggle="dropdown" aria-expanded="false">
+            </button>
+            <div class="dropdown-menu">
+              <!-- <button class="dropdown-item" data-toggle="modal" data-target="#ModalModificacion">Editar Datos Personales</button> -->
+              <button routerLink="/semestre" class="dropdown-item">Ir a Gestionar Semestres</button>
+              <button routerLink="/materias" class="dropdown-item">Ir a Gestionar Materias</button>
+              <button routerLink="/prerrequisitos" class="dropdown-item">Ir a Gestionar Prerrequisitos</button>
+            </div>
+          </div>
+          <button type="button" class="btn btn-warning" (click)="SeleccionarAsignacionEstudiante(a,'Editar')"
+            style="margin-right: 10px;"><i class="bi bi-pencil"></i></button>
+
+          <button type="button" class="btn btn-danger" (click)="EliminarAsignacionEstudiante(a.id_asig_mat_est)">
+            <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- MODAL DE ADICION AsignacionEstudiante-->
+<div class="modal fade" id="ModalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> REGISTRAR NUEVA ASIGNACION A ESTUDIANTE</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newAsignacionEstudiante">
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">ESTUDIANTE: </label>
+            <!-- FILTRADOR V3: NombreFiltro => Estudiante-->
+            <div [formGroup]="filterEstudianteForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control" value="{{EstudianteSelect.NomC }}"/>
+              </div>
+              <div *ngIf="filtroEstudiante" class="lcch-options" >
+                <span *ngFor="let a of estFiltrado" class="form-control" (click)="EstudianteSelect.NomC=a.ape_p_est+' '+a.ape_m_est+' '+a.nombre_est; newAsignacionEstudiante.patchValue({id_est:a.id_est})" (click)="filtroEstudiante=false">{{a.ape_p_est}} {{a.ape_m_est}} {{a.nombre_est}} - {{a.cod_est}}</span>
+              </div>
+            </div>
+            <!-- <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_est">
+              <optgroup label="Seleccione un Estudiante" >
+                  <option *ngFor="let a of est" value="{{a.id_est}}">{{a.ape_p_est}} {{a.ape_m_est}} {{a.nombre_est}}</option>
+              </optgroup>
+            </select> -->
+          </div>
+
+         
+          <div class="form-group row">
+            
+            <div [formGroup]="filterMateriaForm" class="lcch-select col-sm-12">
+              
+              <div class="row">
+                
+                <label class="form-label text-right col-sm-2">MATERIA: </label>
+                <div class="card col-sm-10">
+                  <label class="form-text text-center" style="position: absolute; top:0px; right:45%; font-size: 12px;">FILTRAR MATERIA</label>
+                  <div class="card-body">
+                    <div class="row">
+                      <label class="form-text col-sm-2">GESTION</label>
+                      <input formControlName="txt1" type="text" class="form-control col-sm-2" placeholder="2022/1"/>
+                      <label class="form-text col-sm-2">MATERIA</label>
+                      <input formControlName="txt2" type="text" class="form-control col-sm-6" placeholder=""/>
+                    </div>
+                    <div class="row">
+                      <input formControlName="txt" type="text" class="form-control col-sm-12"/>
+                      <div *ngIf="filtroMateria" class="lcch-options" >
+                        <span *ngFor="let a of matFiltrado" class="form-control" (click)="filterMateriaForm.patchValue({txt:a.nombre_mat +' '+ a.gestion});    newAsignacionEstudiante.patchValue({id_mat:a.id_mat})" (click)="filtroMateria=false">{{a.nombre_mat}} - {{a.codigo_mat}} ➤ {{a.gestion}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CALIFICACION: </label>
+            <input type="number" class="form-control col-sm-4" formControlName="nota_asig">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">LITERAL CALIFICACION: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="literal_nota">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">APROB/REPROB: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="apro_rep_con_est">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">MODIFICADO ASIG: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="modificado_asig">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NUEVA ASIG: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="nueva_asig">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">AUTORIZADO: </label>
+            <input type="number" class="form-control col-sm-4" formControlName="autorizado_asig">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">OBSERVACION: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="obs_asig">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA TRANS: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="fec_trans">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="AgregarAsignacionEstudiante()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL_DE_MODIFICACION AsignacionEstudiante-->
+<div class="modal fade" id="ModalModificacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">MODIFICAR AsignacionEstudiante</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">ESTUDIANTE: </label>
+            <!-- <input type="text" class="form-control col-sm-10" [(ngModel)]="AsignacionEstudianteSeleccionado.id_doc"> -->
+            <!-- FILTRADOR V3: NombreFiltro => Estudiante-->
+            <div [formGroup]="filterEstudianteForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control" value="{{EstudianteSelect.NomC }}"/>
+              </div>
+              <div *ngIf="filtroEstudiante" class="lcch-options" >
+                <span *ngFor="let a of estFiltrado" class="form-control" (click)="EstudianteSelect=a; AsignacionEstudianteSeleccionado.id_est= a.id_est" (click)="filtroEstudiante=false">{{a.NomC}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">MATERIA: </label>
+            <!-- FILTRADOR V3: NombreFiltro => Materia-->
+            <div [formGroup]="filterMateriaForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control" value="{{MateriaSelect.nombre_mat }}"/>
+              </div>
+              <div *ngIf="filtroMateria" class="lcch-options" >
+                <span *ngFor="let a of matFiltrado" class="form-control" (click)="MateriaSelect=a" (click)="filtroMateria=false">{{a.nombre_mat}} - {{a.codigo_mat}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CALIFICACION: </label>
+            <input type="number" class="form-control col-sm-4" [(ngModel)]="AsignacionEstudianteSeleccionado.nota_asig">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">LITERAL CALIFICACION: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="AsignacionEstudianteSeleccionado.literal_nota">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">APROB/REPROB: </label>
+            <input type="text" class="form-control col-sm-4" [(ngModel)]="AsignacionEstudianteSeleccionado.apro_rep_con_est">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">MODIFICADO ASIG: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="AsignacionEstudianteSeleccionado.modificado_asig">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NUEVA ASIG: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="AsignacionEstudianteSeleccionado.nueva_asig">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">AUTORIZADO: </label>
+            <input type="number" class="form-control col-sm-4" [(ngModel)]="AsignacionEstudianteSeleccionado.autorizado_asig">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">OBSERVACION: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="AsignacionEstudianteSeleccionado.obs_asig">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA TRANS: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="AsignacionEstudianteSeleccionado.fec_trans">
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal"
+          (click)="ModificarAsignacionEstudiante(AsignacionEstudianteSeleccionado)">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE VISUALIZACION -->
+<div class="modal fade" id="ModalVisualizacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> VISUALIZANDO Estudiante</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">ESTUDIANTE: </label>
+            <!-- <input type="text" class="form-control col-sm-10" [(ngModel)]="AsignacionEstudianteSeleccionado.id_doc"> -->
+            <select class="custom-select col-sm-10 form-control" type="text" [(ngModel)]="AsignacionEstudianteSeleccionado.id_est">
+              <optgroup label="Seleccione un Estudiante" >
+                  <option *ngFor="let a of est" value="{{a.id_est}}">{{a.ape_p_est}} {{a.ape_m_est}} {{a.nombre_est}}</option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">MATERIA: </label>
+            <!-- <input type="number" class="form-control col-sm-4" [(ngModel)]="AsignacionEstudianteSeleccionado.id_carre_mater"> -->
+            <select class="custom-select col-sm-10 form-control" type="text" [(ngModel)]="AsignacionEstudianteSeleccionado.id_asig_mat">
+              <optgroup label="Seleccione Materia" >
+                <option *ngFor="let a of ADoc" value="{{a.id_asig_mat}}">{{a.periodo_mat_carr}}/{{a.gestion_asig_mat}} ➤ {{a.nombre_mat}} - {{a.codigo_mat}} : {{a.paralelo_asig_mat}} ➤ {{a.ape_p_doc}} {{a.ape_m_doc}} {{a.nombre_doc}} </option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CALIFICACION: </label>
+            <input type="number" class="form-control col-sm-4" [(ngModel)]="AsignacionEstudianteSeleccionado.nota_asig">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">LITERAL CALIFICACION: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="AsignacionEstudianteSeleccionado.literal_nota">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">APROB/REPROB: </label>
+            <input type="text" class="form-control col-sm-4" [(ngModel)]="AsignacionEstudianteSeleccionado.apro_rep_con_est">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">MODIFICADO ASIG: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="AsignacionEstudianteSeleccionado.modificado_asig">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NUEVA ASIG: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="AsignacionEstudianteSeleccionado.nueva_asig">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">AUTORIZADO: </label>
+            <input type="number" class="form-control col-sm-4" [(ngModel)]="AsignacionEstudianteSeleccionado.autorizado_asig">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">OBSERVACION: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="AsignacionEstudianteSeleccionado.obs_asig">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA TRANS: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="AsignacionEstudianteSeleccionado.fec_trans">
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalMod" data-toggle="modal"
+  data-target="#ModalModificacion" style="width: 0px;">Abrir Modal Modificacion</button>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalMos" data-toggle="modal"
+  data-target="#ModalVisualizacion" style="width: 0px;">Abrir Modal Visualizacion</button>

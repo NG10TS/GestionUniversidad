@@ -1,0 +1,159 @@
+<strong>
+  <h2 class="text-center text-bold text-light">GESTIONAR CRONOGRAMAS</h2>
+</strong>
+<hr class="border-warning">
+<!-- CRUD V3: idPK=> id_crono, TITULO=> CRONOGRAMA, nombreCRUD=> Cronogramas,  dataP=> crono -->
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalCrudCronogramas"
+  data-whatever="@getbootstrap">AGREGAR CRONOGRAMA</button>
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input"
+      aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">NOMBRE</th>
+        <!-- <th scope="col">FECHA DE EVALUACIÓN</th> -->
+        <th scope="col">MODALIDAD</th>
+        <th scope="col">INICIO DE CRONOGRAMA</th>
+        <th scope="col">FIN DE CRONOGRAMA</th>
+        <th scope="col">IRE CRONOGRAMA</th>
+        <th scope="col">FRE CRONOGRAMA</th>
+        <th scope="col">PERIODO</th>
+        <th scope="col">GESTIÓN</th>
+        <!-- <th scope="col">MODULO FECHAS</th> -->
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of crono; let i= index">
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.nombre_crono}}</span>
+        </td>
+        <!-- <td>
+          <span *ngIf="!a.Editando">{{a.id_fec_evalua}}</span>
+        </td> -->
+        <td>
+          <span *ngIf="!a.Editando">{{a.id_modal}} {{a.nombre_modal}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.inicio_crono}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.fin_crono}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.ire_crono}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.fre_crono}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.periodo_crono}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.gestion_crono}}</span>
+        </td>
+        <!-- <td>
+          <span *ngIf="!a.Editando">{{a.id_fechas}}</span>
+        </td> -->
+        <td style="width: 200px;">
+          <button class="btn btn-success btn-sm" (click)="SeleccionarCronogramas(a.id_crono,'Mostrar')" type="button">
+            <i class="bi bi-eye"></i>
+          </button>
+          <button type="button" class="btn btn-sm btn-success dropdown-toggle dropdown-toggle-split"
+            data-toggle="dropdown" aria-expanded="false">
+          </button>
+          <button (click)="SeleccionarCronogramas(a.id_crono)"
+            class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+          <button type="button" class="btn btn-danger" (click)="EliminarCronogramas(a.id_crono)">
+            <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- MODAL DE CRUD ADD MOD DE CODIGO DE Cronogramas-->
+<div class="modal fade" id="ModalCrudCronogramas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          {{!newCronogramas.get('id_crono').value ? 'REGISTRAR' : 'MODIFICAR'}} CRONOGRAMA</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newCronogramas">
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOMBRE DE CRONOGRAMA: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="nombre_crono">
+          </div>
+          <!-- <div class="form-group row">
+            <label class="form-label text-right col-sm-2">MÓDULO EVALUACIÓN: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_fec_evalua">
+              <optgroup label="SELECCIONE MÓDULO EVALUACIÓN" >
+                <option *ngFor="let a of fec_eval" value="{{a.id_fec_evalua}}">{{a.nro_modulo}} </option>
+              </optgroup>
+             </select>
+          </div> -->
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">MODALIDAD: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_modal">
+              <optgroup label="SELECCIONE MODALIDAD" >
+                <option value="1">PRESENCIAL</option>
+                <option value="2">VIRTUAL</option>
+              </optgroup>
+             </select>
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">INICIO DE CRONOGRAMA: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="inicio_crono">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FINALIZACIÓN DE CRONOGRAMA: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="fin_crono">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">IRE CRONOGRAMA: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="ire_crono">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">FRE CRONOGRAMA: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="fre_crono">
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">PERIODO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="periodo_crono">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">GESTIÓN: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="gestion_crono">
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="resetCronogramas()">Cancelar</button>
+        <button type="button" class="btn {{!newCronogramas.get('id_crono').value ? 'btn-success' : 'btn-warning'}}" data-dismiss="modal" [disabled]="!newCronogramas.valid"
+          (click)="AgregarModificarCronogramas()">{{!newCronogramas.get('id_crono').value ? 'CREAR PLAN' : 'MODIFICAR PLAN'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudCronogramas" data-toggle="modal"
+  data-target="#ModalCrudCronogramas" style="width: 0px;">Abrir Modal Crud</button>

@@ -1,0 +1,145 @@
+<strong>
+  <h2 class="text-center text-bold text-light">GESTIONAR FECHAS DE EVALUACIÓN</h2>
+</strong>
+<hr class="border-warning">
+
+<!-- CRUD V3: idPK=> id_fec_evalua, TITULO=> FECHA DE EVALUACIÓN, nombreCRUD=> FechaEvaluas,  dataP=> fec_eval -->
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalCrudFechaEvaluas"
+  data-whatever="@getbootstrap">AGREGAR FECHA DE EVALUACIÓN</button>
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input"
+      aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <!-- <th scope="col">SIGLA</th> -->
+        <th scope="col">Cronograma</th>
+        <th scope="col">Evaluación</th>
+        <th scope="col">Fecha de Inicio</th>
+        <th scope="col">Fecha de  Finalización</th>
+        <th scope="col">Modulo</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of fec_eval; let i= index">
+        <td style="width: 20px;">{{i+1}}</td>
+        <!-- <td> <span *ngIf="!a.Editando">{{a.sigla_evalua}}</span> </td> -->
+        <td> <span *ngIf="!a.Editando">{{a.nombre_crono}}</span>  </td>
+        <td>  <span *ngIf="!a.Editando">{{a.nombre_evalua}}</span> </td>
+        <td> <span *ngIf="!a.Editando">{{a.inicio_evalua}}</span> </td>
+        <td>  <span *ngIf="!a.Editando">{{a.fin_evalua}}</span> </td>
+        <!-- <td> <span *ngIf="!a.Editando">{{a.nro_modulo}}</span></td> -->
+        <td> <span *ngIf="!a.Editando">{{a.desc_modulo}}</span>  </td>
+        <td style="width: 200px;">
+          <button class="btn btn-success btn-sm" (click)="SeleccionarFechaEvaluas(a.id_fec_evalua,'Mostrar')" type="button">
+            <i class="bi bi-eye"></i>
+          </button>
+          <button type="button" class="btn btn-sm btn-success dropdown-toggle dropdown-toggle-split"
+            data-toggle="dropdown" aria-expanded="false">
+          </button>
+          <button (click)="SeleccionarFechaEvaluas(a.id_fec_evalua)"
+            class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+          <button type="button" class="btn btn-danger" (click)="EliminarFechaEvaluas(a.id_fec_evalua)">
+            <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- MODAL DE CRUD ADD MOD DE CODIGO DE FechaEvaluas-->
+<div class="modal fade" id="ModalCrudFechaEvaluas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          {{!newFechaEvaluas.get('id_fec_evalua').value ? 'REGISTRAR' : 'MODIFICAR'}} FECHA DE EVALUACIÓN</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newFechaEvaluas">
+          <!-- <div class="form-group row">
+            <label class="form-label text-right col-sm-2">EVALUACIÓN: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_evalua">
+              <optgroup label="SELECCIONE EVALUACIÓN" >
+                <option *ngFor="let a of eval" value="{{a.id_evalua}}">{{a.sigla_evalua}} {{a.nombre_evalua}}</option>
+              </optgroup>
+             </select>
+          </div> -->
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">EVALUACIÓN: </label>
+            <!-- <input type="text" class="form-control col-sm-10" formControlName="id_evalua"> -->
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_evalua">
+              <optgroup label="SELECCIONE EVALUACIÓN">
+                <option value="1">PRIMER PARCIAL</option>
+                <option value="2">SEGUNDO PARCIAL</option>
+                <option value="3">REVALIDA</option>
+                <option value="4">EXAMEN FINAL</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">INICIO: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="inicio_evalua">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FINALIZACIÓN: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="fin_evalua">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">MÓDULO: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="nro_modulo">
+              <optgroup label="SELECCIONE MÓDULO" >
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+              </optgroup>
+             </select>
+           </div>
+
+
+      <div class="form-group row">
+        <label class="form-label col-sm-2">CRONOGRAMA: </label>
+        <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_crono">
+          <optgroup label="SELECCIONE CRONOGRAMA" >
+            <option *ngFor="let a of cronograma" value="{{a.id_crono}}">{{a.nombre_crono}}</option>
+          </optgroup>
+         </select>
+      </div>
+
+     <div class="form-group row">
+       <label class="form-label col-sm-2">NOMBRE EVALUACION: </label>
+       <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_evalua">
+         <optgroup label="SELECCIONE NOMBRE EVALUACION" >
+           <option *ngFor="let a of eval" value="{{a.id_evalua}}">{{a.nombre_evalua}}</option>
+         </optgroup>
+        </select>
+     </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="resetFechaEvaluas()">Cancelar</button>
+        <button type="button" class="btn {{!newFechaEvaluas.get('id_fec_evalua').value ? 'btn-success' : 'btn-warning'}}" data-dismiss="modal" [disabled]="!newFechaEvaluas.valid"
+          (click)="AgregarModificarFechaEvaluas()">{{!newFechaEvaluas.get('id_fec_evalua').value ? 'CREAR PLAN' : 'MODIFICAR PLAN'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudFechaEvaluas" data-toggle="modal"
+  data-target="#ModalCrudFechaEvaluas" style="width: 0px;">Abrir Modal Crud</button>

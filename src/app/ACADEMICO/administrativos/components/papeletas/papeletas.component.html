@@ -1,0 +1,142 @@
+<strong>
+  <h2 class="text-center text-bold text-light">GESTIONAR PAPELETAS</h2>
+</strong>
+<hr class="border-warning">
+<!-- #region CRUD PRINCIPAL PAPELETAS -->
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalCrudPapeleta"
+  data-whatever="@getbootstrap">AGREGAR PAPELETAS</button>
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input"
+      aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">NOMBRE DOCENTE</th>
+        <th scope="col">NOMBRE ADJ EGRESO</th>
+        <th scope="col">FECHA</th>
+        <th scope="col">BONO</th>
+        <th scope="col">DESCUENTO</th>
+        <th scope="col">FECHA PAGO</th>
+        <th scope="col">LIQUIDACION</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of papeleta; let i= index">
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>{{a.nombre_doc}}  {{a.ape_p_doc}} {{a.ape_m_doc}}</td>
+        <td>{{a.nombre_adj_egreso}}</td>
+        <td>{{a.fec_papel}}</td>
+        <td>{{a.bono_papel}}</td>
+        <td>{{a.descuento_papel}}</td>
+        <td>{{a.fec_pago_papel}}</td>
+        <td>{{a.liquido_papel}}</td>
+        <td style="width: 200px;">
+          <button (click)="SeleccionarPapeleta(a.id_papel)"
+            class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+          <button type="button" class="btn btn-danger" (click)="EliminarPapeleta(a.id_papel)">
+            <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- MODAL DE CRUD ADD MOD DE CODIGO DE Papeleta-->
+<div class="modal fade" id="ModalCrudPapeleta" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{!newPapeleta.get('id_papel').value ? 'REGISTRAR' : 'MODIFICAR'}} PAPELETAS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newPapeleta">
+          <div class="form-group row">
+            <label class="form-label col-sm-2">NOMBRE DOCENTE: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_doc">
+              <optgroup label="SELECCIONE NOMBRE DOCENTE" >
+                <option *ngFor="let a of doc" value="{{a.id_doc}}">{{a.ape_p_doc}} {{a.ape_m_doc}} {{a.nombre_doc}} - {{a.cod_doc}}</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">MES PAPELETA: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="mes_papel">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">AÑO PAPELETA: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="anio_papel">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">FECHA PAPELETA: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="fec_papel">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">GANADO PAPELETA: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="ganado_papel">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">DESCUENTO: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="descuento_papel">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">ADELANTO: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="adelanto_papel">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">LIQUIDACION: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="liquido_papel">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">BS: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="bs_papel">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">AUTORIZACION: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="autorizado_papel">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">FECHA PAGO PAPELETA: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="fec_pago_papel">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">NOMBRE ADJ ADMIN: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_egreso_admin">
+              <optgroup label="SELECCIONE NOMBRE ADJ ADMIN" >
+                <option *ngFor="let a of egresoadmin" value="{{a.id_egreso_admin}}">{{a.nombre_adj_admin}}</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">TASA DE CAMBIO: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="tasa_cambio_papel">
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="resetPapeleta()">Cancelar</button>
+        <button type="button" class="btn {{!newPapeleta.get('id_papel').value ? 'btn-success' : 'btn-warning'}}" data-dismiss="modal" [disabled]="!newPapeleta.valid"
+          (click)="AgregarModificarPapeleta()">{{!newPapeleta.get('id_papel').value ? 'CREAR PAPELETAS' : 'MODIFICAR PAPELETAS'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudPapeleta" data-toggle="modal"
+  data-target="#ModalCrudPapeleta" style="width: 0px;">Abrir Modal Crud</button>
+<!-- #endregion CRUD PRINCIPAL PAPELETAS -->
+
+

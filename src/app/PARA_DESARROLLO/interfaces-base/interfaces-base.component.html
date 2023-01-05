@@ -1,0 +1,1566 @@
+<strong>
+  <h2 class="text-center text-bold text-light">GESTIONAR ADMINISTRATIVO</h2>
+</strong>
+<hr class="border-warning">
+
+<button (click)="AddAdministrativo()" type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalAdd" data-whatever="@getbootstrap">AGREGAR ADMINISTRATIVO</button>
+<button class="btn btn-secondary btn-sm" type="button" data-toggle="modal" data-target="#ModalCalendarAcad">
+  <i class="bi bi-eye"></i>calendario acad
+</button>
+<button class="btn btn-secondary btn-sm" type="button" data-toggle="modal" data-target="#ModalActaNotas">
+  <i class="bi bi-eye"></i>Acta de Notas
+</button>
+<button class="btn btn-secondary btn-sm" type="button" data-toggle="modal" data-target="#ModalConvalidacion">
+  <i class="bi bi-eye"></i>Convalidacion
+</button>
+<button class="btn btn-secondary btn-sm" type="button" data-toggle="modal" data-target="#ModalEstRegistroConvalidacion">
+  <i class="bi bi-eye"></i>Estudiantes con Registro de Convalidacion
+</button>
+<!-- <button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalDesigDocentes" data-whatever="@getbootstrap">DESIGNACION DE DOCENTES</button> -->
+<div class="btn-group">
+  <button class="btn btn-success btn-sm" type="button" data-toggle="modal" data-target="#ModalDesigDocentes">
+    <i class="bi bi-eye"></i>
+  </button>
+  <button class="btn btn-success btn-sm" type="button" data-toggle="modal" data-target="#ModalVisualizacion">
+    <i class="bi bi-eye"></i>
+  </button>
+
+  <button type="button" class="btn btn-sm btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false">
+    <!-- <span class="sr-only"> </span> -->
+  </button>
+  <div class="dropdown-menu">
+    <a class="dropdown-item" data-toggle="modal" data-target="#ModalModificacion">Editar Datos Personales</a>
+    <a class="dropdown-item" href="#">Agregar Datos Curriculares</a>
+    <a class="dropdown-item" href="#">Hoja de Datos de Docente</a>
+    <button class="dropdown-item" data-toggle="modal" data-target="#ModalHitorialDesig">Historial de Designaciones</button>
+    <a class="dropdown-item" href="#">Nuevo Registro</a>
+  </div>
+</div>
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+    <table class="table table-bordered table-striped table-hover table-danger">
+      <thead class="bg-danger ">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Nombre Completo</th>
+          <th scope="col">Carnet</th>
+          <th scope="col">Sexo</th>
+          <th scope="col">Tipo</th>
+          <th scope="col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>
+            <span>CHOQUE CHOQUE LUIS CRISTIAN</span>
+          </td>
+          <td>
+            <span>123123123</span>
+          </td>
+          <td>
+            <span>MASCULINO</span>
+          </td>
+          <td>
+              <span>ADMINISTRADOR</span>
+          </td>
+          <td style="width: 200px;">
+            <div class="btn-group">
+              <button class="btn btn-success btn-sm" type="button" data-toggle="modal" data-target="#ModalVisualizacion">
+                <i class="bi bi-eye"></i>
+              </button>
+
+              <button type="button" class="btn btn-sm btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false">
+                <!-- <span class="sr-only"> </span> -->
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" data-toggle="modal" data-target="#ModalModificacion">Editar Datos Personales</a>
+                <a class="dropdown-item" href="#">Agregar Datos Curriculares</a>
+                <a class="dropdown-item" href="#">Hoja de Datos de Docente</a>
+                <button class="dropdown-item" data-toggle="modal" data-target="#ModalHitorialDesig">Historial de Designaciones</button>
+                <a class="dropdown-item" href="#">Nuevo Registro</a>
+              </div>
+            </div>
+
+            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#ModalModificacion"
+               style="margin-right: 10px;"><i class="bi bi-pencil"></i></button>
+
+           <button type="button" class="btn btn-danger">
+             <i class="bi bi-trash"></i></button>
+          </td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>
+            <span>CHOQUE CHOQUE LUIS CRISTIAN</span>
+          </td>
+          <td>
+            <span>123123123</span>
+          </td>
+          <td>
+            <span>MASCULINO</span>
+          </td>
+          <td>
+              <span>ADMINISTRADOR</span>
+          </td>
+          <td style="width: 200px;">
+            <div class="btn-group">
+              <button class="btn btn-success btn-sm" type="button" data-toggle="modal" data-target="#ModalVisualizacion">
+                <i class="bi bi-eye"></i>
+              </button>
+
+              <button type="button" class="btn btn-sm btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false">
+                <!-- <span class="sr-only"> </span> -->
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" data-toggle="modal" data-target="#ModalModificacion">Editar Datos Personales</a>
+                <a class="dropdown-item" href="#">Agregar Datos Curriculares</a>
+                <a class="dropdown-item" href="#">Hoja de Datos de Docente</a>
+                <button class="dropdown-item" data-toggle="modal" data-target="#ModalHitorialDesig">Historial de Designaciones</button>
+                <a class="dropdown-item" href="#">Nuevo Registro</a>
+              </div>
+            </div>
+
+            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#ModalModificacion"
+               style="margin-right: 10px;"><i class="bi bi-pencil"></i></button>
+
+           <button type="button" class="btn btn-danger">
+             <i class="bi bi-trash"></i></button>
+          </td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>
+            <span>CHOQUE CHOQUE LUIS CRISTIAN</span>
+          </td>
+          <td>
+            <span>123123123</span>
+          </td>
+          <td>
+            <span>MASCULINO</span>
+          </td>
+          <td>
+              <span>ADMINISTRADOR</span>
+          </td>
+          <td style="width: 200px;">
+            <div class="btn-group">
+              <button class="btn btn-success btn-sm" type="button" data-toggle="modal" data-target="#ModalVisualizacion">
+                <i class="bi bi-eye"></i>
+              </button>
+
+              <button type="button" class="btn btn-sm btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false">
+                <!-- <span class="sr-only"> </span> -->
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" data-toggle="modal" data-target="#ModalModificacion">Editar Datos Personales</a>
+                <a class="dropdown-item" href="#">Agregar Datos Curriculares</a>
+                <a class="dropdown-item" href="#">Hoja de Datos de Docente</a>
+                <button class="dropdown-item" data-toggle="modal" data-target="#ModalHitorialDesig">Historial de Designaciones</button>
+                <a class="dropdown-item" href="#">Nuevo Registro</a>
+              </div>
+            </div>
+
+            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#ModalModificacion"
+               style="margin-right: 10px;"><i class="bi bi-pencil"></i></button>
+
+           <button type="button" class="btn btn-danger">
+             <i class="bi bi-trash"></i></button>
+          </td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>
+            <span>CHOQUE CHOQUE LUIS CRISTIAN</span>
+          </td>
+          <td>
+            <span>123123123</span>
+          </td>
+          <td>
+            <span>MASCULINO</span>
+          </td>
+          <td>
+              <span>ADMINISTRADOR</span>
+          </td>
+          <td style="width: 200px;">
+            <div class="btn-group">
+              <button class="btn btn-success btn-sm" type="button" data-toggle="modal" data-target="#ModalVisualizacion">
+                <i class="bi bi-eye"></i>
+              </button>
+
+              <button type="button" class="btn btn-sm btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false">
+                <!-- <span class="sr-only"> </span> -->
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" data-toggle="modal" data-target="#ModalModificacion">Editar Datos Personales</a>
+                <a class="dropdown-item" href="#">Agregar Datos Curriculares</a>
+                <a class="dropdown-item" href="#">Hoja de Datos de Docente</a>
+                <button class="dropdown-item" data-toggle="modal" data-target="#ModalHitorialDesig">Historial de Designaciones</button>
+                <a class="dropdown-item" href="#">Nuevo Registro</a>
+              </div>
+            </div>
+
+            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#ModalModificacion"
+               style="margin-right: 10px;"><i class="bi bi-pencil"></i></button>
+
+           <button type="button" class="btn btn-danger">
+             <i class="bi bi-trash"></i></button>
+          </td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>
+            <span>CHOQUE CHOQUE LUIS CRISTIAN</span>
+          </td>
+          <td>
+            <span>123123123</span>
+          </td>
+          <td>
+            <span>MASCULINO</span>
+          </td>
+          <td>
+              <span>ADMINISTRADOR</span>
+          </td>
+          <td style="width: 200px;">
+            <div class="btn-group">
+              <button class="btn btn-success btn-sm" type="button" data-toggle="modal" data-target="#ModalVisualizacion">
+                <i class="bi bi-eye"></i>
+              </button>
+
+              <button type="button" class="btn btn-sm btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false">
+                <!-- <span class="sr-only"> </span> -->
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" data-toggle="modal" data-target="#ModalModificacion">Editar Datos Personales</a>
+                <a class="dropdown-item" href="#">Agregar Datos Curriculares</a>
+                <a class="dropdown-item" href="#">Hoja de Datos de Docente</a>
+                <button class="dropdown-item" data-toggle="modal" data-target="#ModalHitorialDesig">Historial de Designaciones</button>
+                <a class="dropdown-item" href="#">Nuevo Registro</a>
+              </div>
+            </div>
+
+            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#ModalModificacion"
+               style="margin-right: 10px;"><i class="bi bi-pencil"></i></button>
+
+           <button type="button" class="btn btn-danger">
+             <i class="bi bi-trash"></i></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- <span>{{seleccionado | json}}</span> -->
+
+  </div>
+<!-- MODAL HISTORIAL DE DESIGNACIONES
+<div class="modal fade" id="ModalHitorialDesig" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> HISTORIAL DE DESIGNACIONES</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newAdministrativo">
+
+          <div class="form-group row">
+            <div class="col-sm-9">
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-2">COD: </label>
+                <input type="text" class="form-control col-sm-2" formControlName="Ap_Paterno">
+                <label class="form-label text-right col-sm-6">DESIGNACIONES REGISTRADAS: </label>
+                <input type="text" class="form-control col-sm-2" formControlName="Ap_Paterno">
+              </div>
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-2">NOMBRE: </label>
+                <input type="text" class="form-control col-sm-10" formControlName="Ap_Paterno">
+              </div>
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-2">CI: </label>
+                <input type="text" class="form-control col-sm-6" formControlName="Ap_Paterno">
+                <input type="text" class="form-control col-sm-2" formControlName="Ap_Paterno">
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <img src="" width="150px" height="140px">
+            </div>
+          </div>
+          <hr>-->
+
+<!-- MODAL registro de revalidas-->
+<div class="modal fade" id="ModalHitorialDesig" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> REGISTRO DE REVALIDAS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newAdministrativo">
+
+          <div class="form-group row">
+            <div class="col-sm-9">
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-2">CODIGO: </label>
+                <input type="text" class="form-control col-sm-2" formControlName="Ap_Paterno">
+                <label class="form-label text-right col-sm-6">MATRICULA: </label>
+                <input type="text" class="form-control col-sm-2" formControlName="Ap_Paterno">
+              </div>
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-2">NOMBRE: </label>
+                <input type="text" class="form-control col-sm-10" formControlName="Ap_Paterno">
+              </div>
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-2">CARRERA: </label>
+                <input type="text" class="form-control col-sm-10" formControlName="Ap_Paterno">
+              </div>
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-2">PER: </label>
+                <input type="text" class="form-control col-sm-6" formControlName="Ap_Paterno">
+                <label class="form-label text-right col-sm-2">GES: </label>
+                <input type="text" class="form-control col-sm-2" formControlName="Ap_Paterno">
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <img src="" width="150px" height="140px">
+            </div>
+          </div>
+          <hr>
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover table-danger">
+              <thead class="bg-danger ">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Nombre Completo</th>
+                  <th scope="col">Carnet</th>
+                  <th scope="col">Sexo</th>
+                  <th scope="col">Tipo</th>
+                  <th scope="col">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let a of admin; let i= index"  >
+                  <td>{{i+1}}</td>
+                  <td>
+                    <span *ngIf="!a.Editando">{{a.Ap_Paterno}}⠀</span>
+                    <span *ngIf="!a.Editando">{{a.Ap_Materno}}⠀</span>
+                    <span *ngIf="!a.Editando">{{a.Nombre}}</span>
+                  </td>
+                  <td>
+                    <span *ngIf="!a.Editando">{{a.CI}}</span>
+                  </td>
+                  <td>
+                    <span *ngIf="!a.Editando">{{a.Sexo}}</span>
+                  </td>
+                  <td>
+                      <span *ngIf="!a.Editando">{{a.Tipo}}</span>
+                  </td>
+                  <td style="width: 200px;">
+                    <button type="button" class="btn btn-success"
+                      (click)='AdministrativoSeleccionado=a;' style="margin-right: 10px;"><i class="bi bi-eye"></i></button>
+
+                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#ModalModificacion"
+                      (click)='AdministrativoSeleccionado=a;' style="margin-right: 10px;"><i class="bi bi-pencil"></i></button>
+
+                   <button type="button" class="btn btn-danger" (click)="EliminarAdministrativo(a.id)">
+                     <i class="bi bi-trash"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- <span>{{seleccionado | json}}</span> -->
+
+          </div>
+          <!-- <div class="form-group row"></div> -->
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="AddAdministrativo()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div><!-- MODAL DE DESIGNACION DOCENTES -->
+<div class="modal fade" id="ModalDesigDocentes" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> DESIGNACION DE DOCENTES</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newAdministrativo">
+          <div class="form-group row">
+            <div class="col-sm-9">
+              <div class="form-group row" style="margin: 0 0;">
+                <label class="form-label col-sm-2">PERIODO: </label>
+                <label class="form-label col-sm-2">GESTIÓN: </label>
+                <label class="form-label col-sm-3">CARRERA: </label>
+                <label class="form-label col-sm-2">GESTIÓN: </label>
+                <button class="btn btn-primary  col-sm-3">IMPRIMIR</button>
+
+              </div>
+              <div class="form-group row">
+                <input type="text" class="form-control col-sm-2" formControlName="Ap_Paterno">
+                <input type="text" class="form-control col-sm-2" formControlName="Ap_Paterno">
+                <input type="text" class="form-control col-sm-3" formControlName="Ap_Paterno">
+                <input type="text" class="form-control col-sm-2" formControlName="Ap_Paterno">
+              </div>
+
+            </div>
+            <div class="col-sm-3">
+
+              <button class="btn btn-success col-sm-12">ACEPTAR</button>
+              <button class="btn btn-secondary col-sm-12">CANCELAR</button>
+            </div>
+          </div>
+          <hr>
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover table-danger">
+              <thead class="bg-danger ">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Nombre Completo</th>
+                  <th scope="col">Carnet</th>
+                  <th scope="col">Sexo</th>
+                  <th scope="col">Tipo</th>
+                  <th scope="col">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let a of admin; let i= index"  >
+                  <td>{{i+1}}</td>
+                  <td>
+                    <span *ngIf="!a.Editando">{{a.Ap_Paterno}}⠀</span>
+                    <span *ngIf="!a.Editando">{{a.Ap_Materno}}⠀</span>
+                    <span *ngIf="!a.Editando">{{a.Nombre}}</span>
+                  </td>
+                  <td>
+                    <span *ngIf="!a.Editando">{{a.CI}}</span>
+                  </td>
+                  <td>
+                    <span *ngIf="!a.Editando">{{a.Sexo}}</span>
+                  </td>
+                  <td>
+                      <span *ngIf="!a.Editando">{{a.Tipo}}</span>
+                  </td>
+                  <td style="width: 200px;">
+                    <button type="button" class="btn btn-success"
+                      (click)='AdministrativoSeleccionado=a;' style="margin-right: 10px;"><i class="bi bi-eye"></i></button>
+
+                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#ModalModificacion"
+                      (click)='AdministrativoSeleccionado=a;' style="margin-right: 10px;"><i class="bi bi-pencil"></i></button>
+
+                   <button type="button" class="btn btn-danger" (click)="EliminarAdministrativo(a.id)">
+                     <i class="bi bi-trash"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- <span>{{seleccionado | json}}</span> -->
+
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="AddAdministrativo()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- MODAL CALENDARIO ACADEMICO 
+<div class="modal fade" id="ModalCalendarAcad" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> CALENDARIO ACADEMICO - CURSOS REGULARES</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newAdministrativo">
+          <div class="form-group row">
+
+            <div class="col-sm-8">
+              <div class="form-group row">
+                <div class="col-sm-1"></div>
+                <label class="form-label text-right col-sm-2">PERIODO: </label>
+                <select name="select" class="col-sm-3">
+                  <option value="value1">Value 1</option>
+                  <option value="value2" selected>Value 2</option>
+                  <option value="value3">Value 3</option>
+                </select>
+                <label class="form-label text-right col-sm-2">PERIODO: </label>
+                <select name="select" class="col-sm-3">
+                  <option value="value1">Value 1</option>
+                  <option value="value2" selected>Value 2</option>
+                  <option value="value3">Value 3</option>
+                </select>
+              </div>
+              <hr>
+              <div class="form-group row">
+                <div class="col-sm-1"></div>
+                <label class="form-label text-right col-sm-2">INICIO: </label>
+                <input type="date" class="form-control col-sm-3" formControlName="Ap_Paterno">
+
+                <label class="form-label text-right col-sm-2">FIN: </label>
+                <input type="date" class="form-control col-sm-3" formControlName="Ap_Paterno">
+              </div>
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-2">CARRERA: </label>
+                <input type="text" class="form-control col-sm-9" formControlName="Ap_Paterno">
+              </div>
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-2">SEMESTRE: </label>
+                <input type="text" class="form-control col-sm-9" formControlName="Ap_Paterno">
+              </div>
+            </div>
+            <style>
+              .divborde {
+                border-color: gray;
+                border-width: 5px;
+                border-style: double;
+
+              }
+            </style>
+            <div class="col-sm-2">
+              <div class="form-check divborde">
+                <label class="text-center font-weight-bold">TURNO</label>
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                <label class="form-check-label" for="defaultCheck1">
+                  Default checkbox
+                </label>
+                <br>
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                <label class="form-check-label" for="defaultCheck1">
+                  Default checkbox
+                </label>
+              </div>
+            </div>
+            <div class="col-sm-2">
+              <div class="form-check divborde">
+                <label class="text-center font-weight-bold">PARALELO</label>
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                <label class="form-check-label" for="defaultCheck1">
+                  Default checkbox
+                </label>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover table-danger">
+              <thead class="bg-danger ">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Nombre Completo</th>
+                  <th scope="col">Carnet</th>
+                  <th scope="col">Sexo</th>
+                  <th scope="col">Tipo</th>
+                  <th scope="col">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let a of admin; let i= index"  >
+                  <td>{{i+1}}</td>
+                  <td>
+                    <span *ngIf="!a.Editando">{{a.Ap_Paterno}}⠀</span>
+                    <span *ngIf="!a.Editando">{{a.Ap_Materno}}⠀</span>
+                    <span *ngIf="!a.Editando">{{a.Nombre}}</span>
+                  </td>
+                  <td>
+                    <span *ngIf="!a.Editando">{{a.CI}}</span>
+                  </td>
+                  <td>
+                    <span *ngIf="!a.Editando">{{a.Sexo}}</span>
+                  </td>
+                  <td>
+                      <span *ngIf="!a.Editando">{{a.Tipo}}</span>
+                  </td>
+                  <td style="width: 200px;">
+                    <button type="button" class="btn btn-success"
+                      (click)='AdministrativoSeleccionado=a;' style="margin-right: 10px;"><i class="bi bi-eye"></i></button>
+
+                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#ModalModificacion"
+                      (click)='AdministrativoSeleccionado=a;' style="margin-right: 10px;"><i class="bi bi-pencil"></i></button>
+
+                   <button type="button" class="btn btn-danger" (click)="EliminarAdministrativo(a.id)">
+                     <i class="bi bi-trash"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table> -->
+
+            <!-- MODAL ACTA DE NOTAS -->
+<div class="modal fade" id="ModalCalendarAcad" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> REPORTE DE NOTAS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newAdministrativo">
+          <div class="form-group row">
+
+            <div class="col-sm-8">
+              <div class="form-group row">
+                <div class="col-sm-1"></div>
+                <label class="form-label text-right col-sm-2">PERIODO: </label>
+                <select name="select" class="col-sm-3">
+                  <option value="value1">Value 1</option>
+                  <option value="value2" selected>Value 2</option>
+                  <option value="value3">Value 3</option>
+                </select>
+                <label class="form-label text-right col-sm-2">GESTION: </label>
+                <select name="select" class="col-sm-3">
+                  <option value="value1">Value 1</option>
+                  <option value="value2" selected>Value 2</option>
+                  <option value="value3">Value 3</option>
+                </select>
+              </div>
+              <hr>
+              <div class="form-group row">
+                <div class="col-sm-1"></div>
+                <label class="form-label text-right col-sm-2">TURNO: </label>
+                <select name="select" class="col-sm-3">
+                  <option value="value1"selected>Value 1</option>
+                  <option value="value2" >Value 2</option>
+                  <option value="value3">Value 3</option>
+                </select>
+                <label class="form-label text-right col-sm-2">PARALELO: </label>
+                <select name="select" class="col-sm-3">
+                  <option value="value1"selected>Value 1</option>
+                  <option value="value2" >Value 2</option>
+                  <option value="value3">Value 3</option>
+                </select>
+              </div>
+              
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-2">CARRERA: </label>
+                <select name="select" class="col-sm-9">
+                  <option value="value1"selected>Value 1</option>
+                  <option value="value2" >Value 2</option>
+                  <option value="value3">Value 3</option>
+                </select>
+              </div>
+            
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-2">SEMESTRE: </label>
+                <select name="select" class="col-sm-9">
+                  <option value="value1"selected>Value 1</option>
+                  <option value="value2" >Value 2</option>
+                  <option value="value3">Value 3</option>
+                </select>
+              </div>
+              
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-2">MATERIA: </label>
+                <select name="select" class="col-sm-9">
+                  <option value="value1"selected>Value 1</option>
+                  <option value="value2" >Value 2</option>
+                  <option value="value3">Value 3</option>
+                </select>
+              </div>
+              
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-2">EVALUACION: </label>
+                <select name="select" class="col-sm-9">
+                  <option value="value1"selected>Value 1</option>
+                  <option value="value2" >Value 2</option>
+                  <option value="value3">Value 3</option>
+                </select>
+              </div>
+              
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-2">DOCENTE: </label>
+                <input type="text" class="form-control col-sm-2" formControlName="Ap_Paterno">
+                <label class="form-label text-right col-sm-1"> </label>
+                <input type="text" class="form-control col-sm-6" formControlName="Ap_Paterno">
+              </div>
+            </div>
+            <style>
+              .divborde {
+                border-color: gray;
+                border-width: 3px;
+                border-style: double;
+
+              }
+            </style>
+            <div class="col-sm-3">
+              <div class="form-check divborde">
+                <label class="text-center font-weight-bold">EVALUACIONES</label>
+                <div class="form-group row">
+                <label class="form-label text-right">primer parcial:</label>
+                <label class="form-label text-right col-sm-1"></label>
+                <input type="text" class="form-control col-sm-4" formControlName="Ap_Paterno">
+                </div>
+
+                <div class="form-group row">
+                <label class="form-label text-right">segundo parcial:</label>
+                <label class="form-label text-right col-sm-1"></label>
+                <input type="text" class="form-control col-sm-4" formControlName="Ap_Paterno">
+                </div>
+                <div class="form-group row">
+                  <label class="form-label text-right">tercer parcial:</label>
+                  <label class="form-label text-right col-sm-1"></label>
+                  <input type="text" class="form-control col-sm-4" formControlName="Ap_Paterno">
+                  </div>
+                  <div class="form-group row">
+                    <label class="form-label text-right">examen final:</label>
+                    <label class="form-label text-right col-sm-1"></label>
+                    <input type="text" class="form-control col-sm-4" formControlName="Ap_Paterno">
+                    </div>
+                    <div class="form-group row">
+                      <label class="form-label text-right">segundo turno:</label>
+                      <label class="form-label text-right col-sm-1"></label>
+                      <input type="text" class="form-control col-sm-4" formControlName="Ap_Paterno">
+                      </div>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover table-danger">
+              <thead class="bg-danger ">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Nombre Completo</th>
+                  <th scope="col">Carnet</th>
+                  <th scope="col">Sexo</th>
+                  <th scope="col">Tipo</th>
+                  <th scope="col">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let a of admin; let i= index"  >
+                  <td>{{i+1}}</td>
+                  <td>
+                    <span *ngIf="!a.Editando">{{a.Ap_Paterno}}⠀</span>
+                    <span *ngIf="!a.Editando">{{a.Ap_Materno}}⠀</span>
+                    <span *ngIf="!a.Editando">{{a.Nombre}}</span>
+                  </td>
+                  <td>
+                    <span *ngIf="!a.Editando">{{a.CI}}</span>
+                  </td>
+                  <td>
+                    <span *ngIf="!a.Editando">{{a.Sexo}}</span>
+                  </td>
+                  <td>
+                      <span *ngIf="!a.Editando">{{a.Tipo}}</span>
+                  </td>
+                  <td style="width: 200px;">
+                    <button type="button" class="btn btn-success"
+                      (click)='AdministrativoSeleccionado=a;' style="margin-right: 10px;"><i class="bi bi-eye"></i></button>
+
+                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#ModalModificacion"
+                      (click)='AdministrativoSeleccionado=a;' style="margin-right: 10px;"><i class="bi bi-pencil"></i></button>
+
+                   <button type="button" class="btn btn-danger" (click)="EliminarAdministrativo(a.id)">
+                     <i class="bi bi-trash"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+
+            <!-- <span>{{seleccionado | json}}</span> -->
+
+          </div>
+          <hr>
+          <h3 class="text-center font-weight-bold">MATERIAS ABIERTAS EN CALENDARIO ACADEMICO</h3>
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover table-danger">
+              <thead class="bg-danger ">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Nombre Completo</th>
+                  <th scope="col">Carnet</th>
+                  <th scope="col">Sexo</th>
+                  <th scope="col">Tipo</th>
+                  <th scope="col">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let a of admin; let i= index"  >
+                  <td>{{i+1}}</td>
+                  <td>
+                    <span *ngIf="!a.Editando">{{a.Ap_Paterno}}⠀</span>
+                    <span *ngIf="!a.Editando">{{a.Ap_Materno}}⠀</span>
+                    <span *ngIf="!a.Editando">{{a.Nombre}}</span>
+                  </td>
+                  <td>
+                    <span *ngIf="!a.Editando">{{a.CI}}</span>
+                  </td>
+                  <td>
+                    <span *ngIf="!a.Editando">{{a.Sexo}}</span>
+                  </td>
+                  <td>
+                      <span *ngIf="!a.Editando">{{a.Tipo}}</span>
+                  </td>
+                  <td style="width: 200px;">
+                    <button type="button" class="btn btn-success"
+                      (click)='AdministrativoSeleccionado=a;' style="margin-right: 10px;"><i class="bi bi-eye"></i></button>
+
+                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#ModalModificacion"
+                      (click)='AdministrativoSeleccionado=a;' style="margin-right: 10px;"><i class="bi bi-pencil"></i></button>
+
+                   <button type="button" class="btn btn-danger" (click)="EliminarAdministrativo(a.id)">
+                     <i class="bi bi-trash"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- <span>{{seleccionado | json}}</span> -->
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="AddAdministrativo()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- MODAL DE VISUALIZACION -->
+<div class="modal fade" id="ModalVisualizacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> VISUALIZANDO DOCENTE</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newAdministrativo">
+          <div class="form-group row">
+            <div class="col-sm-9">
+
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-2">COD: </label>
+                <input type="text" class="form-control col-sm-2" formControlName="Ap_Paterno">
+                <label class="form-label text-right col-sm-6">DESIGNACIONES REGISTRADAS: </label>
+                <input type="text" class="form-control col-sm-2" formControlName="Ap_Paterno">
+              </div>
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-2">NOMBRE: </label>
+                <input type="text" class="form-control col-sm-10" formControlName="Ap_Paterno">
+              </div>
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-2">CI: </label>
+                <input type="text" class="form-control col-sm-6" formControlName="Ap_Paterno">
+                <input type="text" class="form-control col-sm-2" formControlName="Ap_Paterno">
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <img src="" width="150px" height="140px">
+            </div>
+          </div>
+          <hr>
+          <h1 class="text-center font-weight-bold text-danger">DATOS PERSONALES</h1>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TELEFONO: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="Ap_Paterno">
+            <label class="form-label text-right col-sm-2">CELULAR: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="Ap_Paterno">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">E-MAIL:: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="Ap_Paterno">
+          </div>
+          <div class="form-group row">
+          <label class="form-label text-right col-sm-2">F. NAC: </label>
+          <input type="date" class="form-control col-sm-6" formControlName="Ap_Paterno">
+
+          <label class="form-label text-right col-sm-2">EDAD: </label>
+          <input type="number" class="form-control col-sm-2" formControlName="Ap_Materno">
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">DOMICILIO: </label>
+            <input type="text" class="form-control col-sm-6" formControlName="Nombre">
+
+            <label class="form-label text-right col-sm-2">PAIS: </label>
+            <input type="text" class="form-control col-sm-2" formControlName="Ap_Materno">
+          </div>
+
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TRABAJO: </label>
+            <input type="text" class="form-control col-sm-10 text-center font-weight-bold" formControlName="Sexo">
+
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">DIRECCIÓN: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="FechNac">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TELEFONO: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="CI">
+            <label class="form-label text-right col-sm-3">ULT. ACTUALIZACION: </label>
+            <input type="text" class="form-control col-sm-3" formControlName="Password">
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-4">AP. PATERNO, MATERNO: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="Tipo">
+            <input type="text" class="form-control col-sm-4" formControlName="Tipo">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOMBRES: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="Tipo">
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="AddAdministrativo()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- MODAL DE ADICION -->
+<div class="modal fade" id="ModalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> REGISTRAR DOCENTE NUEVO</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newAdministrativo">
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CODIGO: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="Ap_Paterno">
+            <label class="form-label text-right col-sm-2">GRADO: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="Ap_Paterno">
+          </div>
+          <div class="form-group row">
+          <label class="form-label text-right col-sm-2">A. PATERNO: </label>
+          <input type="text" class="form-control col-sm-10" formControlName="Ap_Paterno">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">A. MATERNO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="Ap_Materno">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOMBRES: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="Nombre">
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CI: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="Sexo">
+            <label class="form-label text-right col-sm-2">EXPEDIDO EN: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="FechNac">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TEL. DOMICILIO: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="CI">
+            <label class="form-label text-right col-sm-2">CELULAR: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="Password">
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA DE NACIMIENTO: </label>
+            <input type="date" class="form-control col-sm-4" formControlName="Tipo">
+            <label class="form-label text-right col-sm-2">LUGAR: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="Ap_Paterno">
+          </div>
+          <div class="form-group row">
+            <label class="form-label  text-right col-sm-2">E-MAIL: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="Ap_Paterno">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">DOMICILIO </label>
+            <input type="text" class="form-control col-sm-10" formControlName="Ap_Paterno">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">ESTADO CIVIL: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="Ap_Paterno">
+            <label class="form-label text-right col-sm-2">NACIONALIDAD: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="Ap_Paterno">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">DIRECCIÓN DE TRABAJO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="Ap_Paterno">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TEL. TRABAJO: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="Ap_Paterno">
+            <label class="form-label text-right col-sm-2">FOTO: </label>
+            <input type="file" class="form-control col-sm-4" formControlName="Ap_Paterno">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">OBSERVACIONES </label>
+            <input type="text" class="form-control col-sm-10" formControlName="Ap_Paterno">
+          </div>
+          <!-- <div class="form-group row"></div> -->
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="AddAdministrativo()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL_DE_MODIFICACION -->
+<div class="modal fade" id="ModalModificacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">MODIFICAR ADMINISTRATIVO</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CODIGO: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="Ap_Paterno">
+            <label class="form-label text-right col-sm-2">GRADO: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="Ap_Paterno">
+          </div>
+          <div class="form-group row">
+          <label class="form-label text-right col-sm-2">A. PATERNO: </label>
+          <input type="text" class="form-control col-sm-10"  [(ngModel)]="AdministrativoSeleccionado.Ap_Paterno">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">A. MATERNO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="Ap_Materno">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOMBRES: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="Nombre">
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CI: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="Sexo">
+            <label class="form-label text-right col-sm-2">EXPEDIDO EN: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="FechNac">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TEL. DOMICILIO: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="CI">
+            <label class="form-label text-right col-sm-2">CELULAR: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="Password">
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA DE NACIMIENTO: </label>
+            <input type="date" class="form-control col-sm-4" formControlName="Tipo">
+            <label class="form-label text-right col-sm-2">LUGAR: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="Ap_Paterno">
+          </div>
+          <div class="form-group row">
+            <label class="form-label  text-right col-sm-2">E-MAIL: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="Ap_Paterno">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">DOMICILIO </label>
+            <input type="text" class="form-control col-sm-10" formControlName="Ap_Paterno">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">ESTADO CIVIL: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="Ap_Paterno">
+            <label class="form-label text-right col-sm-2">NACIONALIDAD: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="Ap_Paterno">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">DIRECCIÓN DE TRABAJO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="Ap_Paterno">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TEL. TRABAJO: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="Ap_Paterno">
+            <label class="form-label text-right col-sm-2">FOTO: </label>
+            <input type="file" class="form-control col-sm-4" formControlName="Ap_Paterno">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">OBSERVACIONES </label>
+            <input type="text" class="form-control col-sm-10" formControlName="Ap_Paterno">
+          </div>
+          <!-- <div class="form-group row"></div> -->
+
+        </div>
+        <!-- <div class="mb-3">
+          <label for="nombre" class="form-label">Ap. Paterno: </label>
+          <input type="text" class="form-control"
+            [(ngModel)]="AdministrativoSeleccionado.Ap_Paterno">
+          <label for="nombre" class="form-label">Ap. Materno: </label>
+          <input type="text" class="form-control"
+            [(ngModel)]="AdministrativoSeleccionado.Ap_Materno">
+          <label for="nombre" class="form-label">Nombre: </label>
+          <input type="text" class="form-control"
+            [(ngModel)]="AdministrativoSeleccionado.Nombre">
+          <label for="nombre" class="form-label">Sexo: </label>
+          <input type="text" class="form-control" [(ngModel)]="AdministrativoSeleccionado.Sexo">
+          <label for="nombre" class="form-label">Fecha Nacimiento: </label>
+          <input type="date" class="form-control"
+            [(ngModel)]="AdministrativoSeleccionado.FechNac">
+          <label for="nombre" class="form-label">CI: </label>
+          <input type="text" class="form-control"  [(ngModel)]="AdministrativoSeleccionado.CI">
+          <label for="nombre" class="form-label">TIPO: </label>
+          <input type="text" class="form-control"  [(ngModel)]="AdministrativoSeleccionado.Tipo">
+          <label for="nombre" class="form-label">Curso: </label>
+          <label for="nombre" class="form-label">Contraseña: </label>
+          <input type="text" class="form-control"
+            [(ngModel)]="AdministrativoSeleccionado.Password">
+          <label for="nombre" class="form-label">Estado de Cuenta: </label>
+          <input type="text" class="form-control"
+            [(ngModel)]="AdministrativoSeleccionado.Estado">
+        </div> -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="ModificarAdministrativo(AdministrativoSeleccionado)">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- MODAL_DE_VISUALIZACION ANTIGUO-->
+<div class="modal fade" id="ModalVisualizacionANTIGUO" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">VISUALIZAR ADMINISTRATIVO</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <!-- <input type="text" class="form-control" formControlName="Foto" [(ngModel)]="AdministrativoSeleccionado.Foto"> -->
+          <label for="nombre" class="form-label">Ap. Paterno: </label>
+          <input type="text" class="form-control"
+            [(ngModel)]="AdministrativoSeleccionado.Ap_Paterno">
+          <label for="nombre" class="form-label">Ap. Materno: </label>
+          <input type="text" class="form-control"
+            [(ngModel)]="AdministrativoSeleccionado.Ap_Materno">
+          <label for="nombre" class="form-label">Nombre: </label>
+          <input type="text" class="form-control"
+            [(ngModel)]="AdministrativoSeleccionado.Nombre">
+          <label for="nombre" class="form-label">Sexo: </label>
+          <input type="text" class="form-control" [(ngModel)]="AdministrativoSeleccionado.Sexo">
+          <label for="nombre" class="form-label">Fecha Nacimiento: </label>
+          <input type="date" class="form-control"
+            [(ngModel)]="AdministrativoSeleccionado.FechNac">
+          <label for="nombre" class="form-label">CI: </label>
+          <input type="text" class="form-control"  [(ngModel)]="AdministrativoSeleccionado.CI">
+          <label for="nombre" class="form-label">TIPO: </label>
+          <input type="text" class="form-control"  [(ngModel)]="AdministrativoSeleccionado.Tipo">
+          <label for="nombre" class="form-label">Curso: </label>
+          <!-- <input type="text" class="form-control" formControlName="curso_id" [(ngModel)]="AdministrativoSeleccionado.curso_id"> -->
+          <label for="nombre" class="form-label">Contraseña: </label>
+          <input type="text" class="form-control"
+            [(ngModel)]="AdministrativoSeleccionado.Password">
+          <label for="nombre" class="form-label">Estado de Cuenta: </label>
+          <input type="text" class="form-control"
+            [(ngModel)]="AdministrativoSeleccionado.Estado">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE ACTA DE NOTAS -->
+<div class="modal fade" id="ModalActaNotas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> ACTA DE NOTAS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newAdministrativo">
+          <div class="form-group row">
+            <div class="col-sm-8">
+
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-2">PERIODO:</label>
+                <select name="select" class="col-sm-4">
+                  <option value="value1">Value 1</option>
+                  <option value="value2" selected>Value 2</option>
+                  <option value="value3">Value 3</option>
+                </select>
+                <label class="form-label text-right col-sm-2">GESTIÓN: </label>
+                <select name="select" class="col-sm-4">
+                  <option value="value1">Value 1</option>
+                  <option value="value2" selected>Value 2</option>
+                  <option value="value3">Value 3</option>
+                </select>
+              </div>
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-2">TURNO:</label>
+                <select name="select" class="col-sm-4">
+                  <option value="value1">Value 1</option>
+                  <option value="value2" selected>Value 2</option>
+                  <option value="value3">Value 3</option>
+                </select>
+                <label class="form-label text-right col-sm-2">PARALELO: </label>
+                <select name="select" class="col-sm-4">
+                  <option value="value1">Value 1</option>
+                  <option value="value2" selected>Value 2</option>
+                  <option value="value3">Value 3</option>
+                </select>
+              </div>
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-2">CARRERA: </label>
+                <select name="select" class="col-sm-10">
+                  <option value="value1">Value 1</option>
+                  <option value="value2" selected>Value 2</option>
+                  <option value="value3">Value 3</option>
+                </select>
+              </div>
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-2">SEMESTRE: </label>
+                <select name="select" class="col-sm-10">
+                  <option value="value1">Value 1</option>
+                  <option value="value2" selected>Value 2</option>
+                  <option value="value3">Value 3</option>
+                </select>
+              </div>
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-2">MATERIA: </label>
+                <select name="select" class="col-sm-10">
+                  <option value="value1">Value 1</option>
+                  <option value="value2" selected>Value 2</option>
+                  <option value="value3">Value 3</option>
+                </select>
+              </div>
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-2">EVALUACIÓN: </label>
+                <select name="select" class="col-sm-10">
+                  <option value="value1">Value 1</option>
+                  <option value="value2" selected>Value 2</option>
+                  <option value="value3">Value 3</option>
+                </select>
+              </div>
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-2">DOCENTE: </label>
+                <input type="text" class="form-control col-sm-2" formControlName="Ap_Paterno">
+                <input type="text" class="form-control col-sm-8" formControlName="Ap_Paterno">
+              </div>
+            </div>
+            <div class="col-sm-4 bg-secondary" style="padding-top: 10px;">
+              <h3 class="text-center font-weight-bold text-danger col-sm.12">EVALUACIONES</h3>
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-6">Primer Parcial: </label>
+                <input type="text" class="form-control col-sm-4" formControlName="Ap_Paterno">
+              </div>
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-6">Primer Parcial: </label>
+                <input type="text" class="form-control col-sm-4" formControlName="Ap_Paterno">
+              </div>
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-6">Primer Parcial: </label>
+                <input type="text" class="form-control col-sm-4" formControlName="Ap_Paterno">
+              </div>
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-6">Primer Parcial: </label>
+                <input type="text" class="form-control col-sm-4" formControlName="Ap_Paterno">
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover table-danger">
+              <thead class="bg-danger ">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Nombre Completo</th>
+                  <th scope="col">Carnet</th>
+                  <th scope="col">Sexo</th>
+                  <th scope="col">Tipo</th>
+                  <th scope="col">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let a of admin; let i= index"  >
+                  <td>{{i+1}}</td>
+                  <td>
+                    <span *ngIf="!a.Editando">{{a.Ap_Paterno}}⠀</span>
+                    <span *ngIf="!a.Editando">{{a.Ap_Materno}}⠀</span>
+                    <span *ngIf="!a.Editando">{{a.Nombre}}</span>
+                  </td>
+                  <td>
+                    <span *ngIf="!a.Editando">{{a.CI}}</span>
+                  </td>
+                  <td>
+                    <span *ngIf="!a.Editando">{{a.Sexo}}</span>
+                  </td>
+                  <td>
+                      <span *ngIf="!a.Editando">{{a.Tipo}}</span>
+                  </td>
+                  <td style="width: 200px;">
+                    <button type="button" class="btn btn-success"
+                      (click)='AdministrativoSeleccionado=a;' style="margin-right: 10px;"><i class="bi bi-eye"></i></button>
+
+                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#ModalModificacion"
+                      (click)='AdministrativoSeleccionado=a;' style="margin-right: 10px;"><i class="bi bi-pencil"></i></button>
+
+                   <button type="button" class="btn btn-danger" (click)="EliminarAdministrativo(a.id)">
+                     <i class="bi bi-trash"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- <span>{{seleccionado | json}}</span> -->
+
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="AddAdministrativo()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- MODO PARA ESTUDIANTE PARA CONVALIDAR-->
+<!-- MODAL DE CONVALIDACION DE MATERIAS O REGISTRO DE ESTUDIOS DE CONVALIDACION-->
+<div class="modal fade" id="ModalConvalidacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> REGISTRO DE ESTUDIOS DE CONVALIDACIÓN</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newAdministrativo">
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">COD ESTUDIANTE: </label>
+            <input type="text" class="form-control col-sm-2" formControlName="Ap_Paterno">
+            <input type="text" class="form-control col-sm-2" formControlName="Ap_Paterno">
+
+            <label class="form-label text-right col-sm-2">FECHA: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="Ap_Paterno">
+          </div>
+          <div class="form-group row">
+          <label class="form-label text-right col-sm-2">A. PATERNO: </label>
+          <input type="text" class="form-control col-sm-10" formControlName="Ap_Paterno">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">A. MATERNO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="Ap_Materno">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOMBRES: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="Nombre">
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CI: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="Sexo">
+            <label class="form-label text-right col-sm-2">EXPEDIDO EN: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="FechNac">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TEL. DOMICILIO: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="CI">
+            <label class="form-label text-right col-sm-2">CELULAR: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="Password">
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">DIRECCIÓN: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="Tipo">
+          </div>
+          <div class="form-group row">
+            <label class="form-label  text-right col-sm-3">NRO_FORMULARIO: </label>
+            <input type="text" class="form-control col-sm-2" formControlName="Ap_Paterno">
+            <label class="form-label  text-right col-sm-2">E-MAIL: </label>
+            <input type="text" class="form-control col-sm-5" formControlName="Ap_Paterno">
+
+          </div>
+          <div class="form-group row">
+            <label class="form-label  text-right col-sm-4">CARRERA A CONVALIDAR: </label>
+            <select name="select" class="col-sm-8">
+              <option value="value1">Value 1</option>
+              <option value="value2" selected>Value 2</option>
+              <option value="value3">Value 3</option>
+            </select>
+          </div>
+          <hr>
+          <label >UNIVERSIDAD / CARRERA ORIGEN</label>
+          <hr>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">UNIVERSIDAD: </label>
+            <select name="select" class="col-sm-10">
+              <option value="value1">Value 1</option>
+              <option value="value2" selected>Value 2</option>
+              <option value="value3">Value 3</option>
+            </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CARRERA: </label>
+            <select name="select" class="col-sm-10">
+              <option value="value1">Value 1</option>
+              <option value="value2" selected>Value 2</option>
+              <option value="value3">Value 3</option>
+            </select>
+          </div>
+          <hr>
+
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover table-danger">
+              <thead class="bg-danger ">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Nombre Completo</th>
+                  <th scope="col">Carnet</th>
+                  <th scope="col">Sexo</th>
+                  <th scope="col">Tipo</th>
+                  <th scope="col">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let a of admin; let i= index"  >
+                  <td>{{i+1}}</td>
+                  <td>
+                    <span *ngIf="!a.Editando">{{a.Ap_Paterno}}⠀</span>
+                    <span *ngIf="!a.Editando">{{a.Ap_Materno}}⠀</span>
+                    <span *ngIf="!a.Editando">{{a.Nombre}}</span>
+                  </td>
+                  <td>
+                    <span *ngIf="!a.Editando">{{a.CI}}</span>
+                  </td>
+                  <td>
+                    <span *ngIf="!a.Editando">{{a.Sexo}}</span>
+                  </td>
+                  <td>
+                      <span *ngIf="!a.Editando">{{a.Tipo}}</span>
+                  </td>
+                  <td style="width: 200px;">
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#ModalVisualizacion"
+                      (click)='AdministrativoSeleccionado=a;' style="margin-right: 10px;"><i class="bi bi-eye"></i></button>
+
+                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#ModalModificacion"
+                      (click)='AdministrativoSeleccionado=a;' style="margin-right: 10px;"><i class="bi bi-pencil"></i></button>
+
+                  <button type="button" class="btn btn-danger" (click)="EliminarAdministrativo(a.id)">
+                    <i class="bi bi-trash"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- <span>{{seleccionado | json}}</span> -->
+
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="AddAdministrativo()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL_DE ESTUDIANTES CON REGISTRO DE CONVALIDACION-->
+<div class="modal fade" id="ModalEstRegistroConvalidacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">ESTUDIANTES DE REGISTRO DE CONVALIDACION</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nombre Completo</th>
+        <th scope="col">Carnet</th>
+        <th scope="col">Sexo</th>
+        <th scope="col">Tipo</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of admin; let i= index"  >
+        <td>{{i+1}}</td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.Ap_Paterno}}⠀</span>
+          <span *ngIf="!a.Editando">{{a.Ap_Materno}}⠀</span>
+          <span *ngIf="!a.Editando">{{a.Nombre}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.CI}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.Sexo}}</span>
+        </td>
+        <td>
+            <span *ngIf="!a.Editando">{{a.Tipo}}</span>
+        </td>
+        <td style="width: 200px;">
+          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#ModalVisualizacion"
+            (click)='AdministrativoSeleccionado=a;' style="margin-right: 10px;"><i class="bi bi-eye"></i></button>
+
+          <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#ModalModificacion"
+            (click)='AdministrativoSeleccionado=a;' style="margin-right: 10px;"><i class="bi bi-pencil"></i></button>
+
+         <button type="button" class="btn btn-danger" (click)="EliminarAdministrativo(a.id)">
+           <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- <span>{{seleccionado | json}}</span> -->
+
+</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

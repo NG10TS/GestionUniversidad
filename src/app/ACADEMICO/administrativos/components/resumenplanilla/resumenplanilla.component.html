@@ -1,0 +1,108 @@
+<strong>
+    <h2 class="text-center text-bold text-light">GESTIONAR RESUMEN DE PLANILLAS</h2>
+  </strong>
+  <hr class="border-warning">
+<!-- CRUD V3: idPK=> id_resumen_planilla, TITULO=> RESUMEN PLANILLA, nombreCRUD=> Resumenplanilla,  dataP=> resu_plani -->
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalCrudResumenplanilla"
+  data-whatever="@getbootstrap">AGREGAR RESUMEN PLANILLA</button>
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input"
+      aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Planillas</th>
+        <th scope="col">Pagos Extras</th>
+        <th scope="col">Fecha</th>
+        <th scope="col">Gestion</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of resu_plani; let i= index">
+        <td style="width: 20px;">{{i+1}}</td>     
+       <td>
+        <span *ngIf="!a.Editando">{{a.id_planilla_admin}}</span>
+      </td>
+      <td>
+        <span *ngIf="!a.Editando">{{a.id_pago_extra}}</span>
+      </td>
+      <td>
+        <span *ngIf="!a.Editando">{{a.fec_resumen_planilla}}</span>
+      </td>
+      <td>
+        <span *ngIf="!a.Editando">{{a.id_gestion}}</span>
+      </td>
+        <td style="width: 200px;">
+          <button (click)="SeleccionarResumenplanilla(a.id_resumen_planilla)"
+            class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+          <button type="button" class="btn btn-danger" (click)="EliminarResumenplanilla(a.id_resumen_planilla)">
+            <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- MODAL DE CRUD ADD MOD DE CODIGO DE Resumenplanilla-->
+<div class="modal fade" id="ModalCrudResumenplanilla" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{!newResumenplanilla.get('id_resumen_planilla').value ? 'REGISTRAR' : 'MODIFICAR'}} RESUMEN PLANILLA</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newResumenplanilla">
+          <div class="form-group row">
+            <label class="form-label col-sm-2">PLANILLA ADMIN: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_planilla">
+              <optgroup label="SELECCIONE PLANILLA ADMIN" >
+                <option *ngFor="let a of plani" value="{{a.id_planilla}}">{{a.nro_planilla}}</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">PAGOS EXTRAS: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_pago_extra">
+              <optgroup label="SELECCIONE PAGOS EXTRAS" >
+                <option *ngFor="let a of pago_ex" value="{{a.id_pago_extra}}">{{a.monto_extra}}</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">FECHA: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="fec_resumen_planilla">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">GESTIÓN: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_gestion">
+              <optgroup label="SELECCIONE GESTIÓN" >
+                <option *ngFor="let a of ges" value="{{a.id_gestion}}">{{a.anio_gestion}}</option>
+              </optgroup>
+             </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="resetResumenplanilla()">Cancelar</button>
+        <button type="button" class="btn {{!newResumenplanilla.get('id_resumen_planilla').value ? 'btn-success' : 'btn-warning'}}" data-dismiss="modal" [disabled]="!newResumenplanilla.valid"
+          (click)="AgregarModificarResumenplanilla()">{{!newResumenplanilla.get('id_resumen_planilla').value ? 'CREAR RESUMEN PLANILLA' : 'MODIFICAR RESUMEN PLANILLA'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudResumenplanilla" data-toggle="modal"
+  data-target="#ModalCrudResumenplanilla" style="width: 0px;">Abrir Modal Crud</button>

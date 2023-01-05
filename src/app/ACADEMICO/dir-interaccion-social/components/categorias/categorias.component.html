@@ -1,0 +1,131 @@
+<!-- <p>categorias works!</p> -->
+<!-- INTRODUCIR nombre CRUD, nombreID,nombre dataPrincipal, TITULOS(Categorias,id_categ,cate,CATEGORIAS DE EVENTOS)-->
+<strong>
+  <h2 class="text-center text-bold text-light">GESTIONAR CATEGORIAS DE EVENTOS</h2>
+</strong>
+<hr class="border-warning">
+
+<button type="button" (click)="LimpiarCategorias()" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalAdd" data-whatever="@getbootstrap">AGREGAR CATEGORIAS</button>
+
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">NOMBRE DE EVENTO</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of cate; let i= index"  >
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.nombre_categ}}⠀</span>
+        </td>
+        <td style="width: 200px;">
+          <button class="btn btn-success" (click)="SeleccionarCategorias(a.id_categ,'Mostrar')" type="button">
+          <i class="bi bi-eye"></i></button>
+
+          <button type="button" class="btn btn-warning"
+          (click)="SeleccionarCategorias(a.id_categ,'Editar')" style="margin-left: 4px;"><i class="bi bi-pencil"></i></button>
+
+         <button type="button" class="btn btn-danger" (click)="EliminarCategorias(a.id_categ)" style="margin-left: 4px;">
+           <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- MODAL DE ADICION Categorias-->
+<div class="modal fade" id="ModalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> REGISTRAR CATEGORIAS DE EVENTOS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newCategorias" >
+          <div class="form-group row">
+            <label class="form-label  col-sm-4">NOMBRE DE CATEGORIA: </label>
+            <input type="text" class="form-control col-sm-8" formControlName="nombre_categ" oninput="this.value= this.value.toUpperCase()"placeholder="INGRESE NOMBRE DE LA CATEGORIA">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="AgregarCategorias()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE MODIFICACION Categorias-->
+<div class="modal fade" id="ModalModificacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">MODIFICAR CATEGORIAS DE EVENTOS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+          <div class="form-group row">
+            <label class="form-label  col-sm-4">NOMBRE DE CATEGORIA: </label>
+            <input type="text" class="form-control col-sm-8" [(ngModel)]="CategoriasSeleccionado.nombre_categ"
+             oninput="this.value= this.value.toUpperCase()"placeholder="INGRESE NOMBRE DE LA CATEGORIA">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="ModificarCategorias(CategoriasSeleccionado)">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE VISUALIZACION Categorias-->
+<div class="modal fade" id="ModalVisualizacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> VISUALIZAR CATEGORIAS DE EVENTOS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+          <div class="form-group row">
+            <label class="form-label  col-sm-4">NOMBRE DE CATEGORIA: </label>
+            <input type="text" class="form-control col-sm-8" [(ngModel)]="CategoriasSeleccionado.nombre_categ">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalMod" data-toggle="modal"
+  data-target="#ModalModificacion" style="width: 0px;">Abrir Modal Modificacion</button>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalMos" data-toggle="modal"
+  data-target="#ModalVisualizacion" style="width: 0px;">Abrir Modal Visualizacion</button>
+

@@ -1,0 +1,424 @@
+<strong>
+  <h2 class="text-center text-bold text-light">GESTIONAR SALARIOS - ADMINISTRATIVOS</h2>
+</strong>
+<hr class="border-warning">
+<button type="button" (click)="LimpiarCargos()" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalAddcargo" data-whatever="@getbootstrap">AGREGAR CARGO</button>
+<button type="button" (click)="CargarCargos()" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalCargos" data-whatever="@getbootstrap">GESTIONAR CARGOS</button>
+<button id="btnOpenModalAddSalario" type="button" class="invisible btn btn-info swalDefaultInfo" style="position: absolute; top:100%" data-toggle="modal" data-target="#ModalAddSalario" data-whatever="@getbootstrap">AGREGAR SALARIO</button>
+<button id="btnOpenModalMod" type="button" class="invisible btn btn-info swalDefaultInfo" style="position: absolute; top:100%" data-toggle="modal" data-target="#ModalModSalario" data-whatever="@getbootstrap">ABRIR MODAL DE EDICION</button>
+<button id="btnOpenModalMos" type="button" class="invisible btn btn-info swalDefaultInfo" style="position: absolute; top:100%" data-toggle="modal" data-target="#ModalMosSalario" data-whatever="@getbootstrap">ABRIR MODAL DE VISUALIZACION</button>
+
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nombre Completo</th>
+        <th scope="col">Carnet</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of sal; let i= index"  >
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.ape_p_admin}} {{a.ape_m_admin}} {{a.nombre_admin}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.ci_est}}-{{a.expedido}}</span>
+        </td>
+        <td style="width: 200px;">
+          <button class="btn btn-success" (click)="SeleccionarSalario(a,'Mostrar')" type="button">
+            <i class="bi bi-eye"></i>
+          </button>
+          <button type="button" class="btn btn-warning"
+          (click)="SeleccionarSalario(a,'Editar')" style="margin-right: 10px;"><i class="bi bi-pencil"></i></button>
+
+         <button type="button" class="btn btn-danger" (click)="EliminarSalario(a.id_salario_admin)">
+           <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- MODAL DE ADICION SALARIO-->
+<div class="modal fade" id="ModalAddSalario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> REGISTRAR SALARIO </h5>
+        <button id="CerrarModal" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="frmform" class="mb-4" [formGroup]="newSalario">
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOMBRE ADMINISTRATIVO: </label>
+            <div [formGroup]="filterAdministrativoForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control" value="{{AdministrativoSelect.NomC }}"/>
+              </div>
+              <div *ngIf="filtroAdministrativo" class="lcch-options" >
+                <span *ngFor="let a of adminFiltrado" class="form-control" (click)="AdministrativoSelect=a" (click)="filtroAdministrativo=false">{{a.NomC}}</span>
+              </div>
+            </div>
+            <!-- <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_administrativo" [(ngModel)]="LastCargoAdd.id_administrativo" disabled>
+              <optgroup label="Seleccione a un Administrativo" >
+                  <option *ngFor="let a of admin" value="{{a.id_administrativo}}">{{a.ape_p_admin}} {{a.ape_m_admin}} {{a.nombre_admin}}</option>
+              </optgroup>
+            </select> -->
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CARGO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="id_cargo_admin" [(ngModel)]="LastCargoAdd.nombre_cargo_admin" disabled>
+            </div>
+          <div class="form-group row">
+          <label class="form-label text-right col-sm-2">HABERES: </label>
+          <input type="text" class="form-control col-sm-10" formControlName="haberes_admin"
+          oninput="this.value= this.value.toUpperCase()"placeholder="">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">HABILES 1: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="hb1_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">HABILES 2: </label>
+            <input type="number" class="form-control col-sm-4" formControlName="hb2_admin">
+            <label class="form-label text-right col-sm-2">AFP: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="afp_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CAJA: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="caja_admin"
+            oninput="this.value= this.value.toUpperCase()"placeholder="NUMERO DE CAJA QUE COBRO">
+            <label class="form-label text-right col-sm-2">OTRO D: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="otrod_admin"
+            oninput="this.value= this.value.toUpperCase()"placeholder="SI TIENE OTRO CARGO">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">BANT: </label>
+            <input type="number" class="form-control col-sm-4" formControlName="bant_admin">
+            <label class="form-label text-right col-sm-2">BOTRO 1: </label>
+            <input type="number" class="form-control col-sm-4" formControlName="botro1_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label  text-right col-sm-2">BOTRO 2: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="botro2_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA DE INICIO: </label>
+            <input type="date" class="form-control col-sm-4" formControlName="fec_ini_admin"
+            oninput="this.value= this.value.toUpperCase()"placeholder="">
+            <label class="form-label text-right col-sm-2">FECHA DE REGISTRO: </label>
+            <input type="date" class="form-control col-sm-4" formControlName="fec_reg_admin"
+            oninput="this.value= this.value.toUpperCase()"placeholder="FECHA DE REGISTRO DEL TRABAJO">
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label  text-right col-sm-2">TIPO DE TRANSACCION : </label>
+            <input type="text" class="form-control col-sm-10" formControlName="tipo_trans_admin"
+            oninput="this.value= this.value.toUpperCase()"placeholder="TIPO DE TRANSACCION QUE SE REALIZA">
+          </div>
+          <div class="form-group row">
+            <label class="form-label  text-right col-sm-2">HORARIO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="horario_admin"
+            oninput="this.value= this.value.toUpperCase()"placeholder="TURNO EN EL QUE TRABAJA">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="AgregarSalario()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE MODIFICACION SALARIO-->
+<div class="modal fade" id="ModalModSalario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> MODIFICAR SALARIO </h5>
+        <button id="CerrarModal" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOMBRE ADMINISTRATIVO: </label>
+            <div [formGroup]="filterAdministrativoForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control" value="{{AdministrativoSelect.NomC }}"/>
+              </div>
+              <div *ngIf="filtroAdministrativo" class="lcch-options" >
+                <span *ngFor="let a of adminFiltrado" class="form-control" (click)="AdministrativoSelect.NomC=a.ape_p_admin+' '+a.ape_m_admin+' '+a.nombre_admin; SalarioSeleccionado.id_administrativo=a.id_administrativo" (click)="filtroAdministrativo=false">{{a.NomC}}</span>
+              </div>
+            </div>
+            <!-- <select class="custom-select col-sm-10 form-control" type="text" [(ngModel)]="SalarioSeleccionado.id_administrativo" disabled>
+              <optgroup label="Seleccione a un Administrativo" >
+                  <option *ngFor="let a of admin" value="{{a.id_administrativo}}">{{a.ape_p_admin}} {{a.ape_m_admin}} {{a.nombre_admin}}</option>
+              </optgroup>
+            </select> -->
+          </div>
+          <!-- <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CARGO: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="LastCargoAdd.nombre_cargo_admin" disabled>
+          </div> -->
+          <div class="form-group row">
+          <label class="form-label text-right col-sm-2">HABERES: </label>
+          <input type="text" class="form-control col-sm-10" [(ngModel)]="SalarioSeleccionado.haberes_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">HABILES 1: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="SalarioSeleccionado.hb1_admin">
+          </div>
+
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">HABILES 2: </label>
+            <input type="number" class="form-control col-sm-4" [(ngModel)]="SalarioSeleccionado.hb2_admin">
+            <label class="form-label text-right col-sm-2">AFP: </label>
+            <input type="text" class="form-control col-sm-4" [(ngModel)]="SalarioSeleccionado.afp_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CAJA: </label>
+            <input type="text" class="form-control col-sm-4" [(ngModel)]="SalarioSeleccionado.caja_admin">
+            <label class="form-label text-right col-sm-2">OTRO D: </label>
+            <input type="text" class="form-control col-sm-4" [(ngModel)]="SalarioSeleccionado.otrod_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">BANT: </label>
+            <input type="number" class="form-control col-sm-4" [(ngModel)]="SalarioSeleccionado.bant_admin">
+            <label class="form-label text-right col-sm-2">BOTRO 1: </label>
+            <input type="number" class="form-control col-sm-4" [(ngModel)]="SalarioSeleccionado.botro1_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label  text-right col-sm-2">BOTRO 2: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="SalarioSeleccionado.botro2_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA DE INICIO: </label>
+            <input type="date" class="form-control col-sm-4" [(ngModel)]="SalarioSeleccionado.fec_ini_admin">
+            <label class="form-label text-right col-sm-2">FECHA DE REGISTRO: </label>
+            <input type="date" class="form-control col-sm-4" [(ngModel)]="SalarioSeleccionado.fec_reg_admin">
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label  text-right col-sm-2">TIPO DE TRANSACCION : </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="SalarioSeleccionado.tipo_trans_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label  text-right col-sm-2">HORARIO: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="SalarioSeleccionado.horario_admin">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="ModificarSalario(SalarioSeleccionado)">Guardar Cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- MODAL DE VISUALIZACION SALARIO-->
+<div class="modal fade" id="ModalMosSalario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> VISUALIZANDO SALARIO </h5>
+        <button id="CerrarModal" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOMBRE ADMINISTRATIVO: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" [(ngModel)]="SalarioSeleccionado.id_administrativo" disabled>
+              <optgroup label="Seleccione a un Administrativo" >
+                  <option *ngFor="let a of admin" value="{{a.id_administrativo}}">{{a.ape_p_admin}} {{a.ape_m_admin}} {{a.nombre_admin}}</option>
+              </optgroup>
+            </select>
+          </div>
+          <!-- <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CARGO: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="LastCargoAdd.nombre_cargo_admin" disabled>
+          </div> -->
+          <div class="form-group row">
+          <label class="form-label text-right col-sm-2">HABERES: </label>
+          <input type="text" class="form-control col-sm-10" [(ngModel)]="SalarioSeleccionado.haberes_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">HABILES 1: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="SalarioSeleccionado.hb1_admin">
+          </div>
+
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">HABILES 2: </label>
+            <input type="number" class="form-control col-sm-4" [(ngModel)]="SalarioSeleccionado.hb2_admin">
+            <label class="form-label text-right col-sm-2">AFP: </label>
+            <input type="text" class="form-control col-sm-4" [(ngModel)]="SalarioSeleccionado.afp_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CAJA: </label>
+            <input type="text" class="form-control col-sm-4" [(ngModel)]="SalarioSeleccionado.caja_admin">
+            <label class="form-label text-right col-sm-2">OTRO D: </label>
+            <input type="text" class="form-control col-sm-4" [(ngModel)]="SalarioSeleccionado.otrod_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">BANT: </label>
+            <input type="number" class="form-control col-sm-4" [(ngModel)]="SalarioSeleccionado.bant_admin">
+            <label class="form-label text-right col-sm-2">BOTRO 1: </label>
+            <input type="number" class="form-control col-sm-4" [(ngModel)]="SalarioSeleccionado.botro1_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label  text-right col-sm-2">BOTRO 2: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="SalarioSeleccionado.botro2_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA DE INICIO: </label>
+            <input type="date" class="form-control col-sm-4" [(ngModel)]="SalarioSeleccionado.fec_ini_admin">
+            <label class="form-label text-right col-sm-2">FECHA DE REGISTRO: </label>
+            <input type="date" class="form-control col-sm-4" [(ngModel)]="SalarioSeleccionado.fec_reg_admin">
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label  text-right col-sm-2">TIPO DE TRANSACCION : </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="SalarioSeleccionado.tipo_trans_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label  text-right col-sm-2">HORARIO: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="SalarioSeleccionado.horario_admin">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- MODAL DE ADICION CARGO-->
+<div class="modal fade" id="ModalAddcargo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> REGISTRAR NUEVO CARGO </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="CloseModalAddcargo">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="frmform" class="mb-4" [formGroup]="newCargo">
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOMBRE DEL CARGO: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="nombre_cargo_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOMBRE ADMINISTRATIVO: </label>
+            <div [formGroup]="filterAdministrativoForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control" value="{{AdministrativoSelect.NomC }}"/>
+              </div>
+              <div *ngIf="filtroAdministrativo" class="lcch-options" >
+                <span *ngFor="let a of adminFiltrado" class="form-control" (click)="AdministrativoSelect.NomC=a.ape_p_admin+' '+a.ape_m_admin+' '+a.nombre_admin; newCargo.patchValue({id_administrativo:a.id_administrativo}) "(click)="filtroAdministrativo=false">{{a.NomC}}</span>
+              </div>
+            </div>
+            <!-- <select class="custom-select col-sm-10 form-control" name="Admin_id" type="text" formControlName="id_administrativo" id="id_administrativo">
+              <optgroup label="Seleccione a un Administrativo" >
+                  <option *ngFor="let a of admin" value="{{a.id_administrativo}}">{{a.ape_p_admin}} {{a.ape_m_admin}} {{a.nombre_admin}}</option>
+              </optgroup>
+            </select> -->
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="AgregarCargoOption('Guardar')">Guardar</button>
+        <button type="button" class="btn btn-primary" (click)="AgregarCargoOption('GuardarAvanzar')">Guardar y Registrar Salario</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- MODAL DE GESTION CARGOS-->
+<div class="modal fade" id="ModalCargos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> GESTION DE CARGOS </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover table-danger">
+              <thead class="bg-danger ">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Cargo</th>
+                  <th scope="col">Nombre Completo</th>
+                  <th scope="col">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let a of car; let i= index"  >
+                  <td>{{i+1}}</td>
+
+                  <td>
+                    <input class="col-12" type="text" *ngIf="a.Editando" [(ngModel)]="a.nombre_cargo_admin">
+                    <span *ngIf="!a.Editando">{{a.nombre_cargo_admin}}</span>
+                  </td>
+                  <td>
+                    <select class="custom-select col-12" type="text" *ngIf="a.Editando" [(ngModel)]="a.id_administrativo">
+                      <optgroup label="Seleccione a un Administrativo" >
+                          <option *ngFor="let a of admin" value="{{a.id_administrativo}}">{{a.ape_p_admin}} {{a.ape_m_admin}} {{a.nombre_admin}}</option>
+                      </optgroup>
+                    </select>
+                    <span *ngIf="!a.Editando">{{a.ape_p_admin}} {{a.ape_m_admin}} {{a.nombre_admin}}</span>
+
+                  </td>
+                  <td style="width: 200px;">
+                    <button type="button" class="btn btn-success" (click)="AgregarSalarioDesdeModal(a)"><i class="bi bi-person-plus"></i></button>
+                    <button type="button" class="btn btn-warning" (click)="a.Editando=true;" *ngIf="!a.Editando">
+                      <i class="bi bi-pencil"></i></button>
+                    <button type="button" class="btn btn-warning" (click)="ModificarCargo(a)" *ngIf="a.Editando"
+                      (click)="a.Editando=false;"><img width="20px" height="20px"
+                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAABXElEQVRogWNgGAWjYBSMgoEEjLgkTGbc/g9jf31xD6uadjseqjmk5ZYYsqM6T2eoVhCjj4lqLqAi+M/AUG4643YHMWpZaO0YGCgrKUbhd/X04lUP9QQDoZgYlDEAA8TExKD2AAMDYU8Meg8wMEA8gUtuSHgAHxj1wECDIe8BouoBRmYWhv9//2CIf/z5j4GfnbgwwFfuf/rNTJQZ2ABRtrPziTAwMmP6dd2tnwwff/4j23IGBojjt77iJVs/UTHAzM7FwCUqhyH+lIGBYfJDsu2mChjyeWDUAwMNRj0w0ICoUmhugAyDnjgHrd2CAi6++MGQsvEJQXVExQC9Hc/AwMCgL0GcnSMjCaGDCzfvUtsdDAwMDAwG6sok6xmZMUBOSNEKjMwYGM0DVASjeWCgwWgeGGgwmgcGGhDlgYsvftDaHRjgApF2EpWEiGmXDxQY8kloFIyCUTAKBhYAAEvUTIshBoCmAAAAAElFTkSuQmCC" /></button>
+
+                    <button type="button" class="btn btn-danger" (click)="EliminarCargo(a.id_cargo_admin)">
+                      <i class="bi bi-trash"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="AgregarSalarioDesdeModal(a)">Registrar Salario</button> -->
+      </div>
+    </div>
+  </div>
+</div>

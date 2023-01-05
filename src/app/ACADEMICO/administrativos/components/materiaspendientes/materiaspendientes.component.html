@@ -1,0 +1,97 @@
+<strong>
+    <h2 class="text-center text-bold text-light">GESTIONAR Materiaspendientes</h2>
+  </strong>
+<hr class="border-warning">
+<!-- CRUD V3: idPK=> id_mat_pend, TITULO=> MATERIAS POR CUMPLIR, nombreCRUD=> Materiaspendientes,  dataP=> matpend -->
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalCrudMateriaspendientes"
+  data-whatever="@getbootstrap">AGREGAR MATERIAS POR CUMPLIR</button>
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input"
+      aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">MATERIA</th>
+        <th scope="col">TIPO DE PAGO</th>
+        <th scope="col">FECHA</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of matpend; let i= index">
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>
+            <spam> *ngIf="!a.Editando">{{a.codigo_mat}} {{a.nombre_mat}}</spam>
+        </td>
+        <td>
+            <spam> *ngIf="!a.Editando">{{a.monto_pago_pend}} </spam>
+        </td>
+        <td>
+            <spam> *ngIf="!a.Editando">{{a.fec_mat_pent}} </spam>
+        </td>
+        <td style="width: 200px;">
+          <button (click)="SeleccionarMateriaspendientes(a.id_mat_pend)"
+            class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+          <button type="button" class="btn btn-danger" (click)="EliminarMateriaspendientes(a.id_mat_pend)">
+            <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- MODAL DE CRUD ADD MOD DE CODIGO DE Materiaspendientes-->
+<div class="modal fade" id="ModalCrudMateriaspendientes" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{!newMateriaspendientes.get('id_mat_pend').value ? 'REGISTRAR' : 'MODIFICAR'}} MATERIAS POR CUMPLIR</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newMateriaspendientes">
+          <div class="form-group row">
+            <label class="form-label col-sm-2">MATERIA: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_materia">
+              <optgroup label="SELECCIONE MATERIA" >
+                <option *ngFor="let a of mat" value="{{a.id_materia}}">{{a.codigo_mat}} {{a.nombre_mat}}</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">TIPO DE PAGO: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_tipo_pago_pend">
+              <optgroup label="SELECCIONE TIPO DE PAGO" >
+                <option *ngFor="let a of tipopago" value="{{a.id_tipo_pago_pend}}">{{a.monto_pago_pend}}</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">FECHA: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="fec_mat_pent">
+          </div>
+          
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="resetMateriaspendientes()">Cancelar</button>
+        <button type="button" class="btn {{!newMateriaspendientes.get('id_mat_pend').value ? 'btn-success' : 'btn-warning'}}" data-dismiss="modal" [disabled]="!newMateriaspendientes.valid"
+          (click)="AgregarModificarMateriaspendientes()">{{!newMateriaspendientes.get('id_mat_pend').value ? 'CREAR MATERIAS POR CUMPLIR' : 'MODIFICAR MATERIAS POR CUMPLIR'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudMateriaspendientes" data-toggle="modal"
+  data-target="#ModalCrudMateriaspendientes" style="width: 0px;">Abrir Modal Crud</button>

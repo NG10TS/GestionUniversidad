@@ -1,0 +1,497 @@
+<strong>
+  <h2 class="text-center text-bold text-light">GESTIONAR CONTENIDOS DE MATERIAS DE EXTERNOS</h2>
+</strong>
+<button class="btn btn-outline-info botonInfo" (click)="MensajeInformacion('INFORMACION DE USO',
+'EN ESTA PAGINA SE PUEDE CONSTRUIR LOS CONTENIDOS PARA CONVALIDACIONES DE FACULTADES EXTERNAS','info')"><abbr title="SOBRE ESTA PAGINA"
+style="text-decoration: none">?</abbr></button>
+<button class="btn btn-outline-info botonInfo" (click)="MensajeInformacion('ACLARACIONES',
+'EN EL CASO QUE NO ENCUENTRE LA INFORMACION DESEADA PUEDE AGREGAR MAS INFORMACION HACIENDO CLICK EN EL BOTON ACCIONES','info')">
+<abbr title="¿FALTA DE DATOS?" style="text-decoration: none">?</abbr></button>
+<button class="btn btn-outline-info botonInfo" (click)="MensajeInformacion('PASOS PARA AGREGAR CORRECTAMENTE',
+'1. AGREGAR LOS TEMAS Y CONTENIDOS SI ES NECESARIO. 2. VINCULAR TEMA Y CONTENIDO(click en Boton Acciones->Vincular). 3. Vincular Tema a la Materia(click Agregar Informacion)','info')">
+<abbr title="¿Agregar Info Correctamente?" style="text-decoration: none">?</abbr></button>
+<hr class="border-warning">
+<div class="dropdown">
+  <button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal"
+    data-target="#ModalCrudVincularContenidos" data-whatever="@getbootstrap">AGREGAR NUEVA INFORMACION</button>
+  <button class="btn btn-outline-light font-weight-bold dropdown-toggle" type="button"
+    data-toggle="dropdown">ACCIONES</button>
+  <ul class="dropdown-menu">
+    <li class="dropdown-item">
+      <button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal"
+        data-target="#ModalVinculacionTemasContenidos">
+        VINCULACION DE TEMAS CONTENIDOS <i class="bi bi-box-arrow-up-right"></i></button>
+    </li>
+    <li class="dropdown-submenu">
+      <a class="test dropdown-item" tabindex="-1" data-backdrop="static" data-keyboard="false">GESTIONAR INFORMACION<i
+          class="bi bi-caret-right-fill float-right"></i></a>
+      <ul class="dropdown-menu">
+        <li class="dropdown-item">
+          <button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal"
+            data-target="#ModalGestionTemas">
+            GESTIONAR TEMAS <i class="bi bi-box-arrow-up-right"></i></button>
+        </li>
+        <li class="dropdown-item">
+          <button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal"
+            data-target="#ModalGestionContenidos">
+            GESTIONAR CONTENIDOS <i class="bi bi-box-arrow-up-right"></i></button>
+        </li>
+
+        <!-- <li class="dropdown-item"><a tabindex="-1" data-backdrop="static" data-keyboard="false"  >2nd level dropdown</a></li>
+        <li class="dropdown-item">dfdf</li>
+        <li class="dropdown-submenu">
+          <a class="test dropdown-item"  >Another dropdown <i class="bi bi-caret-right-fill"></i></a>
+          <ul class="dropdown-menu">
+            <li class="dropdown-item"><a  >3rd level dropdown</a></li>
+            <li class="dropdown-item"><a  >3rd level dropdown</a></li>
+          </ul>
+        </li> -->
+      </ul>
+    </li>
+  </ul>
+  <form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+    <div class="input-group mb-3"  [formGroup]="filterTemaVinForm">
+      <div class="input-group-prepend">
+        <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+      </div>
+      <input type="text" oninput="this.value= this.value.toUpperCase()" class="form-control" aria-label="Sizing example input"
+        aria-describedby="inputGroup-sizing-default" formControlName="txt">
+    </div>
+  </form>
+</div>
+<!-- #region CRUD PRINCIPAL VINCULAR CONTENIDOS -->
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">MATERIA</th>
+        <th scope="col">TEMA</th>
+        <th scope="col">NUMERO DE TEMA</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let i= index;let a of vcm  | paginate: { itemsPerPage: 10, currentPage: pageVincularContenido }" id="mainPagination">
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>{{a.nombre_mater_conv}}</td>
+        <td>{{a.nombre_tema_conv}}</td>
+        <td>{{a.nro_tema_conv}}</td>
+        <td style="width: 200px;">
+          <button (click)="SeleccionarVincularContenidos(a.id_tema_univcarremater)" class="btn btn-warning"><i
+              class="bi bi-pencil"></i></button>
+          <button type="button" class="btn btn-danger" (click)="EliminarVincularContenidos(a.id_tema_univcarremater)">
+            <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div>
+    <pagination-controls (pageChange)="pageVincularContenido = $event" maxSize="9" directionLinks="true"
+      autoHide="false" responsive="true" previousLabel="Anterior" nextLabel="Siguiente"
+      screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page" screenReaderCurrentLabel="You're on page">
+    </pagination-controls>
+  </div>
+</div>
+<!-- MODAL DE CRUD ADD MOD DE CODIGO DE VincularContenidos-->
+<div class="modal fade" id="ModalCrudVincularContenidos" tabindex="-1" data-backdrop="static" data-keyboard="false"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="btn btn-outline-info"  (click)="MensajeInformacion('ACLARACION',
+          'LOS CAMPOS LE COLOR CELESTE SON AUTOCOMPLETABLES','info')">
+          <abbr title="SOBRE EL FORMULARIO"><img src="https://img.icons8.com/ios/50/000000/information--v1.png"/></abbr>
+        </button>
+        <button class="btn btn-outline-info"  (click)="MensajeInformacion('SOBRE ESTE FORMULARIO',
+          'EN ESTE FORMULARIO SE COLOCA QUE TEMA CORRESPONDERA A UNA DETERMINADA MATERIA DE CONVALIDACIONES(CREADA DESDE LA PAGINA: GESTIONAR INFORMACION DE FACULTADES EXTERNAS)','info')">
+          <abbr title="SOBRE EL FORMULARIO"><img src="https://img.icons8.com/ios/50/000000/information--v1.png"/></abbr>
+        </button>
+        <h5 class="modal-title" id="exampleModalLabel">
+          {{!newVincularContenidos.get('id_tema_univcarremater').value ? 'REGISTRAR' : 'MODIFICAR'}} MATERIA - TEMAS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newVincularContenidos">
+          <div class="form-group row">
+            <label class="form-label col-sm-2">MATERIA: </label>
+            <div [formGroup]="filterMateriaOForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control"
+                  value="{{MateriaOSelect.nombre_mater_conv }}" />
+              </div>
+              <div *ngIf="filtroMateriaO" class="lcch-options">
+                <span *ngFor="let a of matOFiltrado" class="form-control"
+                  (click)="MateriaOSelect=a; newVincularContenidos.patchValue({id_univ_carre_mater:a.id_univ_carre_mater})"
+                  (click)="filtroMateriaO=false">{{a.nombre_univ}} ▶ {{a.nombre_carr_conv}} ▶ {{a.nombre_mater_conv}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">TEMA: </label>
+            <!-- FILTRADOR V3: NombreFiltro => TemaVin-->
+            <div [formGroup]="filterTemaVinForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control"
+                  value="{{TemaVinSelect.nombre_tema_conv }}" />
+              </div>
+              <div *ngIf="filtroTemaVin" class="lcch-options">
+                <span *ngFor="let a of temaVinFiltrado" class="form-control"
+                  (click)="TemaVinSelect=a; newVincularContenidos.patchValue({id_conv_tema:a.id_conv_tema})"
+                  (click)="filtroTemaVin=false">{{a.nombre_tema_conv}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">NRO DE TEMA: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="nro_tema_conv">
+          </div>
+
+
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="resetVincularContenidos()">Cancelar</button>
+        <button type="button"
+          class="btn {{!newVincularContenidos.get('id_tema_univcarremater').value ? 'btn-succes' : 'btn-warning'}}"
+          data-dismiss="modal" [disabled]="!newVincularContenidos.valid"
+          (click)="AgregarModificarVincularContenidos()">{{!newVincularContenidos.get('id_tema_univcarremater').value ? 'CREAR PLAN' : 'MODIFICAR PLAN'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudVincularContenidos"
+  data-toggle="modal" data-target="#ModalCrudVincularContenidos" style="width: 0px;">Abrir Modal Crud</button>
+
+<!-- #endregion CRUD PRINCIPAL  VINCULAR CONTENIDOS -->
+
+<!-- #region CRUD TEMAS -->
+<!-- MODAL DE GESTIONAR TEMAS-->
+<div class="modal fade" id="ModalGestionTemas" tabindex="-1" data-backdrop="static" data-keyboard="false"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> GESTION DE TEMAS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+          <button type="button" class="btn btn-outline-light font-weight-bold" (click)="AdicionShow=true">AGREGAR
+            TEMA</button>
+
+          <form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right"
+            role="search">
+            <div class="input-group mb-3" [formGroup]="filterConvTemaForm">
+              <div class="input-group-prepend">
+                <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+              </div>
+              <input type="text"  oninput="this.value= this.value.toUpperCase()" class="form-control" aria-label="Sizing example input"
+                aria-describedby="inputGroup-sizing-default" formControlName="txt">
+            </div>
+          </form>
+
+          <hr>
+          <div class="card" [formGroup]="newConvTemas" *ngIf="AdicionShow">
+            <label class="form-text text-center" style="bottom:0px; left:0px">INTRODUCIR TEMA</label>
+            <button class="btn btn-success" style="position: absolute; top:0px; right:0px"
+              (click)="AgregarModificarConvTemas()" (click)="ShowAddConvTemas=false">GUARDAR</button>
+            <button class="btn btn-secondary" style="position: absolute; top:0px; left:0px"
+              (click)="AdicionShow=false">CANCELAR</button>
+            <div class="card-body">
+              <div class="form-group row">
+                <label class="form-label col-sm-2">NOMBRE TEMA: </label>
+                <input type="text" class="form-control col-sm-8" formControlName="nombre_tema_conv">
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover table-danger">
+              <thead class="bg-danger ">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">NOMBRE TEMA</th>
+                  <th scope="col">Acciones</th>
+                </tr>
+              </thead>
+
+
+              <tbody [formGroup]="newConvTemas">
+                <tr *ngFor="let i= index;let a of convT | paginate: { itemsPerPage: 10, currentPage: pageTema, id:'pageTema' }">
+                  <td style="width: 20px;">{{i+1}}</td>
+                  <td>
+                    <span *ngIf="!a.Editando">{{a.nombre_tema_conv}}</span>
+                    <input *ngIf="a.Editando" type="text" formControlName="nombre_tema_conv"
+                      [(ngModel)]="a.nombre_tema_conv">
+                  </td>
+                  <td style="width: 200px;">
+                    <!-- <button class="btn btn-success btn-sm" (click)="SeleccionarConvTemas(a.id_conv_tema,'Mostrar')"
+                      type="button">
+                      <i class="bi bi-eye"></i></button> -->
+
+                    <button *ngIf="!a.Editando" type="button" class="btn btn-warning"
+                      (click)="SeleccionarConvTemas(a.id_conv_tema)" (click)="a.Editando=true"
+                      style="margin-right: 10px;">
+                      <i class="bi bi-pencil"></i></button>
+                    <button *ngIf="a.Editando" (click)="AgregarModificarConvTemas()"
+                      (click)="a.Editando=false">GUARDAR</button>
+                    <button *ngIf="a.Editando" (click)="a.Editando=false;">CANCELAR</button>
+                    <button type="button" class="btn btn-danger" (click)="EliminarConvTemas(a.id_conv_tema)">
+                      <i class="bi bi-trash"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div>
+              <pagination-controls (pageChange)="pageTema = $event" id="pageTema" maxSize="9" directionLinks="true" autoHide="false"
+                responsive="true" previousLabel="Anterior" nextLabel="Siguiente"
+                screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+                screenReaderCurrentLabel="You're on page">
+              </pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- #endregion CRUD TEMAS-->
+
+<!-- #region CRUD CONTENIDOS -->
+<!-- MODAL DE CONTENIDOS-->
+<div class="modal fade" id="ModalGestionContenidos" tabindex="-1" data-backdrop="static" data-keyboard="false"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> GESTION DE CONTENIDOS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+          <button type="button" (click)="resetConvContenidos(); AdicionShowContenidos=true"
+            class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalAdd"
+            data-whatever="@getbootstrap">AGREGAR CONTENIDO</button>
+
+          <form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right"
+            role="search">
+            <div class="input-group mb-3"  [formGroup]="filterConvContenidoForm">
+              <div class="input-group-prepend">
+                <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+              </div>
+              <input type="text" oninput="this.value= this.value.toUpperCase()" class="form-control" aria-label="Sizing example input"
+                aria-describedby="inputGroup-sizing-default" formControlName="txt" >
+            </div>
+          </form>
+          <hr>
+          <div class="card" [formGroup]="newConvContenidos" *ngIf="AdicionShowContenidos">
+            <label class="form-text text-center" style="bottom:0px; left:0px">INTRODUCIR CONTENIDO</label>
+            <button class="btn btn-success" style="position: absolute; top:0px; right:0px"
+              (click)="AgregarModificarConvContenidos('')" (click)="ShowAddContenidos=false">GUARDAR</button>
+            <button class="btn btn-secondary" style="position: absolute; top:0px; left:0px" (click)="resetConvContenidos()"
+              (click)="AdicionShowContenidos=false">CANCELAR</button>
+            <div class="card-body">
+              <div class="form-group row">
+                <label class="form-label col-sm-2">NOMBRE CONTENIDO: </label>
+                <input type="text" oninput="this.value= this.value.toUpperCase()" class="form-control col-sm-8" formControlName="nombre_conte">
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover table-danger">
+              <thead class="bg-danger ">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">NOMBRE CONTENIDO</th>
+                  <th scope="col">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let i= index;let a of convC | paginate: { itemsPerPage: 10, currentPage: pageContenido, id:'pageContenido' }">
+                  <td style="width: 20px;">{{i+1}}</td>
+                  <td>
+                    <span *ngIf="!a.Editando">{{a.nombre_conte}}</span>
+                    <input *ngIf="a.Editando" type="text" oninput="this.value= this.value.toUpperCase()" [(ngModel)]="a.nombre_conte">
+                  </td>
+                  <td style="width: 200px;">
+                    <!-- <button class="btn btn-success btn-sm"
+                      (click)="SeleccionarConvContenidos(a.id_conv_conte,'Mostrar')" type="button">
+                      <i class="bi bi-eye"></i></button> -->
+
+                    <button type="button" class="btn btn-warning"
+                      (click)="SeleccionarConvContenidos(a.id_conv_conte); a.Editando=true" *ngIf="!a.Editando"
+                      style="margin-right: 10px;"><i class="bi bi-pencil"></i></button>
+                    <button *ngIf="a.Editando"
+                      (click)="AgregarModificarConvContenidos(a); a.Editando=false;">GUARDAR</button>
+                    <button *ngIf="a.Editando" (click)="a.Editando=false;">CANCELAR</button>
+
+                    <button type="button" class="btn btn-danger" (click)="EliminarConvContenidos(a.id_conv_conte)">
+                      <i class="bi bi-trash"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div>
+              <pagination-controls (pageChange)="pageContenido = $event" id="pageContenido" maxSize="9" directionLinks="true"
+                autoHide="false" responsive="true" previousLabel="Anterior" nextLabel="Siguiente"
+                screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+                screenReaderCurrentLabel="You're on page">
+              </pagination-controls>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- #endregion CRUD CONTENIDOS-->
+
+
+<!-- #region MODAL VINCULACION DE CONTENIDOS o TEMA CONTENIDOS-->
+<!-- MODAL DE VINCULACION DE CONTENIDOS DE TEMAS ORIGEN-->
+<div class="modal fade" id="ModalVinculacionTemasContenidos" tabindex="-1" data-backdrop="static" data-keyboard="false"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="btn btn-outline-info"  (click)="MensajeInformacion('SOBRE ESTA VENTANA',
+          'EN ESTE FORMULARIO DETERMINAMOS QUE TEMA TIENE UN DETERMINADO CONTENIDO, PODEMOS AÑADIR EL MISMO TEMA VARIAS VECES CON LA CANTIDAD DE CONTENIDOS QUE DESEEMOS COLOCAR ','info')">
+          <abbr title="SOBRE ESTA VENTANA"><img src="https://img.icons8.com/ios/50/000000/information--v1.png"/></abbr>
+        </button>
+        <h5 class="modal-title" id="exampleModalLabel"> VINCULACION DE CONTENIDOS A TEMAS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal"
+        data-target="#ModalCrudTemaContenidos">AGREGAR NUEVA VINCULACION</button>
+
+      <form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+          </div>
+          <input type="text" class="form-control" aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-default">
+        </div>
+      </form>
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped table-hover table-danger">
+            <thead class="bg-danger ">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">TEMA</th>
+                <th scope="col">CONTENIDO</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let i= index; let a of tc | paginate: { itemsPerPage: 10, currentPage: pageCrudPrincipal, id:'pageCrudPrincipal' }">
+                <td style="width: 20px;">{{i+1}}</td>
+                <td>{{a.nombre_tema_conv}}</td>
+                <td>{{a.nombre_conte}}</td>
+                <td style="width: 200px;">
+                  <button (click)="SeleccionarTemaContenidos(a)" class="btn btn-warning"><i
+                      class="bi bi-pencil"></i></button>
+                  <button type="button" class="btn btn-danger" (click)="EliminarTemaContenidos(a.id_tema_conte)">
+                    <i class="bi bi-trash"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div>
+            <pagination-controls (pageChange)="pageCrudPrincipal = $event" id="pageCrudPrincipal" maxSize="9" directionLinks="true"
+              autoHide="false" responsive="true" previousLabel="Anterior" nextLabel="Siguiente"
+              screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+              screenReaderCurrentLabel="You're on page">
+            </pagination-controls>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE CRUD ADD MOD DE CODIGO DE TemaContenidos-->
+<div class="modal fade" id="ModalCrudTemaContenidos" tabindex="-1" data-backdrop="static" data-keyboard="false"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="btn btn-outline-info"  (click)="MensajeInformacion('ACLARACION',
+          'LOS CAMPOS LE COLOR CELESTE SON AUTOCOMPLETABLES','info')">
+          <abbr title="SOBRE EL FORMULARIO"><img src="https://img.icons8.com/ios/50/000000/information--v1.png"/></abbr>
+        </button>
+        <button class="btn btn-outline-info"  (click)="MensajeInformacion('SOBRE ESTE FORMULARIO',
+          'EN ESTE FORMULARIO DETERMINAMOS QUE TEMA TIENE UN DETERMINADO CONTENIDO, PODEMOS AÑADIR EL MISMO TEMA VARIAS VECES CON LA CANTIDAD DE CONTENIDOS QUE DESEEMOS COLOCAR ','info')">
+          <abbr title="SOBRE EL FORMULARIO"><img src="https://img.icons8.com/ios/50/000000/information--v1.png"/></abbr>
+        </button>
+        <h5 class="modal-title" id="exampleModalLabel">
+          {{!newTemaContenidos.get('id_tema_conte').value ? 'REGISTRAR' : 'MODIFICAR'}} CONTENIDOS-TEMAS</h5>
+        <button type="button" class="close" (click)="resetTemaContenidos()" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newTemaContenidos">
+          {{newTemaContenidos.value|json}}
+          <div class="form-group row">
+            <label class="form-label col-sm-2">TEMA: </label>
+            <div [formGroup]="filterConvTemaForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control"/>
+              </div>
+              <div *ngIf="filtroConvTema" class="lcch-options">
+                <span *ngFor="let a of convTFiltrado" class="form-control" (click)="filterConvTemaForm.patchValue({txt:a.nombre_tema_conv}); newTemaContenidos.patchValue({id_conv_tema:a.id_conv_tema}) "
+                  (click)="filtroConvTema=false">{{a.nombre_tema_conv}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">CONTENIDO: </label>
+            <!-- FILTRADOR V3: NombreFiltro => ConvContenido-->
+            <div [formGroup]="filterConvContenidoForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control"/>
+              </div>
+              <div *ngIf="filtroConvContenido" class="lcch-options">
+                <span *ngFor="let a of convCFiltrado" class="form-control" (click)="filterConvContenidoForm.patchValue({txt:a.nombre_conte});; newTemaContenidos.patchValue({id_conv_conte:a.id_conv_conte})"
+                  (click)="filtroConvContenido=false">{{a.nombre_conte}}</span>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="resetTemaContenidos()">Cancelar</button>
+        <button type="button"
+          class="btn {{!newTemaContenidos.get('id_tema_conte').value ? 'btn-success' : 'btn-warning'}}"
+          data-dismiss="modal" [disabled]="!newTemaContenidos.valid"
+          (click)="AgregarModificarTemaContenidos()">{{!newTemaContenidos.get('id_tema_conte').value ? 'CREAR PLAN' : 'MODIFICAR PLAN'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudTemaContenidos"
+  data-toggle="modal" data-target="#ModalCrudTemaContenidos" style="width: 0px;">Abrir Modal Crud</button>
+
+<!-- #endregion -->

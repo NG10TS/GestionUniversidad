@@ -1,0 +1,146 @@
+<p>universidades works!</p>
+<!-- INTRODUCIR nombre CRUD, nombreID,nombre dataPrincipal, TITULOS(Universidades,id_univ,uni,UNIVERSIDADES)-->
+<strong>
+  <h2 class="text-center text-bold text-light">GESTIONAR UNIVERSIDADES</h2>
+</strong>
+<hr class="border-warning">
+
+<button type="button" (click)="LimpiarUniversidades()" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalAdd" data-whatever="@getbootstrap">AGREGAR Universidades</button>
+
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">SIGLA</th>
+        <th scope="col">NOMBRE</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of uni; let i= index"  >
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.sigla_univ}}⠀</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.nombre_univ}}</span>
+        </td>
+        <td style="width: 200px;">
+          <button class="btn btn-success btn-sm" (click)="SeleccionarUniversidades(a.id_univ,'Mostrar')" type="button">
+          <i class="bi bi-eye"></i></button>
+
+          <button type="button" class="btn btn-warning"
+          (click)="SeleccionarUniversidades(a.id_univ,'Editar')" style="margin-right: 10px;"><i class="bi bi-pencil"></i></button>
+
+         <button type="button" class="btn btn-danger" (click)="EliminarUniversidades(a.id_univ)">
+           <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- MODAL DE ADICION Universidades-->
+<div class="modal fade" id="ModalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> REGISTRAR UNIVERSIDADES</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newUniversidades" >
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">SIGLA UNIVERSIDAD: </label>
+              <input type="text" class="form-control col-sm-10" formControlName="sigla_univ">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">NOMBRE UNIVERSIDAD: </label>
+              <input type="text" class="form-control col-sm-10" formControlName="nombre_univ">
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="AgregarUniversidades()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE MODIFICACION Universidades-->
+<div class="modal fade" id="ModalModificacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">MODIFICAR UNIVERSIDADES</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">SIGLA UNIVERSIDAD: </label>
+              <input type="text" class="form-control col-sm-10" [(ngModel)]="UniversidadesSeleccionado.sigla_univ">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">NOMBRE UNIVERSIDAD: </label>
+              <input type="text" class="form-control col-sm-10" [(ngModel)]="UniversidadesSeleccionado.nombre_univ">
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="ModificarUniversidades(UniversidadesSeleccionado)">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE VISUALIZACION Universidades-->
+<div class="modal fade" id="ModalVisualizacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> VISUALIZANDO UNIVERSIDADES</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">SIGLA UNIVERSIDAD: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="UniversidadesSeleccionado.sigla_univ">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOMBRE UNIVERSIDAD: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="UniversidadesSeleccionado.nombre_univ">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalMod" data-toggle="modal"
+  data-target="#ModalModificacion" style="width: 0px;">Abrir Modal Modificacion</button>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalMos" data-toggle="modal"
+  data-target="#ModalVisualizacion" style="width: 0px;">Abrir Modal Visualizacion</button>
+

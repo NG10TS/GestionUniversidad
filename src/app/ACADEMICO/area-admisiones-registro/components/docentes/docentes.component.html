@@ -1,0 +1,392 @@
+<strong>
+  <h2 class="text-center text-bold text-light">GESTIONAR DOCENTES</h2>
+</strong>
+<hr class="border-warning">
+
+<button type="button" (click)="LimpiarDocentes()" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalAdd" data-whatever="@getbootstrap">AGREGAR ADMINISTRATIVO</button>
+
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nombre Completo</th>
+        <th scope="col">C.I.</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of doc; let i= index"  >
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>
+          <!-- <span *ngIf="!a.Editando">{{a.ape_p_doc}}⠀</span>
+          <span *ngIf="!a.Editando">{{a.ape_m_doc}}⠀</span>
+          <span *ngIf="!a.Editando">{{a.nombre_doc}}</span> -->
+          <span *ngIf="!a.Editando">{{a.NombreCompleto}}⠀</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.ci}}-{{a.expedido}}</span>
+        </td>
+        <td style="width: 200px;">
+          <div class="btn-group">
+
+            <button class="btn btn-success btn-sm" (click)="DocenteSeleccionado=a" type="button" data-toggle="modal" data-target="#ModalVisualizacion">
+              <i class="bi bi-eye"></i>
+            </button>
+
+            <button type="button" class="btn btn-sm btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false">
+
+            </button>
+            <div class="dropdown-menu">
+              <!-- <button class="dropdown-item" data-toggle="modal" data-target="#ModalModificacion">Editar Datos Personales</button> -->
+              <button class="dropdown-item" data-toggle="modal" >Agregar Datos Curriculares</button>
+              <button class="dropdown-item" data-toggle="modal" >Hoja de Datos de Docente</button>
+              <button class="dropdown-item" data-toggle="modal" data-target="#ModalHitorialDesig">Historial de Designaciones</button>
+            </div>
+          </div>
+          <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#ModalModificacion" (click)="LimpiarInputFotoMod()"
+            (click)='DocenteSeleccionado=a;' style="margin-right: 10px;"><i class="bi bi-pencil"></i></button>
+
+         <button type="button" class="btn btn-danger" (click)="EliminarDocente(a.id_doc)">
+           <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- MODAL DE ADICION DOCENTE-->
+<div class="modal fade" id="ModalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> REGISTRAR DOCENTE NUEVO</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newDocente">
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CODIGO: </label>
+            <input type="number" class="form-control col-sm-4" formControlName="cod_doc"
+            oninput="this.value= this.value.toUpperCase()"placeholder="NUMERO DEL DOC EJ: 542">
+            <label class="form-label text-right col-sm-2">GRADO: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="grado">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">A. PATERNO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="ape_p_doc"
+            oninput="this.value= this.value.toUpperCase()"placeholder="ALANES">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">A. MATERNO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="ape_m_doc"
+            oninput="this.value= this.value.toUpperCase()"placeholder="GUZMAN">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOMBRES: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="nombre_doc"
+            oninput="this.value= this.value.toUpperCase()"placeholder="EJ. MARCELO">
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CI: </label>
+            <input type="number" class="form-control col-sm-4" formControlName="ci"
+            oninput="this.value= this.value.toUpperCase()"placeholder="NUMERO DE CI EJ: 123456">
+            <label class="form-label text-right col-sm-2">EXPEDIDO EN: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="expedido"
+            oninput="this.value= this.value.toUpperCase()"placeholder="EJ: ORURO">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TEL. DOMICILIO: </label>
+            <input type="number" class="form-control col-sm-4" formControlName="tel_dom_doc"
+            oninput="this.value= this.value.toUpperCase()"placeholder="2 5212345">
+            <label class="form-label text-right col-sm-2">CELULAR: </label>
+            <input type="number" class="form-control col-sm-4" formControlName="cel_doc"
+            oninput="this.value= this.value.toUpperCase()"placeholder="NUM. DE CELULAR EJ: 71234567">
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA DE NACIMIENTO: </label>
+            <input type="date" class="form-control col-sm-4" formControlName="fec_nac_doc">
+            <label class="form-label text-right col-sm-2">LUGAR: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="lug_doc"
+            oninput="this.value= this.value.toUpperCase()"placeholder="EJ: ORURO">
+          </div>
+          <div class="form-group row">
+            <label class="form-label  text-right col-sm-2">E-MAIL: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="email_doc"
+            oninput="this.value= this.value.toUpperCase()"placeholder="CORREO: Ej: EJEMPLO@GMAIL.COM">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">DOMICILIO </label>
+            <input type="text" class="form-control col-sm-10" formControlName="dom_doc"
+            oninput="this.value= this.value.toUpperCase()"placeholder="CALLE ENTRE CALLE 1 Y CALLE 2">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">ESTADO CIVIL: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="estado_civ_doc"
+            oninput="this.value= this.value.toUpperCase()"placeholder="EJ: SOLTERO">
+            <!-- <label class="form-label text-right col-sm-2">NACIONALIDAD: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="nacional_doc"> -->
+            <label for="nombre" class="col-sm-2 col-form-label text-right">NACIONALIDAD:</label>
+            <div class="col-sm-4">
+              <select class="custom-select"   type="text" formControlName="nacional_doc">
+                <optgroup label="Seleccione Nacionalidad">
+                  <option value="BOLIVIA">BOLIVIA </option>
+                  <option value="PERÚ">PERÚ </option>
+                </optgroup>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">DIRECCIÓN DE TRABAJO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="dir_trab_doc"
+            oninput="this.value= this.value.toUpperCase()"placeholder="CALLE ENTRE CALLE 1 Y CALLE 2">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TEL. TRABAJO: </label>
+            <input type="number" class="form-control col-sm-4" formControlName="tel_trab_doc"
+            oninput="this.value= this.value.toUpperCase()"placeholder="2 5212315">
+            <label class="form-label text-right col-sm-2">FOTO: </label>
+            <input type="file" class="form-control col-sm-4" title="Foto de Perfil." #FOTO_IMG_ADD accept="image/jpg, image/png, image/jpeg" (change)="VerificarFormatoFoto(FOTO_IMG_ADD);"  (change)="onFileChangeFoto($event)">
+
+
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">OBSERVACIONES </label>
+            <input type="text" class="form-control col-sm-10" formControlName="obser_doc">
+          </div>
+          <!-- <div class="form-group row"></div> -->
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="AgregarDocente()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL_DE_MODIFICACION -->
+<div class="modal fade" id="ModalModificacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">MODIFICAR DOCENTE</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CODIGO: </label>
+            <input type="text" class="form-control col-sm-4" [(ngModel)]="DocenteSeleccionado.cod_doc"
+            oninput="this.value= this.value.toUpperCase()"placeholder="NUMERO DEL DOC EJ: 542">
+            <label class="form-label text-right col-sm-2">GRADO: </label>
+            <input type="text" class="form-control col-sm-4" [(ngModel)]="DocenteSeleccionado.grado">
+          </div>
+          <div class="form-group row">
+          <label class="form-label text-right col-sm-2">A. PATERNO: </label>
+          <input type="text" class="form-control col-sm-10"  [(ngModel)]="DocenteSeleccionado.ape_p_doc"
+          oninput="this.value= this.value.toUpperCase()"placeholder="ALANES">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">A. MATERNO: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="DocenteSeleccionado.ape_m_doc"
+            oninput="this.value= this.value.toUpperCase()"placeholder="GUZMAN">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOMBRES: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="DocenteSeleccionado.nombre_doc"
+            oninput="this.value= this.value.toUpperCase()"placeholder="EJ. LIDIA">
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CI: </label>
+            <input type="text" class="form-control col-sm-4" [(ngModel)]="DocenteSeleccionado.ci"
+            oninput="this.value= this.value.toUpperCase()"placeholder="NUMERO DE CI EJ: 123456">
+            <label class="form-label text-right col-sm-2">EXPEDIDO EN: </label>
+            <input type="text" class="form-control col-sm-4" [(ngModel)]="DocenteSeleccionado.expedido"
+            oninput="this.value= this.value.toUpperCase()"placeholder="EJ: ORURO">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TEL. DOMICILIO: </label>
+            <input type="text" class="form-control col-sm-4" [(ngModel)]="DocenteSeleccionado.tel_dom_doc"
+            oninput="this.value= this.value.toUpperCase()"placeholder="2 5212345">
+            <label class="form-label text-right col-sm-2">CELULAR: </label>
+            <input type="text" class="form-control col-sm-4" [(ngModel)]="DocenteSeleccionado.cel_doc"
+            oninput="this.value= this.value.toUpperCase()"placeholder="NUM. DE CELULAR EJ: 71234567">
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA DE NACIMIENTO: </label>
+            <input type="date" class="form-control col-sm-4" [(ngModel)]="DocenteSeleccionado.fec_nac_doc">
+            <label class="form-label text-right col-sm-2">LUGAR: </label>
+            <input type="text" class="form-control col-sm-4" [(ngModel)]="DocenteSeleccionado.lug_doc"
+            oninput="this.value= this.value.toUpperCase()"placeholder="EJ: ORURO">
+          </div>
+          <div class="form-group row">
+            <label class="form-label  text-right col-sm-2">E-MAIL: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="DocenteSeleccionado.email_doc"
+            oninput="this.value= this.value.toUpperCase()"placeholder="CORREO: Ej: EJEMPLO@GMAIL.COM">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">DOMICILIO </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="DocenteSeleccionado.dom_doc"
+            oninput="this.value= this.value.toUpperCase()"placeholder="CALLE ENTRE CALLE 1 Y CALLE 2">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">ESTADO CIVIL: </label>
+            <input type="text" class="form-control col-sm-4" [(ngModel)]="DocenteSeleccionado.estado_civ_doc"
+            oninput="this.value= this.value.toUpperCase()"placeholder="EJ: SOLTERA">
+            <!-- <label class="form-label text-right col-sm-2">NACIONALIDAD: </label>
+            <input type="text" class="form-control col-sm-4" [(ngModel)]="DocenteSeleccionado.nacional_doc"> -->
+            <label for="nombre" class="col-sm-2 col-form-label text-right">NACIONALIDAD:</label>
+            <div class="col-sm-4">
+              <select class="custom-select"   type="text" [(ngModel)]="DocenteSeleccionado.nacional_doc">
+                <optgroup label="Seleccione Nacionalidad">
+                  <option value="BOLIVIA">BOLIVIA </option>
+                  <option value="PERÚ">PERÚ </option>
+                </optgroup>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">DIRECCIÓN DE TRABAJO: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="DocenteSeleccionado.dir_trab_doc"
+            oninput="this.value= this.value.toUpperCase()"placeholder="CALLE ENTRE CALLE 1 Y CALLE 2">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TEL. TRABAJO: </label>
+            <input type="text" class="form-control col-sm-4" [(ngModel)]="DocenteSeleccionado.tel_trab_doc"
+            oninput="this.value= this.value.toUpperCase()"placeholder="2 5212315">
+            <label class="form-label text-right col-sm-2">FOTO: </label>
+            <input type="file" class="form-control col-sm-4" title="Foto de Perfil." #FOTO_IMG_MOD accept="image/jpg, image/png, image/jpeg" (change)="VerificarFormatoFoto(FOTO_IMG_MOD);"  (change)="onFileChangeFoto($event)">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">OBSERVACIONES </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="DocenteSeleccionado.obser_doc">
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="ModificarDocente(DocenteSeleccionado)">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE VISUALIZACION -->
+<div class="modal fade" id="ModalVisualizacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> VISUALIZANDO DOCENTE</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+          <div class="form-group row">
+            <div class="col-sm-9">
+
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-2">COD: </label>
+                <input type="text" class="form-control col-sm-2" [(ngModel)]="DocenteSeleccionado.cod_doc">
+                <label class="form-label text-right col-sm-6">DESIGNACIONES REGISTRADAS: </label>
+                <input type="text" class="form-control col-sm-2" [(ngModel)]="DocenteSeleccionado.cod_doc">
+              </div>
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-2">NOMBRE: </label>
+                <input type="text" class="form-control col-sm-10" [(ngModel)]="DocenteSeleccionado.NombreCompleto">
+              </div>
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-2">CI: </label>
+                <input type="text" class="form-control col-sm-6" [(ngModel)]="DocenteSeleccionado.ci">
+                <input type="text" class="form-control col-sm-2" [(ngModel)]="DocenteSeleccionado.expedido">
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <img [src]="ruta+DocenteSeleccionado.foto_doc" width="150px" height="140px">
+            </div>
+          </div>
+          <hr>
+          <h1 class="text-center font-weight-bold text-danger">DATOS PERSONALES</h1>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TELEFONO: </label>
+            <input type="text" class="form-control col-sm-4" [(ngModel)]="DocenteSeleccionado.tel_trab_doc">
+            <label class="form-label text-right col-sm-2">CELULAR: </label>
+            <input type="text" class="form-control col-sm-4" [(ngModel)]="DocenteSeleccionado.cel_doc">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">E-MAIL:: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="DocenteSeleccionado.email_doc">
+          </div>
+          <div class="form-group row">
+          <label class="form-label text-right col-sm-2">F. NAC: </label>
+          <input type="date" class="form-control col-sm-6" [(ngModel)]="DocenteSeleccionado.fec_nac_doc">
+
+          <label class="form-label text-right col-sm-2">EDAD: </label>
+          <input type="number" class="form-control col-sm-2" >
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">DOMICILIO: </label>
+            <input type="text" class="form-control col-sm-6" [(ngModel)]="DocenteSeleccionado.dom_doc">
+
+            <label class="form-label text-right col-sm-2">PAIS: </label>
+            <input type="text" class="form-control col-sm-2" [(ngModel)]="DocenteSeleccionado.nacional_doc">
+          </div>
+
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TRABAJO: </label>
+            <input type="text" class="form-control col-sm-10 text-center font-weight-bold" [(ngModel)]="DocenteSeleccionado.lug_doc">
+
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">DIRECCIÓN: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="DocenteSeleccionado.dir_trab_doc">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TELEFONO: </label>
+            <input type="text" class="form-control col-sm-4" [(ngModel)]="DocenteSeleccionado.tel_dom_doc">
+            <label class="form-label text-right col-sm-3">ULT. ACTUALIZACION: </label>
+            <input type="text" class="form-control col-sm-3" >
+          </div>
+
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- MENSAJE SUPERIOR DERECHA (Invocar por su id) -->
+<button id="BotonSuccess" type="button" class="invisible btn btn-success swalDefaultSuccess" style="position: absolute; top:100%">Success</button>
+<button id="BotonInfo" type="button" class="invisible btn btn-info swalDefaultInfo" style="position: absolute; top:100%">Info</button>
+<button id="BotonError" type="button" class="invisible btn btn-danger swalDefaultError" style="position: absolute; top:100%">Error </button>
+<button id="BotonWarning" type="button" class="invisible btn btn-warning swalDefaultWarning" style="position: absolute; top:100%">Warning</button>
+<button id="BotonQuestion" type="button" class="invisible btn btn-default swalDefaultQuestion" style="position: absolute; top:100%">Question</button>

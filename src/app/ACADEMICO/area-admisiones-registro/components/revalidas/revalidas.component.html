@@ -1,0 +1,378 @@
+<!-- INTRODUCIR nombre CRUD, nombreID,nombre dataPrincipal, TITULOS(Revalidas,id_revalida,rev,REVALIDAS)-->
+<strong>
+  <h2 class="text-center text-bold text-light">GESTIONAR REVALIDAS</h2>
+</strong>
+<hr class="border-warning">
+
+<button type="button" (click)="LimpiarRevalidas()" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalAdd" data-whatever="@getbootstrap">AGREGAR Revalidas</button>
+
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">NOMBRE ESTUDIANTE</th>
+        <!-- <th scope="col">SIGLA</th> -->
+        <th scope="col"> MATERIA/PARALELO
+
+          <label  for="showsigla">
+            Mostrar  Siglas
+          </label>
+          <input type="checkbox" id="showsigla"  (click)="CodMatShow==false ? CodMatShow=true : CodMatShow=false">
+        </th>
+        <th scope="col">NOTA</th>
+        <th scope="col">DOCENTE/JURADO</th>
+        <th scope="col">SEMESTRE</th>
+        <th scope="col">TURNO</th>
+
+
+        <!-- <th scope="col">PARALELO</th> -->
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of rev; let i= index"  >
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.nombre_est}} {{a.ape_p_est}} {{a.ape_m_est}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.nombre_mat}} <span *ngIf="CodMatShow" class="font-weight-bold">{{a.codigo_mat}}</span> - {{a.paralelo_revalida}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.nota_revalida}} </span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.nombre_doc}} {{a.ape_p_doc}} {{a.ape_m_doc}}</span>
+        </td>
+
+        <td>
+          <span *ngIf="!a.Editando">{{a.numero}} {{a.desc_sem}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.turno_revalida}} </span>
+        </td>
+        <td style="width: 200px;">
+          <button class="btn btn-success" (click)="SeleccionarRevalidas(a.id_revalida,'Mostrar')" type="button">
+          <i class="bi bi-eye"></i></button>
+
+          <button type="button" class="btn btn-warning"
+          (click)="SeleccionarRevalidas(a.id_revalida,'Editar')" style="margin-right: 10px;"><i class="bi bi-pencil"></i></button>
+
+         <button type="button" class="btn btn-danger" (click)="EliminarRevalidas(a.id_revalida)">
+           <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- MODAL DE ADICION Revalidas-->
+<div class="modal fade" id="ModalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> REGISTRAR REVALIDAS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newRevalidas" >
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">NÚMERO DE REVALIDA: </label>
+              <input type="text" class="form-control col-sm-10" formControlName="nro_revalida">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">ESTUDIANTE: </label>
+              <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_est">
+                <optgroup label="SELECCIONE ESTUDIANTE" >
+                  <option *ngFor="let e of est" value="{{e.id_est}}">{{e.nombre_est}} {{e.ape_p_est}} {{e.ape_m_est}}</option>
+                </optgroup>
+               </select>
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">MATERIA: </label>
+              <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_materia">
+                <optgroup label="SELECCIONE MATERIA" >
+                  <option *ngFor="let m of mat" value="{{m.id_materia}}">{{m.codigo_mat}} - {{m.nombre_mat}}</option>
+                </optgroup>
+               </select>
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">DOCENTE: </label>
+              <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_doc">
+                <optgroup label="SELECCIONE DOCENTE" >
+                  <option *ngFor="let d of doc" value="{{d.id_doc}}">{{d.nombre_doc}} {{d.ape_p_doc}} {{d.ape_m_doc}}</option>
+                </optgroup>
+               </select>
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">CARRERA: </label>
+              <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_carre">
+                <optgroup label="SELECCIONE CARRERA" >
+                  <option *ngFor="let c of carre" value="{{c.id_carre}}">{{c.nombre_carre}}</option>
+                </optgroup>
+               </select>
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">NOTA: </label>
+              <input type="number" class="form-control col-sm-10" formControlName="nota_revalida">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">TURNO: </label>
+              <input type="text" class="form-control col-sm-10" formControlName="turno_revalida">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">SEMESTRE: </label>
+              <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_sem">
+                <optgroup label="SELECCIONE SEMESTRE" >
+                  <option *ngFor="let s of sem" value="{{s.id_sem}}">{{s.numero}} - {{s.desc_sem}}</option>
+                </optgroup>
+               </select>
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">PARALELO: </label>
+              <input type="text" class="form-control col-sm-10" formControlName="paralelo_revalida">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">MONTO REVALIDA: </label>
+              <input type="number" class="form-control col-sm-10" formControlName="monto_revalida">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">PERIODO: </label>
+              <input type="number" class="form-control col-sm-10" formControlName="periodo_revalida">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">GESTIÓN: </label>
+              <input type="number" class="form-control col-sm-10" formControlName="gestion_revalida">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">FECHA DE REVALIDA: </label>
+              <input type="date" class="form-control col-sm-10" formControlName="fec_revalida">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">FECHA DE TRANSFERENCIA: </label>
+              <input type="date" class="form-control col-sm-10" formControlName="fec_trans_revalida">
+            </div>
+
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="AgregarRevalidas()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE MODIFICACION Revalidas-->
+<div class="modal fade" id="ModalModificacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">MODIFICAR REVALIDAS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">NUMERO DE REVALIDA: </label>
+              <input type="text" class="form-control col-sm-10" [(ngModel)]="RevalidasSeleccionado.nro_revalida">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">ESTUDIANTE: </label>
+              <select class="custom-select col-sm-10 form-control" type="text" [(ngModel)]="RevalidasSeleccionado.id_est">
+                <optgroup label="SELECCIONE ESTUDIANTE" >
+                  <option *ngFor="let e of est" value="{{e.id_est}}">{{e.nombre_est}} {{e.ape_p_est}} {{e.ape_m_est}}</option>
+                </optgroup>
+               </select>
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">MATERIA: </label>
+              <select class="custom-select col-sm-10 form-control" type="text" [(ngModel)]="RevalidasSeleccionado.id_materia">
+                <optgroup label="SELECCIONE MATERIA" >
+                  <option *ngFor="let m of mat" value="{{m.id_materia}}">{{m.codigo_mat}} - {{m.nombre_mat}}</option>
+                </optgroup>
+               </select>
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">DOCENTE: </label>
+              <select class="custom-select col-sm-10 form-control" type="text" [(ngModel)]="RevalidasSeleccionado.id_doc">
+                <optgroup label="SELECCIONE DOCENTE" >
+                  <option *ngFor="let d of doc" value="{{d.id_doc}}">{{d.nombre_doc}} {{d.ape_p_doc}} {{d.ape_m_doc}}</option>
+                </optgroup>
+               </select>
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">CARRERA: </label>
+              <select class="custom-select col-sm-10 form-control" type="text" [(ngModel)]="RevalidasSeleccionado.id_carre">
+                <optgroup label="SELECCIONE CARRERA" >
+                  <option *ngFor="let c of carre" value="{{c.id_carre}}">{{c.nombre_carre}}</option>
+                </optgroup>
+               </select>
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">NOTA: </label>
+              <input type="number" class="form-control col-sm-10" [(ngModel)]="RevalidasSeleccionado.nota_revalida">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">TURNO: </label>
+              <input type="text" class="form-control col-sm-10" [(ngModel)]="RevalidasSeleccionado.turno_revalida">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">SEMESTRE: </label>
+              <select class="custom-select col-sm-10 form-control" type="text" [(ngModel)]="RevalidasSeleccionado.id_sem">
+                <optgroup label="SELECCIONE SEMESTRE" >
+                  <option *ngFor="let s of sem" value="{{s.id_sem}}">{{s.numero}} - {{s.desc_sem}}</option>
+                </optgroup>
+               </select>
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">PARALELO: </label>
+              <input type="text" class="form-control col-sm-10" [(ngModel)]="RevalidasSeleccionado.paralelo_revalida">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">MONTO REVALIDA: </label>
+              <input type="number" class="form-control col-sm-10" [(ngModel)]="RevalidasSeleccionado.monto_revalida">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">PERIODO: </label>
+              <input type="number" class="form-control col-sm-10" [(ngModel)]="RevalidasSeleccionado.periodo_revalida">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">GESTIÓN: </label>
+              <input type="number" class="form-control col-sm-10" [(ngModel)]="RevalidasSeleccionado.gestion_revalida">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">FECHA DE REVALIDA: </label>
+              <input type="date" class="form-control col-sm-10" [(ngModel)]="RevalidasSeleccionado.fec_revalida">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">FECHA DE TRANSFERENCIA: </label>
+              <input type="date" class="form-control col-sm-10" [(ngModel)]="RevalidasSeleccionado.fec_trans_revalida">
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="ModificarRevalidas(RevalidasSeleccionado)">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE VISUALIZACION Revalidas-->
+<div class="modal fade" id="ModalVisualizacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> VISUALIZANDO REVALIDAS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NUMERO DE REVALIDA: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="RevalidasSeleccionado.nro_revalida">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">ESTUDIANTE: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" [(ngModel)]="RevalidasSeleccionado.id_est">
+              <optgroup label="SELECCIONE ESTUDIANTE" >
+                <option *ngFor="let e of est" value="{{e.id_est}}">{{e.nombre_est}} {{e.ape_p_est}} {{e.ape_m_est}}</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">MATERIA: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" [(ngModel)]="RevalidasSeleccionado.id_materia">
+              <optgroup label="SELECCIONE MATERIA" >
+                <option *ngFor="let m of mat" value="{{m.id_materia}}">{{m.codigo_mat}} - {{m.nombre_mat}}</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">DOCENTE: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" [(ngModel)]="RevalidasSeleccionado.id_doc">
+              <optgroup label="SELECCIONE DOCENTE" >
+                <option *ngFor="let d of doc" value="{{d.id_doc}}">{{d.nombre_doc}} {{d.ape_p_doc}} {{d.ape_m_doc}}</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CARRERA: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" [(ngModel)]="RevalidasSeleccionado.id_carre">
+              <optgroup label="SELECCIONE CARRERA" >
+                <option *ngFor="let c of carre" value="{{c.id_carre}}">{{c.nombre_carre}}</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOTA: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="RevalidasSeleccionado.nota_revalida">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TURNO: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="RevalidasSeleccionado.turno_revalida">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">SEMESTRE: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" [(ngModel)]="RevalidasSeleccionado.id_sem">
+              <optgroup label="SELECCIONE SEMESTRE" >
+                <option *ngFor="let s of sem" value="{{s.id_sem}}">{{s.numero}} - {{s.desc_sem}}</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">PARALELO: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="RevalidasSeleccionado.paralelo_revalida">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">MONTO REVALIDA: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="RevalidasSeleccionado.monto_revalida">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">PERIODO: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="RevalidasSeleccionado.periodo_revalida">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">GESTIÓN: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="RevalidasSeleccionado.gestion_revalida">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA DE REVALIDA: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="RevalidasSeleccionado.fec_revalida">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA DE TRANSFERENCIA: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="RevalidasSeleccionado.fec_trans_revalida">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalMod" data-toggle="modal"
+  data-target="#ModalModificacion" style="width: 0px;">Abrir Modal Modificacion</button>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalMos" data-toggle="modal"
+  data-target="#ModalVisualizacion" style="width: 0px;">Abrir Modal Visualizacion</button>
+

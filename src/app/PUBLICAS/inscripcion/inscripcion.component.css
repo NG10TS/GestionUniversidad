@@ -1,0 +1,22 @@
+/* PARA EL SELECT PERSONALIZADO */
+.lcch-select div span
+{
+  border-radius: 0;
+  border-width: 0;
+  /* text-align: center; */
+  border-left-width: 2px;
+  border-right-width: 2px;
+}
+.lcch-select div span:hover
+{
+  border-radius: 0;
+  border-width: 0;
+  background-color: aquamarine;
+  /* text-align: center; */
+  font-weight: bold;
+  cursor: pointer;
+}
+.lcch-options{
+  position: absolute;
+  width:100%;
+}

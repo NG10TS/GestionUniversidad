@@ -1,0 +1,630 @@
+<strong>
+  <h2 class="text-center text-bold text-light">GESTION DE ESTUDIANTES REGULARES</h2>
+</strong>
+<hr class="border-warning">
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal"
+  data-target="#ModalCrudEstudianteRegular" data-whatever="@getbootstrap">AGREGAR ESTUDIANTE REGULAR</button>
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal"
+  data-target="#ModalGestionPlanPagos" data-whatever="@getbootstrap">GESTIONAR PLAN PAGOS</button>
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal"
+  data-target="#ModalGestionProyecciones" data-whatever="@getbootstrap">GESTIONAR PLAN PAGOS PROYECCIONES</button>
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal"
+  data-target="#ModalGestionDevoluciones" data-whatever="@getbootstrap">GESTIONAR DEVOLUCIONES</button>
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal"
+  data-target="#ModalGestionPlanGestionPagos" data-whatever="@getbootstrap">GESTIONAR PLAN GESTIONES PAGOS</button>
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal"
+data-target="#ModalGestionPagos" data-whatever="@getbootstrap">GESTIONES PAGOS</button>
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input"
+      aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<!-- #region CRUD PRINCIPAL ESTUDIANTES REGULARES -->
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">NOMBRE COMPLETO</th>
+        <th scope="col">TIPO DE PLAN DE PAGO</th>
+        <th scope="col">MONTO [Bs]</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of estReg; let i= index">
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>{{a.ape_p_est}} {{a.ape_m_est}} {{a.nombre}}</td>
+        <td>{{a.tipo_plan_pagos}}</td>
+        <td>{{a.monto}}</td>
+        <td style="width: 200px;">
+          <button (click)="SeleccionarEstudianteRegular(a)" class="btn btn-warning"><i
+              class="bi bi-pencil"></i></button>
+          <button type="button" class="btn btn-danger" (click)="EliminarEstudianteRegular(a.id_est_reg)">
+            <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- MODAL DE CRUD ADD MOD DE CODIGO DE EstudianteRegular-->
+<div class="modal fade" id="ModalCrudEstudianteRegular" tabindex="-1" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{!newEstudianteRegular.get('id_est_reg').value ? 'REGISTRAR' : 'MODIFICAR'}} ESTUDIANTE REGULAR</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newEstudianteRegular">
+          <div class="form-group row">
+            <label class="form-label col-sm-2">ESTUDIANTE: </label>
+            <div [formGroup]="filterEstudianteForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control" />
+              </div>
+              <div *ngIf="filtroEstudiante" class="lcch-options">
+                <span *ngFor="let a of estFiltrado" class="form-control"
+                  (click)="filterEstudianteForm.patchValue({txt:a.ape_p_est+' '+a.ape_m_est+' '+a.nombre_est}); newEstudianteRegular.patchValue({id_est:a.id_est})"
+                  (click)="filtroEstudiante=false">{{a.ape_p_est}} {{a.ape_p_est}} {{a.nombre_est}} -
+                  {{a.cod_est}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">TIPO DE PLAN: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_plan_pago">
+              <optgroup label="SELECCIONE TIPO DE PLAN">
+                <option *ngFor="let a of planPago" value="{{a.id_plan_pago}}">{{a.tipo_plan_pagos}} - {{a.monto}} Bs.</option>
+              </optgroup>
+            </select>
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="resetEstudianteRegular()">Cancelar</button>
+        <button type="button"
+          class="btn {{!newEstudianteRegular.get('id_est_reg').value ? 'btn-success' : 'btn-warning'}}"
+          data-dismiss="modal" [disabled]="!newEstudianteRegular.valid"
+          (click)="AgregarModificarEstudianteRegular()">{{!newEstudianteRegular.get('id_est_reg').value ? 'CREAR ESTUDIANTE REGULAR' : 'MODIFICAR ESTUDIANTE REGULAR'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudEstudianteRegular"
+  data-toggle="modal" data-target="#ModalCrudEstudianteRegular" style="width: 0px;">Abrir Modal Crud</button>
+<!-- #endregion CRUD PRINCIPAL ESTUDIANTES REGULARES -->
+
+<!-- #region PLAN PAGOS -->
+<!-- MODAL DE GESTION PLAN PAGOS-->
+<div class="modal fade" id="ModalGestionPlanPagos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"> PLAN PAGOS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" >
+            <button type="button" class="btn btn-outline-light font-weight-bold" (click)="ShowAddPlanPago=true"
+              data-whatever="@getbootstrap">AGREGAR PLAN PAGO</button>
+            <form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Sizing example input"
+                  aria-describedby="inputGroup-sizing-default">
+              </div>
+            </form>
+            <br>
+            <hr>
+            <div class="card" [formGroup]="newPlanPago" *ngIf="ShowAddPlanPago">
+              <label class="form-text text-center" style="bottom:0px; left:0px">INTRODUCIR PLAN PAGO</label>
+              <button class="btn btn-success" style="position: absolute; top:0px; right:0px" (click)="AgregarModificarPlanPago()" (click)="ShowAddPlanPago=false">GUARDAR</button>
+              <button class="btn btn-secondary" style="position: absolute; top:0px; left:0px" (click)="ShowAddPlanPago=false">CANCELAR</button>
+              <div class="card-body">
+                <div class="form-group row">
+                  <label class="form-label col-sm-6">TIPO DE PLAN PAGO: </label>
+                  <input type="text" class="form-control col-sm-6" formControlName="tipo_plan_pagos">
+                </div>
+                <div class="form-group row">
+                  <label class="form-label col-sm-6">MONTO: </label>
+                  <input type="number" class="form-control col-sm-6" formControlName="monto">
+                </div>
+
+
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-bordered table-striped table-hover table-danger">
+                <thead class="bg-danger ">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Tipo de Plan Pago</th>
+                    <th scope="col">Monto</th>
+                    <th scope="col">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody [formGroup]="newPlanPago">
+                  <tr *ngFor="let a of planPago; let i= index">
+                    <td style="width: 20px;">{{i+1}}</td>
+                    <td>
+                     <span *ngIf="!a.Editando">{{a.tipo_plan_pagos}}</span>
+                     <input type="text" formControlName="tipo_plan_pagos" [(ngModel)]="a.tipo_plan_pagos" *ngIf="a.Editando">
+                    </td>
+                    <td>
+                     <span *ngIf="!a.Editando">{{a.monto}}</span>
+                     <input type="text" formControlName="monto" [(ngModel)]="a.monto" *ngIf="a.Editando">
+                    </td>
+                    <td>
+                      <button class="btn btn-warning" type="button" *ngIf="!a.Editando" (click)="SeleccionarPlanPago(a.id_plan_pago)"  (click)="a.Editando=true" ><i class="bi bi-pencil"></i></button>
+                      <button class="btn btn-success" type="button" *ngIf="a.Editando" (click)="AgregarModificarPlanPago()" (click)="a.Editando=false"><i class="bi bi-save"></i></button>
+                      <button class="btn btn-secondary" type="button" *ngIf="a.Editando" (click)="CargarPlanPago()" (click)="resetPlanPago()" (click)="a.Editando=false"><i class="bi bi-box-arrow-left"></i></button>
+                      <button type="button" class="btn btn-danger" (click)="EliminarPlanPago(a.id_plan_pago)"><i class="bi bi-trash"></i></button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- #endregion PLAN PAGOS -->
+
+<!-- #region PLAN PAGO PROYECCIONES -->
+<!-- MODAL DE MODAL TE GESTION DE PLAN P PROYECCIONES-->
+<div class="modal fade" id="ModalGestionProyecciones" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"> GESTIONAR PLAN DE PAGO PROYECCIONES</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" >
+            <button type="button" class="btn btn-outline-light font-weight-bold" (click)="ShowAddPlanPagoProyeccion=true">AGREGAR PLAN DE PAGO PROYECCION</button>
+
+            <form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+              </div>
+            </form>
+            <br>
+            <hr>
+            <div class="card" [formGroup]="newPlanPagoProyeccion" *ngIf="ShowAddPlanPagoProyeccion">
+              <label class="form-text text-center" style="bottom:0px; left:0px">INTRODUCIR PLAN DE PAGO PROYECCION</label>
+              <button class="btn btn-success" style="position: absolute; top:0px; right:0px" (click)="AgregarModificarPlanPagoProyeccion()" (click)="ShowAddPlanPagoProyeccion=false">GUARDAR</button>
+              <button class="btn btn-secondary" style="position: absolute; top:0px; left:0px" (click)="ShowAddPlanPagoProyeccion=false">CANCELAR</button>
+              <div class="card-body">
+                <div class="form-group row">
+                  <label class="form-label col-sm-2">ESTUDIANTE REGULAR: </label>
+                  <!-- FILTRADOR V3: NombreFiltro => EstudianteRegular-->
+                  <div [formGroup]="filterEstudianteRegularForm" class="lcch-select col-sm-10">
+                    <div>
+                      <input formControlName="txt" type="text" class="form-control" />
+                    </div>
+                    <div *ngIf="filtroEstudianteRegular" class="lcch-options" >
+                      <span *ngFor="let a of estRegularFiltrado" class="form-control"
+                      (click)="filterEstudianteRegularForm.patchValue({txt:a.ape_p_est+' '+a.ape_m_est+' '+a.nombre_est}); newPlanPagoProyeccion.patchValue({id_est_reg:a.id_est_reg})" (click)="filtroEstudianteRegular=false">{{a.ape_p_est}} {{a.ape_m_est}} {{a.nombre_est}} - {{a.cod_est}}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="form-label col-sm-2">MONTO PROYECTO: </label>
+                  <input type="text" class="form-control col-sm-10" formControlName="monto_proy">
+                </div>
+
+
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-bordered table-striped table-hover table-danger">
+                <thead class="bg-danger ">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">ESTUDIANTE REGULAR</th>
+                    <th scope="col">MONTO PROYECCION</th>
+                    <th scope="col">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody [formGroup]="newPlanPagoProyeccion">
+                  <tr *ngFor="let a of planPagoProyeccion; let i= index"  >
+                    <td style="width: 20px;">{{i+1}}</td>
+                    <td>
+                     <span *ngIf="!a.Editando">{{a.ape_p_est}} {{a.ape_m_est}} {{a.nombre_est}}</span>
+                     <!-- <input type="text" formControlName="id_est_reg" [(ngModel)]="a.id_est_reg" *ngIf="a.Editando"> -->
+                     <!-- FILTRADOR V3: NombreFiltro => EstudianteRegular-->
+                     <div [formGroup]="filterEstudianteRegularForm" class="lcch-select"  *ngIf="a.Editando">
+                       <div>
+                         <input formControlName="txt" type="text" class="form-control" />
+                       </div>
+                       <div *ngIf="filtroEstudianteRegular" class="lcch-options" >
+                         <span *ngFor="let a of estRegularFiltrado" class="form-control"
+                         (click)="filterEstudianteRegularForm.patchValue({txt:a.ape_p_est+' '+a.ape_m_est+' '+a.nombre_est}); newPlanPagoProyeccion.patchValue({id_est_reg:a.id_est_reg})" (click)="filtroEstudianteRegular=false">{{a.ape_p_est}} {{a.ape_m_est}} {{a.nombre_est}} - {{a.cod_est}}</span>
+                       </div>
+                     </div>
+                    </td>
+                    <td>
+                     <span *ngIf="!a.Editando">{{a.monto_proy}}</span>
+                     <input type="text" formControlName="monto_proy" [(ngModel)]="a.monto_proy" *ngIf="a.Editando">
+                    </td>
+                    <td>
+                      <button class="btn btn-warning" type="button" *ngIf="!a.Editando" (click)="SeleccionarPlanPagoProyeccion(a)"  (click)="a.Editando=true" ><i class="bi bi-pencil"></i></button>
+                      <button class="btn btn-success" type="button" *ngIf="a.Editando" (click)="AgregarModificarPlanPagoProyeccion()" (click)="a.Editando=false"><i class="bi bi-save"></i></button>
+                      <button class="btn btn-secondary" type="button" *ngIf="a.Editando" (click)="CargarPlanPagoProyeccion()" (click)="resetPlanPagoProyeccion()" (click)="a.Editando=false"><i class="bi bi-box-arrow-left"></i></button>
+                      <button type="button" class="btn btn-danger" (click)="EliminarPlanPagoProyeccion(a.id_plan_pago_proyec)"><i class="bi bi-trash"></i></button>
+                    </td>
+
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- #endregion PLAN PAGO PROYECCIONES -->
+
+<!-- #region DEVOLUCIONES -->
+<!-- MODAL DE DEVOLUCIONES-->
+<div class="modal fade" id="ModalGestionDevoluciones" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"> GESTIONAR DEVOLUCIONES</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" >
+            <!-- CRUD V3: idPK=> id_devolucion, TITULO=> DEVOLUCION, nombreCRUD=> Devolucion,  dataP=> devolucion -->
+            <button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalCrudDevolucion"
+              data-whatever="@getbootstrap">AGREGAR DEVOLUCION</button>
+            <form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Sizing example input"
+                  aria-describedby="inputGroup-sizing-default">
+              </div>
+            </form>
+            <br>
+            <div class="table-responsive">
+              <table class="table table-bordered table-striped table-hover table-danger">
+                <thead class="bg-danger ">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">ESTUDIANTE REGULAR</th>
+                    <th scope="col">DESCRIPCION DEVOLUCION</th>
+                    <th scope="col">MONTO DEVOLUCION</th>
+                    <th scope="col">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let a of devolucion; let i= index">
+                    <td style="width: 20px;">{{i+1}}</td>
+                    <td>{{a.ape_p_est}} {{a.ape_m_est}} {{a.nombre_est}}</td>
+                    <td>{{a.desc_devolucion}}</td>
+                    <td>{{a.monto_devolucion}}</td>
+                    <td style="width: 200px;">
+                      <button (click)="SeleccionarDevolucion(a)"
+                        class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+                      <button type="button" class="btn btn-danger" (click)="EliminarDevolucion(a.id_devolucion)">
+                        <i class="bi bi-trash"></i></button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE CRUD ADD MOD DE CODIGO DE Devolucion-->
+<div class="modal fade" id="ModalCrudDevolucion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{!newDevolucion.get('id_devolucion').value ? 'REGISTRAR' : 'MODIFICAR'}} DEVOLUCION</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newDevolucion">
+          <div class="form-group row">
+            <label class="form-label col-sm-2">ESTUDIANTE REGULAR: </label>
+            <div [formGroup]="filterEstudianteRegularForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control" />
+              </div>
+              <div *ngIf="filtroEstudianteRegular" class="lcch-options" >
+                <span *ngFor="let a of estRegularFiltrado" class="form-control"
+                (click)="filterEstudianteRegularForm.patchValue({txt:a.ape_p_est+ ' '+a.ape_m_est+' '+a.nombre_est}); newDevolucion.patchValue({id_est_reg:a.id_est_reg})" (click)="filtroEstudianteRegular=false">{{a.ape_p_est}} {{a.ape_m_est}} {{a.nombre_est}} - {{a.cod_est}}</span>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="form-label col-sm-2">DESCRIPCION DEVOLUCION: </label>
+              <input type="text" class="form-control col-sm-10" formControlName="desc_devolucion">
+            </div>
+            <div class="form-group row">
+              <label class="form-label col-sm-2">MONTO DEVOLUCION: </label>
+              <input type="text" class="form-control col-sm-10" formControlName="monto_devolucion">
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="resetDevolucion()">Cancelar</button>
+        <button type="button" class="btn {{!newDevolucion.get('id_devolucion').value ? 'btn-success' : 'btn-warning'}}" data-dismiss="modal" [disabled]="!newDevolucion.valid"
+          (click)="AgregarModificarDevolucion()">{{!newDevolucion.get('id_devolucion').value ? 'CREAR DEVOLUCION' : 'MODIFICAR DEVOLUCION'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudDevolucion" data-toggle="modal"
+  data-target="#ModalCrudDevolucion" style="width: 0px;">Abrir Modal Crud</button>
+<!-- #endregion DEVOLUCIONES -->
+
+
+<!-- #region PLAN GESTION PAGOS -->
+
+<!-- MODAL DE PLAN DE GESION PAGOS-->
+<div class="modal fade" id="ModalGestionPlanGestionPagos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"> PLAN GESTION PAGOS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" >
+          <button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalCrudPlanGestionPago"
+          data-whatever="@getbootstrap">AGREGAR PLAN GESTION PAGO</button>
+        <form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+            </div>
+            <input type="text" class="form-control" aria-label="Sizing example input"
+              aria-describedby="inputGroup-sizing-default">
+          </div>
+        </form>
+        <br>
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped table-hover table-danger">
+            <thead class="bg-danger ">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">ESTUDIANTE REGULAR</th>
+                <th scope="col">GESTION DE PAGO</th>
+                <th scope="col">TIPO DE PAGO</th>
+                <!-- <th scope="col">INS</th> -->
+                <th scope="col">NOMBRE DE PLAN PAGO</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let a of planGestionPago; let i= index">
+                <td style="width: 20px;">{{i+1}}</td>
+                <td>{{a.ape_p_est}} {{a.ape_m_est}} {{a.nombre_est}}</td>
+                <td>{{a.anio_gestion}}/{{a.periodo_gestion}}</td>
+                <td>{{a.tipo_pago}}</td>
+                <!-- <td>{{a.id_ins}}</td> -->
+                <td>{{a.nombre_plan_pago}}</td>
+                <td style="width: 200px;">
+                  <button (click)="SeleccionarPlanGestionPago(a.id_plan_ges_pago)"
+                    class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+                  <button type="button" class="btn btn-danger" (click)="EliminarPlanGestionPago(a.id_plan_ges_pago)">
+                    <i class="bi bi-trash"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- MODAL DE CRUD ADD MOD DE CODIGO DE PlanGestionPago-->
+<div class="modal fade" id="ModalCrudPlanGestionPago" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{!newPlanGestionPago.get('id_plan_ges_pago').value ? 'REGISTRAR' : 'MODIFICAR'}} PLAN GESTION PAGO</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newPlanGestionPago">
+          {{newPlanGestionPago.value|json}}
+          <div class="form-group row">
+            <label class="form-label col-sm-2">ESTUDIANTE REGULAR: </label>
+            <!-- FILTRADOR V3: NombreFiltro => EstudianteRegular-->
+            <div [formGroup]="filterEstudianteRegularForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control" />
+              </div>
+              <div *ngIf="filtroEstudianteRegular" class="lcch-options" >
+                <span *ngFor="let a of estRegularFiltrado" class="form-control"
+                (click)="filterEstudianteRegularForm.patchValue({txt:a.ape_p_est+' '+a.ape_m_est+' '+a.nombre_est}); newPlanGestionPago.patchValue({id_est_reg:a.id_est_reg})" (click)="filtroEstudianteRegular=false">{{a.ape_p_est}} {{a.ape_m_est}} {{a.nombre_est}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">GESTION PAGOS: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_gestion_pago">
+              <optgroup label="SELECCIONE GESTION PAGOS" >
+                <option *ngFor="let a of gestPago" value="{{a.id_gestion_pago}}">{{a.tipo_pago}} - {{a.anio_gestion}}/{{a.periodo_gestion}}</option>
+              </optgroup>
+             </select>
+          </div>
+
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="resetPlanGestionPago()">Cancelar</button>
+        <button type="button" class="btn {{!newPlanGestionPago.get('id_plan_ges_pago').value ? 'btn-success' : 'btn-warning'}}" data-dismiss="modal" [disabled]="!newPlanGestionPago.valid"
+          (click)="AgregarModificarPlanGestionPago()">{{!newPlanGestionPago.get('id_plan_ges_pago').value ? 'CREAR PLAN GESTION PAGO' : 'MODIFICAR PLAN GESTION PAGO'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudPlanGestionPago" data-toggle="modal"
+  data-target="#ModalCrudPlanGestionPago" style="width: 0px;">Abrir Modal Crud</button>
+
+<!-- #endregion PLAN GESTION PAGOS -->
+
+
+<!-- #region GESTION PAGOS -->
+<!-- MODAL DE GESTION PAGOS-->
+<div class="modal fade" id="ModalGestionPagos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"> GESTION DE PAGOS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+            <!-- CRUD V3: idPK=> id_gestion_pago, TITULO=> GESTION DE PAGOS, nombreCRUD=> GestionPago,  dataP=> gestPago -->
+            <button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalCrudGestionPago"
+              data-whatever="@getbootstrap">AGREGAR GESTION DE PAGOS</button>
+            <form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Sizing example input"
+                  aria-describedby="inputGroup-sizing-default">
+              </div>
+            </form>
+            <br>
+            <div class="table-responsive">
+              <table class="table table-bordered table-striped table-hover table-danger">
+                <thead class="bg-danger ">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">GESTION</th>
+                    <th scope="col">TIPO DE PAGO</th>
+                    <th scope="col">MATRICULA</th>
+                    <th scope="col">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let a of gestPago; let i= index">
+                    <td style="width: 20px;">{{i+1}}</td>
+                    <td>{{a.anio_gestion}}/{{a.periodo_gestion}}</td>
+                    <td>{{a.tipo_pago}}</td>
+                    <td>{{a.desc_matricula}}</td>
+                    <td style="width: 200px;">
+                      <button (click)="SeleccionarGestionPago(a.id_gestion_pago)"
+                        class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+                      <button type="button" class="btn btn-danger" (click)="EliminarGestionPago(a.id_gestion_pago)">
+                        <i class="bi bi-trash"></i></button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- MODAL DE CRUD ADD MOD DE CODIGO DE GestionPago-->
+<div class="modal fade" id="ModalCrudGestionPago" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{!newGestionPago.get('id_gestion_pago').value ? 'REGISTRAR' : 'MODIFICAR'}} GESTION DE PAGOS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newGestionPago">
+          <div class="form-group row">
+            <label class="form-label col-sm-2">GESTION: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_gestion">
+              <optgroup label="SELECCIONE GESTION" >
+                <option *ngFor="let a of gest" value="{{a.id_gestion}}">{{a.anio_gestion}}/{{a.periodo_gestion}}</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">TIPO DE PAGO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="tipo_pago">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">MATRICULA: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_matricula">
+              <optgroup label="SELECCIONE MATRICULA" >
+                <option *ngFor="let a of matricula" value="{{a.id_matricula}}">{{a.desc_matricula}}</option>
+              </optgroup>
+             </select>
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="resetGestionPago()">Cancelar</button>
+        <button type="button" class="btn {{!newGestionPago.get('id_gestion_pago').value ? 'btn-success' : 'btn-warning'}}" data-dismiss="modal" [disabled]="!newGestionPago.valid"
+          (click)="AgregarModificarGestionPago()">{{!newGestionPago.get('id_gestion_pago').value ? 'CREAR GESTION DE PAGOS' : 'MODIFICAR GESTION DE PAGOS'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudGestionPago" data-toggle="modal"
+  data-target="#ModalCrudGestionPago" style="width: 0px;">Abrir Modal Crud</button>
+<!-- #endregion GESTION PAGOS -->

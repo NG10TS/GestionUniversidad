@@ -1,0 +1,444 @@
+<strong>
+  <h2 class="text-center text-bold text-light">GESTIONAR INSCRIPCIONES</h2>
+</strong>
+<hr class="border-warning">
+
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal"
+  data-target="#ModalAdd" data-whatever="@getbootstrap">AGREGAR INSCRIPCIÓN</button>
+
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input"
+      aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">ESTUDIANTE</th>
+        <th scope="col">PLAN</th>
+        <th scope="col">CARRERA</th>
+        <th scope="col">FECHA DE INSCRIPCIÓN</th>
+        <!-- <th scope="col">DOCENTE</th> -->
+        <th scope="col">ACCIONES</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of ins let i= index">
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.nombre_plan}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.ape_p_est}} {{a.ape_m_est}} {{a.nombre_est}} </span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.nombre_carre}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.fec_ins}}</span>
+        </td>
+
+        <td style="width: 200px;">
+          <div class="btn-group">
+            <button class="btn btn-success btn-sm" (click)="SeleccionarInscripcion(a.id_ins,'Mostrar')" type="button">
+              <i class="bi bi-eye"></i>
+            </button>
+
+            <button type="button" class="btn btn-sm btn-success dropdown-toggle dropdown-toggle-split"
+              data-toggle="dropdown" aria-expanded="false">
+            </button>
+            <div class="dropdown-menu">
+              <!-- <button class="dropdown-item" data-toggle="modal" data-target="#ModalModificacion">Editar Datos Asignacionmatles</button> -->
+              <button class="dropdown-item" data-toggle="modal">Agregar Datos Curriculares</button>
+              <button class="dropdown-item" data-toggle="modal">Hoja de Datos de Docente</button>
+              <button class="dropdown-item" data-toggle="modal" data-target="#ModalHitorialDesig">Historial de
+                Designaciones</button>
+            </div>
+          </div>
+          <button type="button" class="btn btn-warning" (click)="SeleccionarInscripcion(a,'Editar')"
+            style="margin-right: 10px;"><i class="bi bi-pencil"></i></button>
+
+          <button type="button" class="btn btn-danger" (click)="EliminarInscripcion(a.id_ins)">
+            <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="modal fade" id="ModalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> REGISTRAR INSCRIPCION</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newInscripcion">
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">ESTUDIANTE: </label>
+            <!-- FILTRADOR V3: NombreFiltro => Estudiante-->
+            <div [formGroup]="filterEstudianteForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control" value="{{EstudianteSelect.ape_p_est}} {{EstudianteSelect.ape_m_est}} {{EstudianteSelect.nombre_est}}"/>
+              </div>
+              <div *ngIf="filtroEstudiante" class="lcch-options" >
+                <span *ngFor="let a of estFiltrado" class="form-control" (click)="EstudianteSelect=a" (click)="autoCompletart(a.id_est)" (click)="filtroEstudiante=false">{{a.ape_p_est}} {{a.ape_m_est}} {{a.nombre_est}} - {{a.cod_est}}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CARRERA: </label>
+            <div>
+            <select class="custom-select" type="text" formControlName="id_carre">
+              <optgroup label="Seleccione su Carrera ">
+                <option *ngFor="let c of carre " value="{{c.id_carre}}">{{c.nombre_carre}} </option>
+              </optgroup>
+            </select>
+          </div>
+          <label class="form-label text-right col-sm-2">PLAN DE INSCRIPCIÓN: </label>
+            <div>
+            <select class="custom-select" type="text" formControlName="id_plan_ins">
+              <optgroup label="Seleccione su Plan ">
+                <option *ngFor="let p of planins " value="{{p.id_plan_ins}}">{{p.nombre_plan}} </option>
+              </optgroup>
+            </select>
+          </div>
+          </div>
+
+          <!-- <div class="form-group row">
+            <label class="form-label text-right col-sm-2">PLAN DE INSCRIPCIÓN: </label>
+            <div>
+            <select class="custom-select" type="text" formControlName="id_plan_ins">
+              <optgroup label="Seleccione su Plan ">
+                <option *ngFor="let p of planins " value="{{p.id_plan_ins}}">{{p.nombre_plan}} </option>
+              </optgroup>
+            </select>
+          </div>
+          </div> -->
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TURNO: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_turno">
+              <optgroup label="SELECCIONE TURNO" >
+                <option *ngFor="let a of turno" value="{{a.id_turno}}">{{a.desc_turno}}</option>
+              </optgroup>
+             </select>
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">PERIODO: </label>
+            <input type="number" class="form-control col-sm-4" formControlName="ins_periodo">
+            <label class="form-label text-right col-sm-2">GESTIÓN: </label>
+            <input type="number" class="form-control col-sm-4" formControlName="ins_gestion">
+            <!-- <label class="form-label text-right col-sm-2">TURNO: </label>
+            <select class="custom-select col-sm-2 form-control" type="text" formControlName="id_turno">
+              <optgroup label="SELECCIONE TURNO" >
+                <option *ngFor="let a of turno" value="{{a.id_turno}}">{{a.desc_turno}}</option>
+              </optgroup>
+             </select> -->
+          </div>
+          <!-- <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TURNO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="turno_ins">
+          </div> -->
+          <!-- <div class="form-group row">
+            <label class="form-label text-right col-sm-2">HABILITACIÓN: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="habi_ins">
+          </div> -->
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">OBSERVACIONES: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="obs_ins">
+          </div>
+
+          <!-- <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NIVEL: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="nivel">
+          </div> -->
+          <!-- <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CONVENIO </label>
+            <input type="text" class="form-control col-sm-4" formControlName="convenio">
+            <label class="form-label text-right col-sm-2">INSCRIPTO ANTIGUO: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="antiguo_ins">
+          </div> -->
+
+          <!-- <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TIPO DE PAGO: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="tipo_de_pago">
+            <label class="form-label text-right col-sm-2">TERMINAL: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="terminal_ins">
+          </div> -->
+          <!-- <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA DE INSCRIPCIÓN: </label>
+            <input type="date" class="form-control col-sm-4" formControlName="fec_ins">
+          </div> -->
+
+          <!-- <div class="form-group row">
+            <label class="form-label text-right col-sm-2">ARCH ENV BNB: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="arch_env_bnb">
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">BECA P.O.R: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="bec_por">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">BECA: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_beca">
+              <optgroup label="SELECCIONE BECA" >
+                <option *ngFor="let a of beca" value="{{a.id_beca}}">{{a.nombre_beca}} - {{a.sigla_beca}}</option>
+              </optgroup>
+             </select>
+          </div> -->
+
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <!-- <button type="button" class="btn btn-primary" data-dismiss="modal">Guardar</button> -->
+        <button type="button" class="btn btn-primary" data-dismiss="modal"
+          (click)="AgregarInscripcion()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL_DE_MODIFICACION -->
+<div class="modal fade" id="ModalModificacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">MODIFICAR FACULTAD</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div id="frmform" class="mb-4">
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">ESTUDIANTE: </label>
+            <!-- FILTRADOR V3: NombreFiltro => EstudianteM-->
+            <div [formGroup]="filterEstudianteMForm" class="lcch-select col-sm-10" >
+              <div>
+                <input formControlName="txt" type="text" class="form-control" value="{{InscripcionSeleccionado.NomC }}" disabled/>
+              </div>
+              <div *ngIf="filtroEstudianteM" class="lcch-options" >
+                <span *ngFor="let a of estMFiltrado" class="form-control" (click)="autoCompletarM(a)" (click)="filtroEstudianteM=false">{{a.ape_p_est}} {{a.ape_m_est}} {{a.nombre_est}}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CARRERA: </label>
+            <div>
+            <select class="custom-select" type="text" [(ngModel)]="InscripcionSeleccionado.id_carre">
+              <optgroup label="Seleccione su Carrera ">
+                <option *ngFor="let c of carre " value="{{c.id_carre}}">{{c.nombre_carre}} </option>
+              </optgroup>
+            </select>
+          </div>
+          </div>
+
+          <div class="form-group row">
+
+            <label class="form-label text-right col-sm-2">PLAN DE INSCRIPCIÓN: </label>
+            <div>
+            <select class="custom-select" type="text" [(ngModel)]="InscripcionSeleccionado.id_plan_ins">
+              <optgroup label="Seleccione su Plan ">
+                <option *ngFor="let p of planins " value="{{p.id_plan_ins}}">{{p.nombre_plan}} </option>
+              </optgroup>
+            </select>
+           </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">PERIODO: </label>
+            <input type="number" class="form-control col-sm-4" [(ngModel)]="InscripcionSeleccionado.ins_periodo">
+            <label class="form-label text-right col-sm-2">GESTIÓN: </label>
+            <input type="number" class="form-control col-sm-4" [(ngModel)]="InscripcionSeleccionado.ins_gestion">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TURNO: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="InscripcionSeleccionado.turno_ins">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">HABILITACIÓN: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="InscripcionSeleccionado.habi_ins">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">OBSERVACIONES: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="InscripcionSeleccionado.obs_ins">
+          </div>
+
+          <!-- <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NIVEL: </label>
+            <input type="text" class="form-control col-sm-4" [(ngModel)]="InscripcionSeleccionado.nivel">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CONVENIO </label>
+            <input type="text" class="form-control col-sm-4" [(ngModel)]="InscripcionSeleccionado.convenio">
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TIPO DE PAGO: </label>
+            <input type="text" class="form-control col-sm-4" [(ngModel)]="InscripcionSeleccionado.tipo_de_pago">
+            <label class="form-label text-right col-sm-2">TERMINAL: </label>
+            <input type="text" class="form-control col-sm-4" [(ngModel)]="InscripcionSeleccionado.terminal_ins">
+          </div> -->
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA DE INSCRIPCIÓN: </label>
+            <input type="date" class="form-control col-sm-4" [(ngModel)]="InscripcionSeleccionado.fec_ins">
+          </div>
+
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal"
+          (click)="ModificarInscripcion(InscripcionSeleccionado)">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE VISUALIZACION -->
+<div class="modal fade" id="ModalVisualizacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> VISUALIZANDO DOCENTE</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="frmform" class="mb-4">
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">ESTUDIANTE: </label>
+            <select class="custom-select col-sm-8" type="text" [(ngModel)]="InscripcionSeleccionado.id_est">
+              <optgroup label="Seleccione Estudiante " >
+                  <option *ngFor="let e of est " value="{{e.id_est}}">{{e.nombre_est}}  {{e.ape_p_est}}  {{e.ape_m_est}}</option>
+              </optgroup>
+            </select>
+            </div>
+            <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CARRERA: </label>
+            <select class="custom-select col-sm-8" type="text" [(ngModel)]="InscripcionSeleccionado.id_carre">
+              <optgroup label="Seleccione su Carrera " >
+                  <option *ngFor="let c of carre " value="{{c.id_carre}}">{{c.nombre_carre}} </option>
+              </optgroup>
+            </select>
+        </div>
+        <div class="form-group row">
+          <label class="form-label text-right col-sm-2">PLAN DE INSCRIPCIÓN: </label>
+          <select class="custom-select  col-sm-8" type="text" [(ngModel)]="InscripcionSeleccionado.id_plan_ins">
+            <optgroup label="Seleccione su Plan " >
+                <option *ngFor="let p of planins " value="{{p.id_plan_ins}}">{{p.nombre_plan}} </option>
+            </optgroup>
+          </select>
+        </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">PERIODO: </label>
+            <select class="custom-select  col-sm-2" type="text" [(ngModel)]="InscripcionSeleccionado.ins_periodo">
+              <optgroup label="Seleccione el Periodo ">
+                <option value="1">1</option>
+                <option value="2">2</option>
+            </optgroup>
+            </select>
+            <label class="form-label text-right col-sm-2">GESTIÓN: </label>
+            <input type="number" class="form-control col-sm-4"[(ngModel)]="InscripcionSeleccionado.ins_gestion">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TURNO: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="InscripcionSeleccionado.turno_ins">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">HABILITACIÓN: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="InscripcionSeleccionado.habi_ins">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">OBSERVACIONES: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="InscripcionSeleccionado.obs_ins">
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NIVEL: </label>
+            <input type="text" class="form-control col-sm-4" [(ngModel)]="InscripcionSeleccionado.nivel">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CONVENIO </label>
+            <input type="text" class="form-control col-sm-3" [(ngModel)]="InscripcionSeleccionado.convenio">
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA DE INSCRIPCIÓN: </label>
+            <input type="date" class="form-control col-sm-3" [(ngModel)]="InscripcionSeleccionado.fec_ins">
+            <label class="form-label text-right col-sm-2">INSCRITO ANTIGUO: </label>
+            <input type="text" class="form-control col-sm-3" [(ngModel)]="InscripcionSeleccionado.antiguo_ins">
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TIPO DE PAGO: </label>
+            <input type="text" class="form-control col-sm-3" [(ngModel)]="InscripcionSeleccionado.tipo_de_pago">
+            <label class="form-label text-right col-sm-2">TERMINAL: </label>
+            <input type="text" class="form-control col-sm-3" [(ngModel)]="InscripcionSeleccionado.terminal_ins">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA DE INSCRIPCIÓN: </label>
+            <input type="date" class="form-control col-sm-4" [(ngModel)]="InscripcionSeleccionado.fec_ins">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">ESTUDIANTE: </label>
+            <select class="custom-select" type="text" [(ngModel)]="InscripcionSeleccionado.id_est">
+              <optgroup label="Seleccione Estudiante ">
+                <option *ngFor="let e of est " value="{{e.id_est}}">{{e.nombre_est}} - {{e.ape_p_est}} - {{e.ape_m_est}}
+                </option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CARRERA: </label>
+            <select class="custom-select" type="text" [(ngModel)]="InscripcionSeleccionado.id_carre">
+              <optgroup label="Seleccione su Carrera ">
+                <option *ngFor="let c of carre " value="{{c.id_carre}}">{{c.nombre_carre}} </option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">PLAN DE INSCRIPCIÓN: </label>
+            <select class="custom-select" type="text" [(ngModel)]="InscripcionSeleccionado.id_plan_ins">
+              <optgroup label="Seleccione su Plan ">
+                <option *ngFor="let p of planins " value="{{p.id_plan_ins}}">{{p.nombre_plan}} </option>
+              </optgroup>
+            </select>
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalMod" data-toggle="modal"
+  data-target="#ModalModificacion" style="width: 0px;">Abrir Modal Modificacion</button>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalMos" data-toggle="modal"
+  data-target="#ModalVisualizacion" style="width: 0px;">Abrir Modal Visualizacion</button>

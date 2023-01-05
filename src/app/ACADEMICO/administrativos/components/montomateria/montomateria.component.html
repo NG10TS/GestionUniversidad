@@ -1,0 +1,111 @@
+<strong>
+    <h2 class="text-center text-bold text-light">GESTIONAR Montomateria</h2>
+  </strong>
+<hr class="border-warning">
+
+<!-- CRUD V3: idPK=> id_monto_materia, TITULO=> MONTO POR MATERIA, nombreCRUD=> Montomateria,  dataP=> monto -->
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalCrudMontomateria"
+  data-whatever="@getbootstrap">AGREGAR MONTO POR MATERIA</button>
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input"
+      aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">SIGLA</th>
+        <th scope="col">DESCRIPCION</th>
+        <th scope="col">MONTO</th>
+        <th scope="col">VIGENTE</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of monto; let i= index">
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>
+            <spam> *ngIf="!a.Editando">{{a.sigla_monto}} </spam>
+        </td>
+        <td>
+            <spam> *ngIf="!a.Editando">{{a.descrip_monto}} </spam>
+        </td>
+        <td>
+            <spam> *ngIf="!a.Editando">{{a.monto_mat}} </spam>
+        </td>
+        <td>
+            <spam> *ngIf="!a.Editando">{{a.vigente_monto_mat}} </spam>
+        </td>
+        <td style="width: 200px;">
+          <button (click)="SeleccionarMontomateria(a.id_monto_materia)"
+            class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+          <button type="button" class="btn btn-danger" (click)="EliminarMontomateria(a.id_monto_materia)">
+            <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- MODAL DE CRUD ADD MOD DE CODIGO DE Montomateria-->
+<div class="modal fade" id="ModalCrudMontomateria" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{!newMontomateria.get('id_monto_materia').value ? 'REGISTRAR' : 'MODIFICAR'}} MONTO POR MATERIA</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newMontomateria">
+          <div class="form-group row">
+            <label class="form-label col-sm-2">SIGLA MONTO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="sigla_monto">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">DESCRIPCION MONTO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="descrip_monto">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">MONTO: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="monto">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">VIGENTE: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="vigente_monto_mat">
+              <optgroup label="SELECCIONE VIGENTE" >
+                <option value="VIGENTE">VIGENTE</option>
+                <option value="NO VIGENTE">NO VIGENTE</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">NUMERO PAGO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="nro_pag_monto_mat">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">TIPO DE MONTO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="tipo_monto_mat">
+          </div>
+          
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="resetMontomateria()">Cancelar</button>
+        <button type="button" class="btn {{!newMontomateria.get('id_monto_materia').value ? 'btn-success' : 'btn-warning'}}" data-dismiss="modal" [disabled]="!newMontomateria.valid"
+          (click)="AgregarModificarMontomateria()">{{!newMontomateria.get('id_monto_materia').value ? 'CREAR MONTO POR MATERIA' : 'MODIFICAR MONTO POR MATERIA'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudMontomateria" data-toggle="modal"
+  data-target="#ModalCrudMontomateria" style="width: 0px;">Abrir Modal Crud</button>

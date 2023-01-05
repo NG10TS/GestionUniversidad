@@ -1,0 +1,866 @@
+<strong>
+  <h2 class="text-center text-bold text-light">GESTIONAR EGRESADOS</h2>
+</strong>
+<hr class="border-warning">
+
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#Modallista"data-whatever="@getbootstrap">GESTIONAR LISTA DE PREDEFENSA</button>
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#Modallista2"data-whatever="@getbootstrap">GESTIONAR LISTA DE DEFENSA</button>
+
+
+<button type="button" (click)="LimpiarEgresados()" class="btn btn-outline-light font-weight-bold" data-toggle="modal"
+  data-target="#ModalAdd" data-whatever="@getbootstrap">AGREGAR EGRESADOS</button>
+
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input"
+      aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">NOMBRE</th>
+        <th scope="col">CARRERA</th>
+        <th scope="col">GESTIÓN</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of egre; let i= index">
+
+        <td style="width: 20px;">{{i+1}}</td>
+
+        <td>
+          <span *ngIf="!a.Editando">{{a.nombre_est}} {{a.ape_p_est}} {{a.ape_m_est}}⠀</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.nombre_carre}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.fin_periodo_ti}}/{{a.fin_gestion_ti}}</span>
+        </td>
+
+        <td style="width: 200px;">
+          <div class="btn-group">
+
+            <button class="btn btn-success btn-sm" (click)="EgresadosSeleccionado=a" type="button" data-toggle="modal"
+              data-target="#ModalVisualizacion">
+              <i class="bi bi-eye"></i>
+            </button>
+
+            <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"
+              aria-expanded="false">
+
+            </button>
+          </div>
+          <button type="button" class="btn btn-warning" (click)="SeleccionarEgresados(a.id_titulado,'Editar')"
+            style="margin-right: 10px;"><i class="bi bi-pencil"></i></button>
+
+          <button type="button" class="btn btn-danger" (click)="EliminarEgresados(a.id_titulado)">
+            <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- MODAL DE ADICION Egresados-->
+<div class="modal fade" id="ModalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> REGISTRAR EGRESADOS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- <label class="form-label text-right col-sm-2">COD ESTUDIANTE: </label> -->
+        <!-- <input type="text" [(ngModel)]="CODEst">
+        <button (click)="AutocompletarEstudiantes()" class="btn btn-success">AUTOCOMPLETAR</button>
+        <BR><BR> -->
+        <div class="mb-4" [formGroup]="newEgresados">
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">ESTUDIANTE: </label>
+            <!-- FILTRADOR V3: NombreFiltro => Estudiante-->
+            <div [formGroup]="filterEstudianteForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control" value="{{EstudianteSelect.NomC }}" />
+              </div>
+              <div *ngIf="filtroEstudiante" class="lcch-options">
+                <span *ngFor="let a of estFiltrado" class="form-control" (click)="autoCompletar(a)"
+                  (click)="filtroEstudiante=false">{{a.NomC}}</span>
+              </div>
+            </div>
+            <!-- <select class="custom-select col-sm-8" type="text" formControlName="id_est">
+              <optgroup label="Seleccione Estudiante " >
+                  <option *ngFor="let e of est " value="{{e.id_est}}">{{e.nombre_est}}  {{e.ape_p_est}}  {{e.ape_m_est}}</option>
+              </optgroup>
+            </select> -->
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CARRERA: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_carre" disabled>
+              <optgroup label="SELECCIONE CARRERA">
+                <option *ngFor="let c of carre" value="{{c.id_carre}}">{{c.nombre_carre}}</option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">PERIODO: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="fin_periodo_ti">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">GESTIÓN: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="fin_gestion_ti">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOTA ROT: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="nota_rot">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA ROT: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="fecha_rot">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOTA PANE 1: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="nota_pane1">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA PANE 1: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="fecha_pane1">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOTA PANE 2: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="nota_pane2">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA PANE 2: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="fecha_pane2">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CITE HABILITACIÓN: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="cite_habil">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA HABILITACIÓN: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="fecha_habil">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CITE CNT: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="cite_cnt">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA CNT: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="fecha_cnt">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TIPO DE DEFENSA: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="tipo_defensa">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">ACTA DE DEFENSA: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="acta_defensa">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOTA DE DEFENSA: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="nota_defensa">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NUMERO DIP: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="nro_dip">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA DIP: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="fec_dip">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA DE TRANSFERENCIA DE TITULO DE EGRESO: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="fec_trans_egr_ti">
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="AgregarEgresados()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE MODIFICACION Egresados-->
+<div class="modal fade" id="ModalModificacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">MODIFICAR EGRESADOS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="frmform" class="mb-4">
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">ESTUDIANTE: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" [(ngModel)]="EgresadosSeleccionado.id_est"
+              disabled>
+              <optgroup label="SELECCIONE ESTUDIANTE">
+                <option *ngFor="let e of est" value="{{e.id_est}}">{{e.nombre_est}} {{e.ape_p_est}} {{e.ape_m_est}}
+                </option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CARRERA: </label>
+            <select class="custom-select col-sm-10 form-control" type="text"
+              [(ngModel)]="EgresadosSeleccionado.id_carre" disabled>
+              <optgroup label="SELECCIONE CARRERA">
+                <option *ngFor="let c of carre" value="{{c.id_carre}}">{{c.nombre_carre}}</option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">PERIODO: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.fin_periodo_ti">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">GESTIÓN: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.fin_gestion_ti">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOTA ROT: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.nota_rot">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA ROT: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.fecha_rot">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOTA PANE 1: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.nota_pane1">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA PANE 1: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.fecha_pane1">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOTA PANE 2: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.nota_pane2">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA PANE 2: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.fecha_pane2">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CITE HABILITACIÓN: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.cite_habil">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA HABILITACIÓN: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.fecha_habil">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CITE CNT: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.cite_cnt">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA CNT: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.fecha_cnt">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TIPO DE DEFENSA: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.tipo_defensa">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">ACTA DE DEFENSA: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.acta_defensa">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOTA DE DEFENSA: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.nota_defensa">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NUMERO DIP: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.nro_dip">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA DIP: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.fec_dip">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA DE TRANSFERENCIA DE TITULO DE EGRESO: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.fec_trans_egr_ti">
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal"
+          (click)="ModificarEgresados(EgresadosSeleccionado)">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE VISUALIZACION Egresados-->
+<div class="modal fade" id="ModalVisualizacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> VISUALIZANDO EGRESADOS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">ESTUDIANTE: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" [(ngModel)]="EgresadosSeleccionado.id_est">
+              <optgroup label="SELECCIONE ESTUDIANTE">
+                <option *ngFor="let e of est" value="{{e.id_est}}">{{e.nombre_est}} {{e.ape_p_est}} {{e.ape_m_est}}
+                </option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CARRERA: </label>
+            <select class="custom-select col-sm-10 form-control" type="text"
+              [(ngModel)]="EgresadosSeleccionado.id_carre">
+              <optgroup label="SELECCIONE CARRERA">
+                <option *ngFor="let c of carre" value="{{c.id_carre}}">{{c.nombre_carre}}</option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">PERIODO: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.fin_periodo_ti">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">GESTIÓN: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.fin_gestion_ti">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOTA ROT: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.nota_rot">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA ROT: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.fecha_rot">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOTA PANE 1: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.nota_pane1">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA PANE 1: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.fecha_pane1">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOTA PANE 2: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.nota_pane2">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA PANE 2: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.fecha_pane2">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CITE HABILITACIÓN: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.cite_habil">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA HABILITACIÓN: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.fecha_habil">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CITE CNT: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.cite_cnt">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA CNT: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.fecha_cnt">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TIPO DE DEFENSA: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.tipo_defensa">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">ACTA DE DEFENSA: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.acta_defensa">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOTA DE DEFENSA: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.nota_defensa">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NUMERO DIP: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.nro_dip">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA DIP: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.fec_dip">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA DE TRANSFERENCIA DE TITULO DE EGRESO: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.fec_trans_egr_ti">
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalMod" data-toggle="modal"
+  data-target="#ModalModificacion" style="width: 0px;">Abrir Modal Modificacion</button>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalMos" data-toggle="modal"
+  data-target="#ModalVisualizacion" style="width: 0px;">Abrir Modal Visualizacion</button>
+
+
+<!-- MODAL DE LISTA-->
+<div class="modal fade" id="Modallista" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"> GESTIONAR PREDEFENSAS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="" >
+            <!-- CRUD V3: idPK=> id_egreso_cat, TITULO=> EGRESO CATEGORIA, nombreCRUD=> EgresoCategoria,  dataP=> egreso_categoria -->
+            <button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalAdicion"
+              data-whatever="@getbootstrap">AGREGAR</button>
+            <form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Sizing example input"
+                  aria-describedby="inputGroup-sizing-default">
+              </div>
+            </form>
+            <br>
+            <div class="table-responsive">
+              <table class="table table-bordered table-striped table-hover table-danger">
+                <thead class="bg-danger ">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">ESTUDIANTE</th>
+                    <th scope="col">CARRERA</th>
+                    <th scope="col">GESTION</th>
+                    <th scope="col">NOTA ROT</th>
+                    <th scope="col">FECHA ROT</th>
+                    <th scope="col">NOTA PREDEFENSA 1</th>
+                    <th scope="col">FECHA PREDEFENSA 1</th>
+                    <th scope="col">NOTA PREDEFENSA 2</th>
+                    <th scope="col">FECHA PREDEFENSA 2</th>
+                    <!-- <th scope="col">NOTA FINAL</th>
+                    <th scope="col">OBS</th> -->
+                    <th scope="col">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let a of egre; let i= index">
+                    <td style="width: 20px;">{{i+1}}</td>
+                    <td>
+                      <span *ngIf="!a.Editando">{{a.nombre_est}} {{a.ape_p_est}} {{a.ape_m_est}}⠀</span>
+                    </td>
+                    <td>
+                      <span *ngIf="!a.Editando">{{a.nombre_carre}}</span>
+                    </td>
+                    <td>
+                      <span *ngIf="!a.Editando">{{a.fin_periodo_ti}}/{{a.fin_gestion_ti}}</span>
+                    </td>
+                    <td>
+                      <span *ngIf="!a.Editando">{{a.nota_rot}}</span>
+                    </td>
+                    <td>
+                      <span *ngIf="!a.Editando">{{a.fecha_rot}}</span>
+                    </td>
+                    <td>
+                      <span *ngIf="!a.Editando">{{a.nota_pane1}}</span>
+                    </td>
+                    <td>
+                      <span *ngIf="!a.Editando">{{a.fecha_pane1}}</span>
+                    </td>
+                    <td>
+                      <span *ngIf="!a.Editando">{{a.nota_pane2}}</span>
+                    </td>
+                    <td>
+                      <span *ngIf="!a.Editando">{{a.fecha_pane2}}</span>
+                    </td>
+                    <!-- <td>{{a.nota_literal}}</td> -->
+                    <!-- <td>{{a.id_titulado}}</td> -->
+                    <td style="width: 200px;">
+                      <button (click)="Seleccionardocenteseguimineto(a.id_titulado)"
+                        class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+                      <!-- <button type="button" class="btn btn-danger" (click)="Eliminardocenteseguimineto(b.id_nota_eval)">
+                        <i class="bi bi-trash"></i></button> -->
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE MODIFICACION Egresados-->
+<div class="modal fade" id="ModalModificacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">MODIFICAR EGRESADOS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="frmform" class="mb-4">
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">ESTUDIANTE: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" [(ngModel)]="EgresadosSeleccionado.id_est"
+              disabled>
+              <optgroup label="SELECCIONE ESTUDIANTE">
+                <option *ngFor="let e of est" value="{{e.id_est}}">{{e.nombre_est}} {{e.ape_p_est}} {{e.ape_m_est}}
+                </option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CARRERA: </label>
+            <select class="custom-select col-sm-10 form-control" type="text"
+              [(ngModel)]="EgresadosSeleccionado.id_carre" disabled>
+              <optgroup label="SELECCIONE CARRERA">
+                <option *ngFor="let c of carre" value="{{c.id_carre}}">{{c.nombre_carre}}</option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">PERIODO: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.fin_periodo_ti">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">GESTIÓN: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.fin_gestion_ti">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOTA ROT: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.nota_rot">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA ROT: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.fecha_rot">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOTA PANE 1: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.nota_pane1">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA PANE 1: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.fecha_pane1">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOTA PANE 2: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.nota_pane2">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA PANE 2: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.fecha_pane2">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CITE HABILITACIÓN: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.cite_habil">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA HABILITACIÓN: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.fecha_habil">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CITE CNT: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.cite_cnt">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA CNT: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.fecha_cnt">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TIPO DE DEFENSA: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.tipo_defensa">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">ACTA DE DEFENSA: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.acta_defensa">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOTA DE DEFENSA: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.nota_defensa">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NUMERO DIP: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.nro_dip">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA DIP: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.fec_dip">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA DE TRANSFERENCIA DE TITULO DE EGRESO: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.fec_trans_egr_ti">
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal"
+          (click)="ModificarEgresados(EgresadosSeleccionado)">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE LISTA-->
+<div class="modal fade" id="Modallista2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"> GESTIONAR DEFENSA</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="" >
+            <!-- CRUD V3: idPK=> id_egreso_cat, TITULO=> EGRESO CATEGORIA, nombreCRUD=> EgresoCategoria,  dataP=> egreso_categoria -->
+            <button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalAdicion"
+              data-whatever="@getbootstrap">AGREGAR</button>
+            <form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Sizing example input"
+                  aria-describedby="inputGroup-sizing-default">
+              </div>
+            </form>
+            <br>
+            <div class="table-responsive">
+              <table class="table table-bordered table-striped table-hover table-danger">
+                <thead class="bg-danger ">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">ESTUDIANTE</th>
+                    <th scope="col">CARRERA</th>
+                    <th scope="col">GESTION</th>
+                    <th scope="col">HABILITADO</th>
+                    <th scope="col">FECHA</th>
+                    <th scope="col">CITE CNT</th>
+                    <th scope="col">FECHA CNT</th>
+                    <th scope="col">TIPO DEFENSA</th>
+                    <th scope="col">ACTA DEFENSA</th>
+                    <th scope="col">NOTA DEFENSA</th>
+                    <!-- <th scope="col">Nº DIP</th>
+                    <th scope="col">FECHA DIP</th>
+                    <th scope="col">FECHA TRANFERENCIA DIP</th> -->
+                    <th scope="col">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let a of egre; let i= index">
+                    <td style="width: 20px;">{{i+1}}</td>
+                    <td>
+                      <span *ngIf="!a.Editando">{{a.nombre_est}} {{a.ape_p_est}} {{a.ape_m_est}}⠀</span>
+                    </td>
+                    <td>
+                      <span *ngIf="!a.Editando">{{a.nombre_carre}}</span>
+                    </td>
+                    <td>
+                      <span *ngIf="!a.Editando">{{a.fin_periodo_ti}}/{{a.fin_gestion_ti}}</span>
+                    </td>
+                    <td>
+                      <span *ngIf="!a.Editando">{{a.cite_habil}}</span>
+                    </td>
+                    <td>
+                      <span *ngIf="!a.Editando">{{a.fecha_habil}}</span>
+                    </td>
+                    <td>
+                      <span *ngIf="!a.Editando">{{a.cite_cnt}}</span>
+                    </td>
+                    <td>
+                      <span *ngIf="!a.Editando">{{a.fecha_cnt}}</span>
+                    </td>
+                    <td>
+                      <span *ngIf="!a.Editando">{{a.tipo_defensa}}</span>
+                    </td>
+                    <td>
+                      <span *ngIf="!a.Editando">{{a.acta_defensa}}</span>
+                    </td>
+                    <td>
+                      <span *ngIf="!a.Editando">{{a.nota_defensa}}</span>
+                    </td>
+                    <!-- <td>
+                      <span *ngIf="!a.Editando">{{a.nro_dip}}</span>
+                    </td>
+                    <td>
+                      <span *ngIf="!a.Editando">{{a.fec_dip}}</span>
+                    </td>
+                    <td>
+                      <span *ngIf="!a.Editando">{{a.fec_trans_egr_ti}}</span>
+                    </td> -->
+                    <td style="width: 200px;">
+                      <button (click)="Seleccionardocenteseguimineto(a.id_titulado)"
+                        class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+                      <!-- <button type="button" class="btn btn-danger" (click)="Eliminardocenteseguimineto(a.id_nota_eval)">
+                        <i class="bi bi-trash"></i></button> -->
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- MODAL DE MODIFICACION Egresados-->
+<div class="modal fade" id="ModalModificacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">MODIFICAR EGRESADOS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="frmform" class="mb-4">
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">ESTUDIANTE: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" [(ngModel)]="EgresadosSeleccionado.id_est"
+              disabled>
+              <optgroup label="SELECCIONE ESTUDIANTE">
+                <option *ngFor="let e of est" value="{{e.id_est}}">{{e.nombre_est}} {{e.ape_p_est}} {{e.ape_m_est}}
+                </option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CARRERA: </label>
+            <select class="custom-select col-sm-10 form-control" type="text"
+              [(ngModel)]="EgresadosSeleccionado.id_carre" disabled>
+              <optgroup label="SELECCIONE CARRERA">
+                <option *ngFor="let c of carre" value="{{c.id_carre}}">{{c.nombre_carre}}</option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">PERIODO: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.fin_periodo_ti">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">GESTIÓN: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.fin_gestion_ti">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOTA ROT: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.nota_rot">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA ROT: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.fecha_rot">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOTA PANE 1: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.nota_pane1">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA PANE 1: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.fecha_pane1">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOTA PANE 2: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.nota_pane2">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA PANE 2: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.fecha_pane2">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CITE HABILITACIÓN: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.cite_habil">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA HABILITACIÓN: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.fecha_habil">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CITE CNT: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.cite_cnt">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA CNT: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.fecha_cnt">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TIPO DE DEFENSA: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.tipo_defensa">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">ACTA DE DEFENSA: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.acta_defensa">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOTA DE DEFENSA: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.nota_defensa">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NUMERO DIP: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.nro_dip">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA DIP: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.fec_dip">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA DE TRANSFERENCIA DE TITULO DE EGRESO: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="EgresadosSeleccionado.fec_trans_egr_ti">
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal"
+          (click)="ModificarEgresados(EgresadosSeleccionado)">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>

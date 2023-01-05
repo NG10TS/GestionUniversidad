@@ -1,0 +1,97 @@
+<strong>
+    <h2 class="text-center text-bold text-light">GESTIONAR Vensemestre</h2>
+  </strong>
+<hr class="border-warning">
+<!-- CRUD V3: idPK=> id_ven_semestre, TITULO=> VEN SEMESTRE, nombreCRUD=> Vensemestre,  dataP=> vensem -->
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalCrudVensemestre"
+  data-whatever="@getbootstrap">AGREGAR VEN SEMESTRE</button>
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input"
+      aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">SEMESTRE</th>
+        <th scope="col">DETALLE</th>
+        <th scope="col">FECHA</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of vensem; let i= index">
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>
+            <spam> *ngIf="!a.Editando">{{a.id_sem}} </spam>
+        </td>
+        <td>
+            <spam> *ngIf="!a.Editando">{{a.id_ven_detalle}} </spam>
+        </td>
+        <td>
+            <spam> *ngIf="!a.Editando">{{a.fec_ven_sem}} </spam>
+        </td>
+        <td style="width: 200px;">
+          <button (click)="SeleccionarVensemestre(a.id_ven_semestre)"
+            class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+          <button type="button" class="btn btn-danger" (click)="EliminarVensemestre(a.id_ven_semestre)">
+            <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- MODAL DE CRUD ADD MOD DE CODIGO DE Vensemestre-->
+<div class="modal fade" id="ModalCrudVensemestre" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{!newVensemestre.get('id_ven_semestre').value ? 'REGISTRAR' : 'MODIFICAR'}} VEN SEMESTRE</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newVensemestre">
+          <div class="form-group row">
+            <label class="form-label col-sm-2">SEMESTRE: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_sem">
+              <optgroup label="SELECCIONE SEMESTRE" >
+                <option *ngFor="let a of sem" value="{{a.id_sem}}">{{a.id_sem}}</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">VEN DETALLE: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_ven_detalle">
+              <optgroup label="SELECCIONE VEN DETALLE" >
+                <option *ngFor="let a of vendet" value="{{a.id_ven_detalle}}">{{a.fec_materia}}</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">FECHA VEN SEMESTRE: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="fec_ven_sem">
+          </div>
+          
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="resetVensemestre()">Cancelar</button>
+        <button type="button" class="btn {{!newVensemestre.get('id_ven_semestre').value ? 'btn-success' : 'btn-warning'}}" data-dismiss="modal" [disabled]="!newVensemestre.valid"
+          (click)="AgregarModificarVensemestre()">{{!newVensemestre.get('id_ven_semestre').value ? 'CREAR VEN SEMESTRE' : 'MODIFICAR VEN SEMESTRE'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudVensemestre" data-toggle="modal"
+  data-target="#ModalCrudVensemestre" style="width: 0px;">Abrir Modal Crud</button>

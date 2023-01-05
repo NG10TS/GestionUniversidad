@@ -1,0 +1,190 @@
+<strong>
+  <h2 class="text-center text-bold text-light">GESTIONAR PRESUPUESTOS E INGRESOS</h2>
+</strong>
+<hr class="border-warning">
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalCrudPresupuestosIngreso"
+  data-whatever="@getbootstrap">AGREGAR PRESUPUESTOS DE INGRESOS</button>
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalGestionIngresosOperativos"
+  data-whatever="@getbootstrap">GESTIONAR INGRESOS OPERATIVOS</button>
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input"
+      aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<!-- #region CRUD PRINCIPAL PRESUPUESTOS INGRESOS -->
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">NOMBRE DE PLAN DE PROYECTO</th>
+        <th scope="col">MONTO PRESUPUESTO</th>
+        <th scope="col">MONTO EJECUTADO</th>
+        <th scope="col">MONTO PROYECTO A PAGAR</th>
+        <th scope="col">MES DE PRESUPUESTO</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of presupuestoIngreso; let i= index">
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>{{a.nombre_plan_proyec}}</td>
+        <td>{{a.monto_presu}}</td>
+        <td>{{a.monto_ejecutado}}</td>
+        <td>{{a.monto_proy}}</td>
+        <td>{{a.mes_presu}}</td>
+        <td style="width: 200px;">
+          <button (click)="SeleccionarPresupuestosIngreso(a.id_presu_ingre)"
+            class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+          <button type="button" class="btn btn-danger" (click)="EliminarPresupuestosIngreso(a.id_presu_ingre)">
+            <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- MODAL DE CRUD ADD MOD DE CODIGO DE PresupuestosIngreso-->
+<div class="modal fade" id="ModalCrudPresupuestosIngreso" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{!newPresupuestosIngreso.get('id_presu_ingre').value ? 'REGISTRAR' : 'MODIFICAR'}} PRESUPUESTOS DE INGRESOS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newPresupuestosIngreso">
+          <div class="form-group row">
+            <label class="form-label col-sm-2">NOMBRE DEL PLAN DE PROYECTO: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_ingreso_oper">
+              <optgroup label="SELECCIONE NOMBRE DEL PLAN DE PROYECTO" >
+                <option *ngFor="let a of ingresoOperativo" value="{{a.id_ingreso_oper}}">{{a.nombre_plan_proyec}} - {{monto_proy}} Bs.</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">MONTO PRESUPUESTO: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="monto_presu">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">MONTO_EJECUTADO: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="monto_ejecutado">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">MES DE PRESUPUESTO: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="mes_presu">
+          </div>
+          
+          
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="resetPresupuestosIngreso()">Cancelar</button>
+        <button type="button" class="btn {{!newPresupuestosIngreso.get('id_presu_ingre').value ? 'btn-success' : 'btn-warning'}}" data-dismiss="modal" [disabled]="!newPresupuestosIngreso.valid"
+          (click)="AgregarModificarPresupuestosIngreso()">{{!newPresupuestosIngreso.get('id_presu_ingre').value ? 'CREAR PRESUPUESTOS DE INGRESOS' : 'MODIFICAR PRESUPUESTOS DE INGRESOS'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudPresupuestosIngreso" data-toggle="modal"
+  data-target="#ModalCrudPresupuestosIngreso" style="width: 0px;">Abrir Modal Crud</button>
+
+<!-- #endregion CRUD PRINCIPAL PRESUPUESTOS INGRESOS -->
+
+<!-- #region INGRESOS OPERATIVOS -->
+<!-- MODAL DE GESTION INGRESOS OPERATIVOS-->
+<div class="modal fade" id="ModalGestionIngresosOperativos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"> GESTIONAR INGRESOS OPERATIVOS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" >
+            <form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Sizing example input"
+                  aria-describedby="inputGroup-sizing-default">
+              </div>
+            </form>
+            <br>
+            <button type="button" class="btn btn-outline-light font-weight-bold" (click)="ShowAddIngresoOperativo=true">AGREGAR INGRESO OPERATIVO</button>
+            <hr>
+            <div class="card" [formGroup]="newIngresoOperativo" *ngIf="ShowAddIngresoOperativo">
+              <label class="form-text text-center" style="bottom:0px; left:0px">INTRODUCIR INGRESO OPERATIVO</label>
+              <button class="btn btn-success" style="position: absolute; top:0px; right:0px" (click)="AgregarModificarIngresoOperativo()" (click)="ShowAddIngresoOperativo=false">GUARDAR</button>
+              <button class="btn btn-secondary" style="position: absolute; top:0px; left:0px" (click)="ShowAddIngresoOperativo=false">CANCELAR</button>
+              <div class="card-body">
+                <div class="form-group row">
+                    <label class="form-label col-sm-2">MONTO DE PROYECTO EMITIDO POR ESTUDIANTE: </label>
+                    <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_plan_pago_proyec">
+                      <optgroup label="SELECCIONE MONTO DE PROYECTO EMITIDO POR ESTUDIANTE" >
+                        <option *ngFor="let a of planPagoProyecciones" value="{{a.id_plan_pago_proyec}}">{{a.monto_proy}} - {{a.ape_p_est}} {{a.ape_m_est}} {{a.nombre_est}}</option>
+                      </optgroup>
+                     </select>
+                  </div>
+                  <div class="form-group row">
+                    <label class="form-label col-sm-2">NOMBRE DEL PLAN DE PROYECTO: </label>
+                    <input type="text" class="form-control col-sm-10" formControlName="nombre_plan_proyec">
+                  </div>
+                  
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-bordered table-striped table-hover table-danger">
+                <thead class="bg-danger ">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">NOMBRE DE PLAN DE PROYECTO</th>
+                    <th scope="col">MONTO DE PROYECTO</th>
+                    <th scope="col">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody [formGroup]="newIngresoOperativo">
+                  <tr *ngFor="let a of ingresoOperativo; let i= index">
+                    <td style="width: 20px;">{{i+1}}</td>
+                    <td>
+                     <span *ngIf="!a.Editando">{{a.nombre_plan_proyec}}</span>
+                     <input type="text" formControlName="nombre_plan_proyec" [(ngModel)]="a.nombre_plan_proyec" *ngIf="a.Editando">
+                    </td>
+                    <td>
+                     <span *ngIf="!a.Editando">{{a.id_plan_pago_proyec}}</span>
+                     <!-- <input type="text" formControlName="id_plan_pago_proyec" [(ngModel)]="a.id_plan_pago_proyec" *ngIf="a.Editando"> -->
+                     <select class="custom-select form-control" type="text" formControlName="id_plan_pago_proyec" [(ngModel)]="a.id_plan_pago_proyec" *ngIf="a.Editando">
+                        <optgroup label="SELECCIONE MONTO DE PROYECTO" >
+                          <option *ngFor="let a of planPagoProyecciones" value="{{a.id_plan_pago_proyec}}">{{a.monto_proy}} - {{a.ape_p_est}} {{a.ape_m_est}} {{a.nombre_est}}</option>
+                        </optgroup>
+                       </select>
+                    </td>
+
+                    <td style="width: 200px;">
+                      <button (click)="SeleccionarIngresoOperativo(a.id_ingreso_oper)"
+                        class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+                      <button type="button" class="btn btn-danger" (click)="EliminarIngresoOperativo(a.id_ingreso_oper)">
+                        <i class="bi bi-trash"></i></button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- #endregion INGRESOS OPERATIVOS -->

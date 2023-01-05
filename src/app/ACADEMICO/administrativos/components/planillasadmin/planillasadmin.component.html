@@ -1,0 +1,411 @@
+<strong>
+  <h2 class="text-center text-bold text-light">GESTIONAR PLANILLAS ADMIN</h2>
+</strong>
+<hr class="border-warning">
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalEgresoAdmin"data-whatever="@getbootstrap">GESTIONAR EGRESOS ADMIN</button>
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalEgresoCat"data-whatever="@getbootstrap">GESTIONAR EGRESOS CATEGORIA</button>
+
+<!-- #region CRUD PRINCIPAL PLANILLAS ADMIN -->
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalCrudPlanillaAdmin"
+  data-whatever="@getbootstrap">AGREGAR PLANILLAS ADMIN</button>
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input"
+      aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">NOMBRE ADMIN</th>
+        <th scope="col">NOMBRE CARGO ADMIN</th>
+        <th scope="col">NUMERO PLANILLA</th>
+        <th scope="col">MES PLANILLA</th>
+        <th scope="col">HABERES ADMIN</th>
+        <th scope="col">HB1 ADMIN</th>
+        <th scope="col">CAJA ADMIN</th>
+        <th scope="col">BOTRO1 ADMIN</th>
+        <th scope="col">FECHA PLANILLA ADMIN</th>
+        <!-- <th scope="col">#</th> -->
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of planilla_admin; let i= index">
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>{{a.nombre_admin}} {{a.ape_p_admin}} {{a.ape_m_admin}}</td>
+        <td>{{a.nombre_cargo_admin}} </td>
+        <td>{{a.nro_planilla}} </td>
+        <td>{{a.mes_planilla}} </td>
+        <td>{{a.haberes_admin}} </td>
+        <td>{{a.hb1_admin}} </td>
+        <td>{{a.caja_admin}} </td>
+        <td>{{a.botro1_admin}} </td>
+        <td>{{a.fec_planilla_admin}} </td>
+        <td style="width: 200px;">
+          <button (click)="SeleccionarPlanillaAdmin(a.id_planilla_admin)"
+            class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+          <button type="button" class="btn btn-danger" (click)="EliminarPlanillaAdmin(a.id_planilla_admin)">
+            <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- MODAL DE CRUD ADD MOD DE CODIGO DE PlanillaAdmin-->
+<div class="modal fade" id="ModalCrudPlanillaAdmin" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{!newPlanillaAdmin.get('id_planilla_admin').value ? 'REGISTRAR' : 'MODIFICAR'}} PLANILLAS ADMIN</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="resetPlanillaAdmin()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newPlanillaAdmin">
+            {{newPlanillaAdmin.value|json}}
+          <div class="form-group row">
+            <label class="form-label col-sm-2">NUMERO PLANILLA: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="nro_planilla">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">MES PLANILLA: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="mes_planilla">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">GESTION PLANILLA: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="gestion_planilla">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">NOMBRE ADMINISTRATIVO: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_administrativo">
+              <optgroup label="SELECCIONE NOMBRE ADMINISTRATIVO" >
+                <option *ngFor="let a of admin" value="{{a.id_administrativo}}">{{a.nombre_admin}} {{a.ape_p_admin}} {{a.ape_m_admin}}</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">CARGO NOMBRE: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_cargo_admin">
+              <optgroup label="SELECCIONE CARGO NOMBRE" >
+                <option *ngFor="let a of cargoadmin" value="{{a.id_cargo_admin}}">{{a.nombre_cargo_admin}}</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">HABERES ADMIN: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="haberes_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">HB1 ADMIN: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="hb1_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">HB2 ADMIN: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="hb2_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">AFP ADMIN: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="afp_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">CAJA ADMIN: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="caja_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">OTRO ¿D ADMIN: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="otroi_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">BANT ADMIN: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="bant_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">BOTRO1 ADMIN: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="botro1_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">BOTRO2 ADMIN: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="botro2_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">LIQUIDO ADMIN: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="liquido_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">OBS ADMIN: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="obs_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">FECHA PLANILLA ADMIN: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="fec_planilla_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">EGRESO ADMIN: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_egreso_admin">
+              <optgroup label="SELECCIONE EGRESO ADMIN" >
+                <option *ngFor="let a of egreso_admin" value="{{a.id_egreso_admin}}">{{a.categoria_egreso}}</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">CONS ADMIN: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="cons_admin">
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="resetPlanillaAdmin()">Cancelar</button>
+        <button type="button" class="btn {{!newPlanillaAdmin.get('id_planilla_admin').value ? 'btn-success' : 'btn-warning'}}" data-dismiss="modal" [disabled]="!newPlanillaAdmin.valid"
+          (click)="AgregarModificarPlanillaAdmin()">{{!newPlanillaAdmin.get('id_planilla_admin').value ? 'CREAR PLANILLAS ADMIN' : 'MODIFICAR PLANILLAS ADMIN'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudPlanillaAdmin" data-toggle="modal"
+  data-target="#ModalCrudPlanillaAdmin" style="width: 0px;">Abrir Modal Crud</button>
+
+<!-- #endregion CRUD PRINCIPAL PLANILLAS ADMIN -->
+
+<!-- #region CRUD EGRESOS ADMIN -->
+<!-- MODAL DE ADD MOD-->
+<div class="modal fade" id="ModalEgresoAdmin" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"> GESTIONAR EGRESOS ADMIN</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="" >
+        <button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalCrudEgresoAdmin"
+        data-whatever="@getbootstrap">AGREGAR EGRESOS ADMIN</button>
+        <form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+          </div>
+          <input type="text" class="form-control" aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-default">
+        </div>
+        </form>
+        <br>
+        <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover table-danger">
+          <thead class="bg-danger ">
+            <tr>
+              <th scope="col">#</th>
+                  <th scope="col">NOMBRE ADJ EGRESO</th>
+                  <th scope="col">MONTO EGRESO</th>
+                  <th scope="col">FECHA EGRESO</th>
+                  <th scope="col">TASA DE CAMBIO</th>
+                  <th scope="col">FECHA DE TRANSFERENCIAKS</th>
+                  <th scope="col">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let a of egreso_admin; let i= index">
+                <td style="width: 20px;">{{i+1}}</td>
+                <td>{{a.nombre_adj_egreso}}</td>
+                <td>{{a.monto_egreso}}</td>
+                <td>{{a.fec_egreso}}</td>
+                <td>{{a.tasa_cambio_egreso}}</td>
+                <td>{{a.fec_trans_egreso}}</td>
+                <td style="width: 200px;">
+                <button (click)="SeleccionarEgresoAdmin(a.id_egreso_admin)"
+                  class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+                <button type="button" class="btn btn-danger" (click)="EliminarEgresoAdmin(a.id_egreso_admin)">
+                  <i class="bi bi-trash"></i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+              </div>
+            </div>
+          </div>
+</div>
+
+<!-- MODAL DE CRUD ADD MOD DE CODIGO DE EgresoAdmin-->
+<div class="modal fade" id="ModalCrudEgresoAdmin" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{!newEgresoAdmin.get('id_egreso_admin').value ? 'REGISTRAR' : 'MODIFICAR'}} EGRESOS ADMIN</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newEgresoAdmin">
+            {{newEgresoAdmin.value|json}}
+          <div class="form-group row">
+            <label class="form-label col-sm-2">IDENTIDAD: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="identi_adj_egreso">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">NOMBRE ADJ: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="nombre_adj_egreso">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">DETALLE EGRESO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="detalle_egreso">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">CATEGORIA: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_egreso_cat">
+              <optgroup label="SELECCIONE CATEGORIA" >
+                <option *ngFor="let a of egreso_cat" value="{{a.id_egreso_cat}}">{{a.nombre_egre_cat}}</option>
+              </optgroup>
+             </select>
+          </div>
+          
+          <div class="form-group row">
+            <label class="form-label col-sm-2">FECHA EGRESO: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="fec_egreso">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">MONTO EGRESO: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="monto_egreso">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">TASA DE CAMBIO: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="tasa_cambio_egreso">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">OBSERVACION: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="obs_egreso">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">FECHA TRANSFERENCIA: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="fec_trans_egreso">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">NUMERO FACTURA EGRESO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="nro_fac_egreso">
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="resetEgresoAdmin()">Cancelar</button>
+        <button type="button" class="btn {{!newEgresoAdmin.get('id_egreso_admin').value ? 'btn-success' : 'btn-warning'}}" data-dismiss="modal" [disabled]="!newEgresoAdmin.valid"
+          (click)="AgregarModificarEgresoAdmin()">{{!newEgresoAdmin.get('id_egreso_admin').value ? 'CREAR EGRESOS ADMIN' : 'MODIFICAR EGRESOS ADMIN'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudEgresoAdmin" data-toggle="modal"
+  data-target="#ModalCrudEgresoAdmin" style="width: 0px;">Abrir Modal Crud</button>
+<!-- #endregion CRUD EGRESOS ADMIN -->
+
+
+<!-- #region CRUD EGRESO CATEGORIA -->
+<!-- MODAL DE EGRESO CATEGORIA-->
+<div class="modal fade" id="ModalEgresoCat" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"> GESTIONAR EGRESO CATEGORIA</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="" > 
+            <!-- CRUD V3: idPK=> id_egreso_cat, TITULO=> EGRESO CATEGORIA, nombreCRUD=> EgresoCategoria,  dataP=> egreso_categoria -->
+            <button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalCrudEgresoCategoria"
+              data-whatever="@getbootstrap">AGREGAR EGRESO CATEGORIA</button>
+            <form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Sizing example input"
+                  aria-describedby="inputGroup-sizing-default">
+              </div>
+            </form>
+            <br>
+            <div class="table-responsive">
+              <table class="table table-bordered table-striped table-hover table-danger">
+                <thead class="bg-danger ">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">NOMBRE CATEGORIA</th>
+                    <th scope="col">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let a of egreso_cat; let i= index">
+                    <td style="width: 20px;">{{i+1}}</td>
+                    <td>{{a.nombre_egre_cat}}</td>
+                    <td style="width: 200px;">
+                      <button (click)="SeleccionarEgresoCategoria(a.id_egreso_cat)"
+                        class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+                      <button type="button" class="btn btn-danger" (click)="EliminarEgresoCategoria(a.id_egreso_cat)">
+                        <i class="bi bi-trash"></i></button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+     <!-- MODAL DE CRUD ADD MOD DE CODIGO DE EgresoCategoria-->
+     <div class="modal fade" id="ModalCrudEgresoCategoria" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">
+              {{!newEgresoCategoria.get('id_egreso_cat').value ? 'REGISTRAR' : 'MODIFICAR'}} EGRESO CATEGORIA</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" [formGroup]="newEgresoCategoria">
+            {{newEgresoCategoria.value|json}}
+           <div class="form-group row">
+             <label class="form-label col-sm-2">NOMBRE EGRESO CATEGORIA: </label>
+             <input type="text" class="form-control col-sm-10" formControlName="nombre_egre_cat">
+           </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+              (click)="resetEgresoCategoria()">Cancelar</button>
+            <button type="button" class="btn {{!newEgresoCategoria.get('id_egreso_cat').value ? 'btn-success' : 'btn-warning'}}" data-dismiss="modal" [disabled]="!newEgresoCategoria.valid"
+              (click)="AgregarModificarEgresoCategoria()">{{!newEgresoCategoria.get('id_egreso_cat').value ? 'CREAR EGRESO CATEGORIA' : 'MODIFICAR EGRESO CATEGORIA'}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudEgresoCategoria" data-toggle="modal"
+      data-target="#ModalCrudEgresoCategoria" style="width: 0px;">Abrir Modal Crud</button>
+
+<!-- #endregion CRUD EGRESO CATEGORIA -->

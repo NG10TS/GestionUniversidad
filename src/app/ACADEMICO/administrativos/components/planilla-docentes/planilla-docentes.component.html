@@ -1,0 +1,137 @@
+<strong>
+  <h2 class="text-center text-bold text-light">GESTIONAR PLANILLA DOCENTES</h2>
+</strong>
+<hr class="border-warning">
+<!-- CRUD V3: idPK=> id_planilla_doc, TITULO=> PLANILLA DOCENTE, nombreCRUD=> PlanillaDoc,  dataP=> planillaDoc -->
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalCrudPlanillaDoc"
+  data-whatever="@getbootstrap">AGREGAR PLANILLA DOCENTE</button>
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input"
+      aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nro. PLANILLA</th>
+        <th scope="col">DOCENTE</th>
+        <th scope="col">MONTO PLANILLA</th>
+        <th scope="col">TOTAL PLANILLA</th>
+        <th scope="col">NOMBRE DE EGRESO ADMINs</th>
+        <th scope="col">OBSERVACION PLANILLA</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of planillaDoc; let i= index">
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>{{a.nro_plani_doc}}</td>
+        <td>{{a.ape_p_doc}} {{a.ape_m_doc}} {{a.nombre_doc}}</td>
+        <td>{{a.monto_plani}}</td>
+        <td>{{a.total_plani}}</td>
+        <td>{{a.nombre_adj_egreso}}</td>
+        <td>{{a.obs_plani}}</td>
+        <td style="width: 200px;">
+          <button (click)="SeleccionarPlanillaDoc(a.id_planilla_doc)"
+            class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+          <button type="button" class="btn btn-danger" (click)="EliminarPlanillaDoc(a.id_planilla_doc)">
+            <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- MODAL DE CRUD ADD MOD DE CODIGO DE PlanillaDoc-->
+<div class="modal fade" id="ModalCrudPlanillaDoc" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{!newPlanillaDoc.get('id_planilla_doc').value ? 'REGISTRAR' : 'MODIFICAR'}} PLANILLA DOCENTE</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newPlanillaDoc">
+          <div class="form-group row">
+            <label class="form-label col-sm-2">NRO DE PLANILLA DOCENTE: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="nro_plani_doc">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">DOMIC PLANILLA DOCENTE: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="domic_plani_doc">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">DOCENTE: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_doc">
+              <optgroup label="SELECCIONE DOCENTE" >
+                <option *ngFor="let a of docente" value="{{a.id_doc}}">{{a.ape_p_doc}} {{a.ape_m_doc}} {{a.nombre_doc}}</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">MONTO PLANILLA: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="monto_plani">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">TOTAL PLANILLA: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="total_plani">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">Ret. PLANILLA: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="ret_plani">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">Inc. PLANILLA: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="inc_plani">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">DESC PLANILLA: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="desc_plani">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">LIQUIDO PLANILLA: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="liquido_plani">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">OBSERVACION PLANILLA: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="obs_plani">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">EGRESOS ADMIN: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_egreso_admin">
+              <optgroup label="SELECCIONE EGRESOS ADMIN" >
+                <option *ngFor="let a of egresoAdmin" value="{{a.id_egreso_admin}}">{{a.nombre_adj_egreso}}</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">SEL. PLANILLA: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="sel_plani">
+          </div>
+          
+          
+          
+          
+          
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="resetPlanillaDoc()">Cancelar</button>
+        <button type="button" class="btn {{!newPlanillaDoc.get('id_planilla_doc').value ? 'btn-success' : 'btn-warning'}}" data-dismiss="modal" [disabled]="!newPlanillaDoc.valid"
+          (click)="AgregarModificarPlanillaDoc()">{{!newPlanillaDoc.get('id_planilla_doc').value ? 'CREAR PLANILLA DOCENTE' : 'MODIFICAR PLANILLA DOCENTE'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudPlanillaDoc" data-toggle="modal"
+  data-target="#ModalCrudPlanillaDoc" style="width: 0px;">Abrir Modal Crud</button>

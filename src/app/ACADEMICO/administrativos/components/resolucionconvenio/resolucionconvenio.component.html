@@ -1,0 +1,101 @@
+<strong>
+    <h2 class="text-center text-bold text-light">GESTIONAR RESOLUCION DE CONVENIOS DE BECAS</h2>
+  </strong>
+  <hr class="border-warning">
+<!-- CRUD V3: idPK=> id_resol_convenio, TITULO=> RESOLUCION, nombreCRUD=> Resolucionconvenio,  dataP=> resol -->
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalCrudResolucionconvenio"
+  data-whatever="@getbootstrap">AGREGAR RESOLUCION</button>
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input"
+      aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Convenio</th>
+        <th scope="col">Fecha</th>
+        <th scope="col">Gestion</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of resol; let i= index">
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>
+            <spam> *ngIf="!a.Editando">{{a.nombre_convenio}} </spam>
+        </td>
+        <td>
+            <spam> *ngIf="!a.Editando">{{a.fec_convenio}} </spam>
+        </td>
+        <td>
+            <spam> *ngIf="!a.Editando">{{a.periodo_convenio}} | {{a.gestion_convenio}} </spam>
+        </td>
+
+        <td style="width: 200px;">
+          <button (click)="SeleccionarResolucionconvenio(a.id_resol_convenio)"
+            class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+          <button type="button" class="btn btn-danger" (click)="EliminarResolucionconvenio(a.id_resol_convenio)">
+            <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- MODAL DE CRUD ADD MOD DE CODIGO DE Resolucionconvenio-->
+<div class="modal fade" id="ModalCrudResolucionconvenio" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{!newResolucionconvenio.get('id_resol_convenio').value ? 'REGISTRAR' : 'MODIFICAR'}} RESOLUCION</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newResolucionconvenio">
+          <div class="form-group row">
+            <label class="form-label col-sm-2">CONVENIO: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_convenio">
+              <optgroup label="SELECCIONE CONVENIO" >
+                <option *ngFor="let a of conve" value="{{a.id_convenio}}">{{a.nombre_convenio}}</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">Nº RESOLUCIÓN: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="nro_resol_convenio">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">FECHA: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="fec_convenio">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">PERIODO: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="periodo_gestion">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">GESTIÓN: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="gestión_gestion">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="resetResolucionconvenio()">Cancelar</button>
+        <button type="button" class="btn {{!newResolucionconvenio.get('id_resol_convenio').value ? 'btn-success' : 'btn-warning'}}" data-dismiss="modal" [disabled]="!newResolucionconvenio.valid"
+          (click)="AgregarModificarResolucionconvenio()">{{!newResolucionconvenio.get('id_resol_convenio').value ? 'CREAR RESOLUCION' : 'MODIFICAR RESOLUCION'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudResolucionconvenio" data-toggle="modal"
+  data-target="#ModalCrudResolucionconvenio" style="width: 0px;">Abrir Modal Crud</button>

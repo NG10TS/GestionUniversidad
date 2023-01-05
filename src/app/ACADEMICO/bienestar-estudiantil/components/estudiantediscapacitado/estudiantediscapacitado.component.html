@@ -1,0 +1,300 @@
+<strong>
+  <h2 class="text-center text-bold text-light">GESTIONAR ESTUDIANTES DISCAPACITADOS</h2>
+</strong>
+<hr class="border-warning">
+
+<button type="button" (click)="LimpiarEstudiantediscapacitados()" class="btn btn-outline-light font-weight-bold"
+  data-toggle="modal" data-target="#ModalAdd" data-whatever="@getbootstrap">AGREGAR ESTUDIANTE</button>
+
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input"
+      aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">NOMBRE COMPLETO</th>
+        <th scope="col">TIPO DE DISCAPACIDAD</th>
+        <th scope="col">DESCRIPCIÓN</th>
+        <th scope="col">PROMEDIO</th>
+        <th scope="col">TUTOR</th>
+        <th scope="col">CARRERA</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of estd; let i= index">
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>
+          <!-- <span *ngIf="!a.Editando">{{a.ape_p_doc}}⠀</span>
+          <span *ngIf="!a.Editando">{{a.ape_m_doc}}⠀</span>
+          <span *ngIf="!a.Editando">{{a.nombre_doc}}</span> -->
+          <span *ngIf="!a.Editando">{{a.NombreCompleto}}⠀</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.tipo_discap}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.desc_discap}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.prom_discap}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.nombre_tutor}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.nombre_carre}}</span>
+        </td>
+
+        <td style="width: 200px;">
+          <div class="btn-group">
+            <button class="btn btn-success" (click)="SeleccionarEstudiantediscapacitado(a.id_discap,'Mostrar')"
+              type="button">
+              <i class="bi bi-eye"></i>
+            </button>
+
+            <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"
+              aria-expanded="false" style="margin-right: 10px;">
+            </button>
+            <div class="dropdown-menu">
+              <!-- <button class="dropdown-item" data-toggle="modal" data-target="#ModalModificacion">Editar Datos Personales</button> -->
+              <button class="dropdown-item" data-toggle="modal">Agregar Datos Curriculares</button>
+              <button class="dropdown-item" data-toggle="modal">Hoja de Datos de Docente</button>
+              <button class="dropdown-item" data-toggle="modal" data-target="#ModalHitorialDesig">Historial de
+                Designaciones</button>
+            </div>
+          </div>
+          <button type="button" class="btn btn-warning"
+            (click)="SeleccionarEstudiantediscapacitado(a.id_discap, 'Editar')" style="margin-right: 10px;"><i
+              class="bi bi-pencil"></i></button>
+
+          <button type="button" class="btn btn-danger" (click)="EliminarEstudiantediscapacitado(a.id_discap)">
+            <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- MODAL DE ADICION ESTUDIANTE-->
+<div class="modal fade" id="ModalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> REGISTRAR ESTUDIANTE NUEVO</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group row">
+          <label class="form-label  col-sm-4">CÓDIGO DE ESTUDIANTE: </label>
+          <input style="margin-right: 15px;" type="text" [(ngModel)]="CODEst" class="form-control col-sm-4"
+            oninput="this.value= this.value.toUpperCase()" placeholder="INGRESE CODIGO">
+          <button (click)="AutocompletarEstudiantes()" class="btn btn-success">AUTOCOMPLETAR</button>
+        </div>
+        <br>
+        <form id="frmform" class="mb-4" [formGroup]="newEstudiantediscapacitado">
+          <div class="form-group row">
+            <label class="form-label  col-sm-3">ESTUDIANTE: </label>
+            <select class="custom-select col-sm-9" type="text" formControlName="id_est">
+              <optgroup label="Seleccione Estudiante ">
+                <option *ngFor="let e of est " value="{{e.id_est}}">{{e.NombreCompleto}}</option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label  col-sm-3">CARRERA: </label>
+            <select class="custom-select col-sm-9" type="text" formControlName="id_carre">
+              <optgroup label="Seleccione su Carrera ">
+                <option *ngFor="let c of carre " value="{{c.id_carre}}">{{c.nombre_carre}} </option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label  col-sm-3">PROMEDIO DE DISCAPACIDAD: </label>
+            <input type="number" class="form-control col-sm-9" formControlName="prom_discap"
+              oninput="this.value= this.value.toUpperCase()" placeholder="INGRESE PROMEDIO DE DISCAPACIDAD">
+          </div>
+          <div class="form-group row">
+            <label class="form-label  col-sm-3">TIPO DE DISCAPACIDAD: </label>
+            <input type="text" class="form-control col-sm-9" formControlName="tipo_discap"
+              oninput="this.value= this.value.toUpperCase()" placeholder="INGRESE TIPO DE DISCAPACIDAD">
+          </div>
+          <div class="form-group row">
+            <label class="form-label  col-sm-3">DESCRIPCIÓN: </label>
+            <input type="text" class="form-control col-sm-9" formControlName="desc_discap"
+              oninput="this.value= this.value.toUpperCase()" placeholder="INGRESE DESCRIPCION DE LA DISCAPACIDAD">
+          </div>
+          <div class="form-group row">
+            <label class="form-label  col-sm-3">TUTOR A CARGO: </label>
+            <input type="text" class="form-control col-sm-9" formControlName="nombre_tutor"
+              oninput="this.value= this.value.toUpperCase()" placeholder="INGRESE NOMBRE DE TUTOR">
+            <!-- <select class="custom-select" type="text" formControlName="nombre_tutor">
+                <optgroup label="Seleccione Tutor ">
+                    <option *ngFor="let e of est " value="{{e.id_est}} ">{{e.padre_del_est}} </option>
+                    <option *ngFor="let e of est " value="{{e.id_est}}">{{e.madre_del_est}}</option>
+                </optgroup>
+              </select> -->
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal"
+          (click)="AgregarEstudiantediscapacitado()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL_DE_MODIFICACION ESTUDIANTE-->
+<div class="modal fade" id="ModalModificacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">MODIFICAR ESTUDIANTE</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="frmform" class="mb-4">
+
+          <div class="form-group row">
+            <label class="form-label  col-sm-2">ESTUDIANTE: </label>
+            <select class="custom-select col-sm-10" type="text"
+              [(ngModel)]="EstudiantediscapacitadoSeleccionado.id_est">
+              <optgroup label="Seleccione Estudiante ">
+                <option *ngFor="let e of est " value="{{e.id_est}}">{{e.NombreCompleto}}</option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label  col-sm-2">CARRERA: </label>
+            <select class="custom-select col-sm-10" type="text" formControlName="id_carre">
+              <optgroup label="Seleccione su Carrera ">
+                <option *ngFor="let c of carre " value="{{c.id_carre}}">{{c.nombre_carre}} </option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label  col-sm-2">PROMEDIO DE DISCAPACIDAD: </label>
+            <input type="text" class="form-control col-sm-2"
+              [(ngModel)]="EstudiantediscapacitadoSeleccionado.prom_discap"
+              oninput="this.value= this.value.toUpperCase()" placeholder="INGRESE PROMEDIO DE DISCAPACIDAD">
+            <label class="form-label  col-sm-3">TIPO DE DISCAPACIDAD: </label>
+            <input type="text" class="form-control col-sm-5"
+              [(ngModel)]="EstudiantediscapacitadoSeleccionado.tipo_discap"
+              oninput="this.value= this.value.toUpperCase()" placeholder="INGRESE TIPO DE DISCAPACIDAD">
+          </div>
+          <!-- <div class="form-group row">
+          <label class="form-label  col-sm-3">TIPO DE DISCAPACIDAD: </label>
+          <input type="text" class="form-control col-sm-9"[(ngModel)]="EstudiantediscapacitadoSeleccionado.tipo_discap">
+          </div> -->
+          <div class="form-group row">
+            <label class="form-label  col-sm-2">DESCRIPCIÓN: </label>
+            <input type="text" class="form-control col-sm-10"
+              [(ngModel)]="EstudiantediscapacitadoSeleccionado.desc_discap"
+              oninput="this.value= this.value.toUpperCase()" placeholder="INGRESE DESCRIPCION DE LA DISCAPACIDAD">
+          </div>
+          <div class="form-group row">
+            <label class="form-label  col-sm-2">TUTOR A CARGO: </label>
+            <input type="text" class="form-control col-sm-10"
+              [(ngModel)]="EstudiantediscapacitadoSeleccionado.nombre_tutor"
+              oninput="this.value= this.value.toUpperCase()" placeholder="INGRESE NOMBRE DEL TUTOR">
+            <!-- <select class="custom-select" type="text" [(ngModel)]="EstudiantediscapacitadoSeleccionado.nombre_tutor">
+                <optgroup label="Seleccione Tutor " >
+                  <option *ngFor="let e of est " value="{{e.id_est}}">{{e.padre_del_est}} </option>
+                  <option *ngFor="let e of est " value="{{e.id_est}}">{{e.madre_del_est}}</option>
+              </optgroup>
+              </select> -->
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal"
+              (click)="ModificarEstudiantediscapacitado(EstudiantediscapacitadoSeleccionado)">Guardar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- MODAL DE VISUALIZACION -->
+    <div class="modal fade" id="ModalVisualizacion" tabindex="-1" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel"> VISUALIZAR ESTUDIANTE </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="frmform" class="mb-4">
+              <div class="form-group row">
+                <label class="form-label  col-sm-2">ESTUDIANTE: </label>
+                <select class="custom-select col-sm-10" type="text" [(ngModel)]="EstudiantediscapacitadoSeleccionado.id_est">
+                  <optgroup label="Seleccione Estudiante ">
+                    <option *ngFor="let e of est " value="{{e.id_est}}">{{e.NombreCompleto}}</option>
+                  </optgroup>
+                </select>
+              </div>
+              <div class="form-group row">
+                <label class="form-label  col-sm-2">CARRERA: </label>
+                <select class="custom-select col-sm-10" type="text" formControlName="id_carre">
+                  <optgroup label="Seleccione su Carrera ">
+                    <option *ngFor="let c of carre " value="{{c.id_carre}}">{{c.nombre_carre}} </option>
+                  </optgroup>
+                </select>
+              </div>
+              <div class="form-group row">
+                <label class="form-label  col-sm-2">PROMEDIO DE DISCAPACIDAD: </label>
+                <input type="text" class="form-control col-sm-2"
+                  [(ngModel)]="EstudiantediscapacitadoSeleccionado.prom_discap">
+                <label class="form-label  col-sm-3">TIPO DE DISCAPACIDAD: </label>
+                <input type="text" class="form-control col-sm-5"
+                  [(ngModel)]="EstudiantediscapacitadoSeleccionado.tipo_discap">
+              </div>
+              <div class="form-group row">
+                <label class="form-label  col-sm-2">DESCRIPCIÓN: </label>
+                <input type="text" class="form-control col-sm-10"
+                  [(ngModel)]="EstudiantediscapacitadoSeleccionado.desc_discap">
+              </div>
+              <div class="form-group row">
+                <label class="form-label  col-sm-2">TUTOR A CARGO: </label>
+                <input type="text" class="form-control col-sm-10"
+                  [(ngModel)]="EstudiantediscapacitadoSeleccionado.nombre_tutor">
+                <!-- <select class="custom-select" type="text" [(ngModel)]="EstudiantediscapacitadoSeleccionado.nombre_tutor">
+                <optgroup label="Seleccione Tutor " >
+                  <option *ngFor="let e of est " value="{{e.id_est}}">{{e.padre_del_est}} </option>
+                 <option *ngFor="let e of est " value="{{e.id_est}}">{{e.madre_del_est}}</option>
+              </optgroup>
+              </select> -->
+              </div>
+            </div>
+          </div>
+          
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalMod"
+      data-toggle="modal" data-target="#ModalModificacion" style="width: 0px;">Abrir Modal Modificacion</button>
+    <button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalMos"
+      data-toggle="modal" data-target="#ModalVisualizacion" style="width: 0px;">Abrir Modal Visualizacion</button>

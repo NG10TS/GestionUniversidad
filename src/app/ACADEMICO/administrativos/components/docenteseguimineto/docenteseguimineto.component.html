@@ -1,0 +1,438 @@
+<strong>
+    <h2 class="text-center text-bold text-light">GESTIONAR SEGUIMIENTO</h2>
+  </strong>
+  <hr class="border-warning">
+
+  <button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#Modallista"data-whatever="@getbootstrap">GESTIONAR LISTA DE NOTAS</button>
+
+ <!-- CRUD V3: idPK=> id_doc_segui, TITULO=> SEGUIMIENTO, nombreCRUD=> docenteseguimineto,  dataP=> seguir -->
+ <button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalCruddocenteseguimineto"
+   data-whatever="@getbootstrap">AGREGAR SEGUIMIENTO</button>
+ <form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+   <div class="input-group mb-3">
+     <div class="input-group-prepend">
+       <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+     </div>
+     <input type="text" class="form-control" aria-label="Sizing example input"
+       aria-describedby="inputGroup-sizing-default">
+   </div>
+ </form>
+ <br>
+ <div class="table-responsive">
+   <table class="table table-bordered table-striped table-hover table-danger">
+     <thead class="bg-danger ">
+       <tr>
+        <th scope="col">#</th>
+        <th scope="col">DOCENTE</th>
+        <th scope="col">MATERIA</th>
+        <th scope="col">NOTA 1P</th>
+        <th scope="col">NOTA 2P</th>
+        <th scope="col">NOTA EF</th>
+        <th scope="col">NOTA 2T</th>
+        <th scope="col">NOTA FINAL</th>
+        <!-- <th scope="col">LITERAL</th> -->
+        <th scope="col">OBSERVACIONES</th>
+         <th scope="col">Acciones</th>
+       </tr>
+     </thead>
+     <tbody>
+       <tr *ngFor="let a of seguir; let J= index">
+         <td style="width: 20px;">{{J+1}}</td>
+         <td>
+            <span *ngIf="!a.Editando">{{a.ape_p_doc}}⠀</span>
+            <span *ngIf="!a.Editando">{{a.ape_m_doc}}⠀</span>
+            <span *ngIf="!a.Editando">{{a.nombre_doc}}</span>
+            <!-- <span *ngIf="!a.Editando">{{a.NombreCompleto}}⠀</span> -->
+          </td>
+          <td>
+            <span *ngIf="!a.Editando">{{a.codigo_mat}} {{a.nombre_mat}}</span>
+          </td>
+          <td>
+            <span *ngIf="!a.Editando">{{a.nota_1p_se}}</span>
+          </td>
+          <td>
+            <span *ngIf="!a.Editando">{{a.nota_2p_se}}</span>
+          </td>
+          <td>
+            <span *ngIf="!a.Editando">{{a.nota_ex_se}}</span>
+          </td>
+          <td>
+            <span *ngIf="!a.Editando">{{a.nota_2t_se}}</span>
+          </td>
+          <td>
+            <span *ngIf="!a.Editando">{{a.nota_fi_se}}</span>
+          </td>
+          <td>
+            <span *ngIf="!a.Editando">{{a.obs_se}}</span>
+          </td>
+
+         <td style="width: 200px;">
+            <!-- <button type="button" class="btn btn-outline-light font-weight-bold btn-info" data-toggle="modal" data-target="#Modallista"data-whatever="@getbootstrap"><i class="bi bi-app-indicator"></i></button>
+            <button type="button" class="btn btn-outline-light font-weight-bold btn-success" data-toggle="modal" data-target="#Modallista2"data-whatever="@getbootstrap"><i class="bi bi-archive"></i></button> -->
+            <a routerLink="/admin/NotasEvaluas" type="button" class="btn btn-outline-light font-weight-bold btn-info" data-whatever="@getbootstrap"><i class="bi bi-app-indicator"></i></a>
+
+           <button (click)="Seleccionardocenteseguimineto(a.id_doc_segui)"
+             class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+           <button type="button" class="btn btn-danger" (click)="Eliminardocenteseguimineto(a.id_doc_segui)">
+             <i class="bi bi-trash"></i></button>
+         </td>
+       </tr>
+     </tbody>
+   </table>
+ </div>
+ <!-- MODAL DE CRUD ADD MOD DE CODIGO DE docenteseguimineto-->
+ <div class="modal fade" id="ModalCruddocenteseguimineto" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-lg">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h5 class="modal-title">
+           {{!newdocenteseguimineto.get('id_doc_segui').value ? 'REGISTRAR' : 'MODIFICAR'}} SEGUIMIENTO</h5>
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+         </button>
+       </div>
+       <div class="modal-body">
+         <div class="mb-4" [formGroup]="newdocenteseguimineto">
+           <div class="form-group row">
+             <label class="form-label text-right col-sm-2">DOCENTE: </label>
+             <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_doc">
+               <optgroup label="SELECCIONE DOCENTE" >
+                 <option *ngFor="let a of doc" value="{{a.id_doc}}">{{a.nombre_doc}} {{a.ape_p_doc}} {{a.ape_m_doc}}</option>
+               </optgroup>
+              </select>
+           </div>
+           <div class="form-group row">
+             <label class="form-label text-right col-sm-2">MATERIA: </label>
+             <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_nota_eval">
+               <optgroup label="SELECCIONE MATERIA" >
+                 <option *ngFor="let a of nota" value="{{a.id_nota_eval}}">{{a.codigo_mat}} {{a.nombre_mat}}</option>
+               </optgroup>
+              </select>
+           </div>
+           <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOTA_1P: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="nota_1p_se">
+              <optgroup label="SELECCIONE NOTA_1P" >
+                <option value="SI">SI</option>
+                <option value="NO">NO</option>
+              </optgroup>
+             </select>
+          </div>
+           <div class="form-group row">
+             <label class="form-label text-right col-sm-2">NOTA_2P: </label>
+             <select class="custom-select col-sm-10 form-control" type="text" formControlName="nota_2p_se">
+               <optgroup label="SELECCIONE NOTA_2P" >
+                 <option value="SI">SI</option>
+                 <option value="NO">NO</option>
+               </optgroup>
+              </select>
+           </div>
+           <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOTA_EX: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="nota_ex_se">
+              <optgroup label="SELECCIONE NOTA_EX" >
+                <option value="SI">SI</option>
+                <option value="NO">NO</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOTA_2t: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="nota_2t_se">
+              <optgroup label="SELECCIONE NOTA_2t" >
+                <option value="SI">SI</option>
+                <option value="NO">NO</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOTA_FINAL: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="nota_fi_se">
+              <optgroup label="SELECCIONE NOTA_FINAL" >
+                <option value="SI">SI</option>
+                <option value="NO">NO</option>
+              </optgroup>
+             </select>
+          </div> 
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">OBSERVACIONES: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="obs_se">
+          </div>
+          
+           
+         </div>
+       </div>
+       <div class="modal-footer">
+         <button type="button" class="btn btn-secondary" data-dismiss="modal"
+           (click)="resetdocenteseguimineto()">Cancelar</button>
+         <button type="button" class="btn {{!newdocenteseguimineto.get('id_doc_segui').value ? 'btn-success' : 'btn-warning'}}" data-dismiss="modal" [disabled]="!newdocenteseguimineto.valid"
+           (click)="AgregarModificardocenteseguimineto()">{{!newdocenteseguimineto.get('id_doc_segui').value ? 'CREAR SEGUIMIENTO' : 'MODIFICAR SEGUIMIENTO'}}</button>
+       </div>
+     </div>
+   </div>
+ </div>
+ <button type="button" class="invisible" style="position: absolute; top:100%" id="btnCruddocenteseguimineto" data-toggle="modal"
+   data-target="#ModalCruddocenteseguimineto" style="width: 0px;">Abrir Modal Crud</button> 
+
+<!-- MODAL DE LISTA-->
+<div class="modal fade" id="Modallista" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"> GESTIONAR NOTAS</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-4" [formGroup]="" >
+              <!-- CRUD V3: idPK=> id_egreso_cat, TITULO=> EGRESO CATEGORIA, nombreCRUD=> EgresoCategoria,  dataP=> egreso_categoria -->
+              <button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalAdicion"
+                data-whatever="@getbootstrap">AGREGAR</button>
+              <form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+                  </div>
+                  <input type="text" class="form-control" aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-default">
+                </div>
+              </form>
+              <br>
+              <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover table-danger">
+                  <thead class="bg-danger ">
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">MATERIA</th>
+                      <th scope="col">ESTUDIANTE</th>
+                      <th scope="col">NOTA 1P</th>
+                      <th scope="col">NOTA 2P</th>
+                      <th scope="col">NOTA EF</th>
+                      <th scope="col">NOTA 2T</th>
+                      <th scope="col">NOTA FINAL</th>
+                      <th scope="col">OBS</th>
+                      <th scope="col">Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let b of seguir2; let i= index_lista">
+                      <td style="width: 20px;">{{i+1}}</td>
+                      <td>{{b.codigo_mat}} {{b.nombre_mat}}</td>
+                      <td>{{b.ape_p_est}} {{b.ape_m_est}} {{b.nombre_est}}</td>
+                      <td>{{b.eval_p1}}</td>
+                      <td>{{b.eval_p2}}</td>
+                      <td>{{b.eval_fin}}</td>
+                      <td>{{b.eval_2t}}</td>
+                      <td>{{b.nota_final}}</td>
+                      <!-- <td>{{a.nota_literal}}</td> -->
+                      <td>{{b.obs_nota_eval}}</td>
+                      <td style="width: 200px;">
+                        <button (click)="Seleccionardocenteseguimineto(b.id_nota_eval)"
+                          class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+                        <button type="button" class="btn btn-danger" (click)="Eliminardocenteseguimineto(b.id_nota_eval)">
+                          <i class="bi bi-trash"></i></button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+  
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE LISTA-->
+<div class="modal fade" id="Modallista2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"> GESTIONAR NOTAS</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-4" [formGroup]="" >
+              <!-- CRUD V3: idPK=> id_egreso_cat, TITULO=> EGRESO CATEGORIA, nombreCRUD=> EgresoCategoria,  dataP=> egreso_categoria -->
+              <button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalCrudEgresoCategoria"
+                data-whatever="@getbootstrap">AGREGAR</button>
+              <form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+                  </div>
+                  <input type="text" class="form-control" aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-default">
+                </div>
+              </form>
+              <br>
+              <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover table-danger">
+                  <thead class="bg-danger ">
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">MATERIA</th>
+                      <th scope="col">ESTUDIANTE</th>
+                      <th scope="col">NOTA 1P</th>
+                      <th scope="col">NOTA 2P</th>
+                      <th scope="col">NOTA EF</th>
+                      <!-- <th scope="col">NOTA 2T</th> -->
+                      <th scope="col">NOTA FINAL</th>
+                      <th scope="col">OBS</th>
+                      <th scope="col">Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let a of seguir3; let i= index_nota">
+                      <td style="width: 20px;">{{i+1}}</td>
+                      <td>{{a.codigo_mat}} {{a.nombre_mat}}</td>
+                      <td>{{a.ape_p_est}} {{a.ape_m_est}} {{a.nombre_est}}</td>
+                      <td>{{a.eval_p1*0.35}}</td>
+                      <td>{{a.eval_p2*0.35}}</td>
+                      <td>{{a.eval_fin*0.30}}</td>
+                      <!-- <td>{{a.eval_2t}}</td>
+                      <td>{{a.nota_final}}</td> -->
+                      <td>{{a.eval_p1*0.35 + a.eval_p2*0.35 + a.eval_fin*0.30}}</td>
+                      <!-- <td>{{a.nota_literal}}</td> -->
+                      <td>{{a.obs_nota_eval}}</td>
+                      <td style="width: 200px;">
+                        <button (click)="Seleccionardocenteseguimineto(a.id_nota_eval)"
+                          class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+                        <button type="button" class="btn btn-danger" (click)="Eliminardocenteseguimineto(a.id_nota_eval)">
+                          <i class="bi bi-trash"></i></button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+  
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--  -->
+
+  <div class="modal fade" id="ModalAdicion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+  
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">{{!newNotasEvaluas.get('id_nota_eval').value ? 'REGISTRAR NUEVA' : 'MODIFICAR'}} NOTAS</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+  
+        <div class="modal-body">
+          <div class="mb-4">
+            <!-- <input type="text" [(ngModel)]="CODEst">
+            <button (click)="AutocompletarAsignacionEstudiante()" class="btn btn-success">AUTOCOMPLETAR</button> -->
+            <div class="mb-4" [formGroup]="newNotasEvaluas">
+  
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-2">ESTUDIANTE: </label>
+                <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_est">
+                  <optgroup label="Seleccione un Estudiante" >
+                      <option *ngFor="let a of est" value="{{a.id_est}}">{{a.nombre_est}} {{a.ape_p_est}} {{a.ape_m_est}}</option>
+                  </optgroup>
+                </select>
+              </div>
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-2">MATERIA: </label>
+                      <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_materia">
+                  <optgroup label="Seleccione la Materia" >
+                      <option *ngFor="let a of mat" value="{{a.id_materia}}">{{a.codigo_mat}} {{a.nombre_mat}}</option>
+                  </optgroup>
+                </select>
+              </div>
+              <!-- <div class="form-group row">
+                <label class="form-label text-right col-sm-2">MATERIA ASIGNADA: </label>
+                      <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_asig_mat_est">
+                  <optgroup label="Seleccione la Materia" >
+                      <option *ngFor="let a of AEst" value="{{a.id_asig_mat_est}}">{{a.id_asig_mat_est}} {{a.materia_asig}}</option>
+                  </optgroup>
+                </select>
+              </div> -->
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-2">CARRERA:  </label>
+                <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_carre">
+                  <optgroup label="Seleccione un Estudiante" >
+                      <option *ngFor="let a of carre" value="{{a.id_carre}}">{{a.nombre_carre}}</option>
+                  </optgroup>
+                </select>
+              </div>
+  
+              <div class="form-group row" [ngClass]="{'has-error': isSubmitted && newNotasEvaluas.get('eval_p1').errors}">
+                <label class="form-label text-right col-sm-2">PRIMER PARCIAL: </label>
+                <input type="number" class="form-control col-sm-10" formControlName="eval_p1" id="eval_p1"
+                  oninput="this.value= this.value.toUpperCase()" placeholder="NOTA EJ: 51">
+                  <span *ngIf="isSubmitted && newNotasEvaluas.get('eval_p1').errors" class="text-danger text-sm text-center float-right">La nota es requerida</span>
+              </div>
+              <div class="form-group row" [ngClass]="{'has-error': isSubmitted && newNotasEvaluas.get('eval_p2').errors}">
+                <label class="form-label text-right col-sm-2">SEGUNDO PARCIAL: </label>
+                <input type="number" class="form-control col-sm-10" formControlName="eval_p2" id="eval_p2"
+                  oninput="this.value= this.value.toUpperCase()" placeholder="NOTA EJ: 51">
+                  <span *ngIf="isSubmitted && newNotasEvaluas.get('eval_p2').errors" class="text-danger text-sm text-center float-right">La nota es requerida</span>
+              </div>
+              <div class="form-group row" [ngClass]="{'has-error': isSubmitted && newNotasEvaluas.get('eval_fin').errors}">
+                <label class="form-label text-right col-sm-2">EXAMEN FINAL: </label>
+                <input type="number" class="form-control col-sm-10" formControlName="eval_fin" id="eval_fin"
+                  oninput="this.value= this.value.toUpperCase()" placeholder="NOTA EJ: 51">
+                  <span *ngIf="isSubmitted && newNotasEvaluas.get('eval_fin').errors" class="text-danger text-sm text-center float-right">La nota es requerida</span>
+              </div>
+              <div class="form-group row" [ngClass]="{'has-error': isSubmitted && newNotasEvaluas.get('eval_2t').errors}">
+                <label class="form-label text-right col-sm-2">REVALIDA: </label>
+                <input type="number" class="form-control col-sm-10" formControlName="eval_2t" id="eval_2t"
+                  oninput="this.value= this.value.toUpperCase()" placeholder="NOTA EJ: 51">
+                  <span *ngIf="isSubmitted && newNotasEvaluas.get('eval_2t').errors" class="text-danger text-sm text-center float-right">La nota es requerida</span>
+              </div>
+              <div class="form-group row" [ngClass]="{'has-error': isSubmitted && newNotasEvaluas.get('nota_final').errors}">
+                <label class="form-label text-right col-sm-2">NOTA FINAL: </label>
+                <input type="number" class="form-control col-sm-10" formControlName="nota_final" id="nota_final"
+                  oninput="this.value= this.value.toUpperCase()" placeholder="NOTA EJ: 51">
+                  <span *ngIf="isSubmitted && newNotasEvaluas.get('nota_final').errors" class="text-danger text-sm text-center float-right">La nota es requerida</span>
+              </div>
+              <div class="form-group row" [ngClass]="{'has-error': isSubmitted && newNotasEvaluas.get('nota_literal').errors}">
+                <label class="form-label text-right col-sm-2">NOTA LITERAL: </label>
+                <input type="text" class="form-control col-sm-10" formControlName="nota_literal" id="nota_literal"
+                  oninput="this.value= this.value.toUpperCase()" placeholder="NOTA EJ: CINCUENTA Y UNO">
+                  <span *ngIf="isSubmitted && newNotasEvaluas.get('nota_literal').errors" class="text-danger text-sm text-center float-right">La nota es requerida</span>
+              </div>
+  
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-2">OBSERVACIONES: </label>
+                <input type="text" class="form-control col-sm-10" formControlName="obs_nota_eval"
+                  oninput="this.value= this.value.toUpperCase()" placeholder=" EJ: NINGUNA">
+              </div>
+  
+            </div>
+            {{newNotasEvaluas.value|json}}
+          </div>
+        </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+            (click)="resetNotasEvaluas()">Cancelar</button>
+            <button type="button" class="btn {{!newNotasEvaluas.get('id_nota_eval').value ? 'btn-success' : 'btn-warning'}}"
+            data-dismiss="modal" [disabled]="!newNotasEvaluas.valid"
+            (click)="AgregarModificarNotasEvaluas()">{{!newNotasEvaluas.get('id_nota_eval').value ? 'CREAR NOTAS' : 'MODIFICAR NOTAS'}}</button>
+          </div>
+  
+      </div>
+    </div>
+  </div>
+  <button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudNotasEvaluas" data-toggle="modal"
+    data-target="#ModalAdicion" style="width: 0px;">Abrir Modal Crud</button>
+  

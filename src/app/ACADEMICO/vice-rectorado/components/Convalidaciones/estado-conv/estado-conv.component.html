@@ -1,0 +1,99 @@
+<strong>
+  <h2 class="text-center text-bold text-light">CONTROL DE ESTADO DE CONVALIDACION MATERIA DEL ESTUDIANTE</h2>
+</strong>
+<button class="btn btn-outline-info botonInfo" (click)="MensajeInformacion('INFORMACION DE USO',
+'EN ESTA PAGINA SE PUEDE VER EL ESTADO CONVALIDACION','info')"><abbr
+    title="SOBRE ESTA PAGINA" style="text-decoration: none">?</abbr></button>
+<button class="btn btn-outline-info botonInfo" (click)="MensajeInformacion('ACLARACIONES',
+'PRESIONA AGREGAR ESTADO CONVALIDACION PARA INSERTAR','info')">
+  <abbr title="¿FALTA DE DATOS?" style="text-decoration: none">?</abbr></button>
+
+
+
+<hr class="border-warning">
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalCrudEstadoConvUnivs"
+  data-whatever="@getbootstrap">AGREGAR ESTADO-CONVALIDACION</button>
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3"  [formGroup]="filterSearchConvEstadoForm">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" oninput="this.value= this.value.toUpperCase()" class="form-control" aria-label="Sizing example input"
+      aria-describedby="inputGroup-sizing-default" formControlName="txt">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">ESTUDIANTE CONVALIDACION</th>
+        <th scope="col">DATO CONVALIDACION</th>
+        <th scope="col">DESCRIPCION</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of estConv; let i= index">
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>{{a.id_conv_est}}</td>
+        <td>{{a.id_univ_carre_mater}}</td>
+        <td>{{a.desc_conv}}</td>
+        <td style="width: 200px;">
+          <button (click)="SeleccionarEstadoConvUnivs(a.id_estado_conv)"
+            class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+          <button type="button" class="btn btn-danger" (click)="EliminarEstadoConvUnivs(a.id_estado_conv)">
+            <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- MODAL DE CRUD ADD MOD DE CODIGO DE EstadoConvUnivs-->
+<div class="modal fade" id="ModalCrudEstadoConvUnivs" tabindex="-1" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          {{!newEstadoConvUnivs.get('id_estado_conv').value ? 'REGISTRAR' : 'MODIFICAR'}} ESTADO-CONVALIDACION</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newEstadoConvUnivs">
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">INFO. DATO A CONVALIDAR: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_univ_carre_mater">
+              <optgroup label="SELECCIONE INFO. DATO A CONVALIDAR" >
+                <option *ngFor="let a of ConvReg" value="{{a.id_univ_carre_mater}}">{{a.nombre_univ}} {{a.nombre_carr_conv}} {{a.nombre_mater_conv}}</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">ESTUDIANTE CONVALIDADO: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_conv_est">
+              <optgroup label="SELECCIONE ESTUDIANTE CONVALIDADO" >
+                <option *ngFor="let a of EstConv" value="{{a.id_conv_est}}">{{a.ape_p_est}} {{a.ape_m_est}} {{a.nombre_est}}</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">DESCRIPCION DE ESTADO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="desc_conv">
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="resetEstadoConvUnivs()">Cancelar</button>
+        <button type="button" class="btn {{!newEstadoConvUnivs.get('id_estado_conv').value ? 'btn-success' : 'btn-warning'}}" data-dismiss="modal" [disabled]="!newEstadoConvUnivs.valid"
+          (click)="AgregarModificarEstadoConvUnivs()">{{!newEstadoConvUnivs.get('id_estado_conv').value ? 'CREAR ESTADO-CONVALIDACION' : 'MODIFICAR ESTADO-CONVALIDACION'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudEstadoConvUnivs" data-toggle="modal"
+  data-target="#ModalCrudEstadoConvUnivs" style="width: 0px;">Abrir Modal Crud</button>

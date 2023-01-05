@@ -1,0 +1,317 @@
+
+<strong>
+  <h2 class="text-center text-bold text-light">GESTIONAR REGISTRO DE DOCUMENTOS</h2>
+</strong>
+<hr class="border-warning">
+
+<button type="button" (click)="LimpiarRegisdocumentos()" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalAdd" data-whatever="@getbootstrap">AGREGAR REGISTRO DE DOCUMENTO</button>
+
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nº REGISTRO</th>
+        <th scope="col">ESTUDIANTE</th>
+        <th scope="col">CARRERA</th>
+        <th scope="col">NOMBRE DEL DOCUMENTO</th>
+        <th scope="col">TIPO DE DOCUMENTO</th>
+
+        <th scope="col">ACCIONES</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of reg; let i= index"  >
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.nro_registro}}⠀</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.ape_m_est}} {{a.ape_p_est}} {{a.nombre_est}} </span>
+        </td>
+         <td>
+          <span *ngIf="!a.Editando"> {{a.nombre_carre}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.documen}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.tipo_documen}}</span>
+        </td>
+
+        <td style="width: 200px;">
+          <div class="btn-group">
+            <button class="btn btn-success btn-sm" (click)="SeleccionarRegisdocumento(a,'Mostrar')" type="button">
+              <i class="bi bi-eye"></i>
+            </button>
+
+            <button type="button" class="btn btn-sm btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false">
+            </button>
+            <div class="dropdown-menu">
+              <!-- <button class="dropdown-item" data-toggle="modal" data-target="#ModalModificacion">Editar Datos Personales</button> -->
+              <button class="dropdown-item" data-toggle="modal" >Agregar Datos Curriculares</button>
+              <button class="dropdown-item" data-toggle="modal" >Hoja de Datos de Docente</button>
+              <button class="dropdown-item" data-toggle="modal" data-target="#ModalHitorialDesig">Historial de Designaciones</button>
+            </div>
+          </div>
+          <button type="button" class="btn btn-warning"
+          (click)="SeleccionarRegisdocumento(a,'Editar')" style="margin-right: 10px;"><i class="bi bi-pencil"></i></button>
+
+         <button type="button" class="btn btn-danger" (click)="EliminarRegisdocumento(a.id_regis_documen)">
+           <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- MODAL DE ADICION Facultad-->
+<div class="modal fade" id="ModalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> REGISTRAR NUEVO DOCUMENTO</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newRegisdocumento">
+         <!--<div class="mb-4" [formGroup]="newAdministrativo">-->
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">ESTUDIANTE: </label>
+            <!-- FILTRADOR V3: NombreFiltro => Estudiante-->
+            <div [formGroup]="filterEstudianteForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control" value="{{EstudianteSelect.NomC }}"/>
+              </div>
+              <div *ngIf="filtroEstudiante" class="lcch-options" >
+                <span *ngFor="let a of estFiltrado" class="form-control" (click)="autoCompletar(a)" (click)="filtroEstudiante=false">{{a.NomC}}</span>
+              </div>
+            </div>
+            <!-- <select class="custom-select" type="text" formControlName="id_est">
+              <optgroup label="Seleccione Estudiante " >
+                  <option *ngFor="let e of est " value="{{e.id_est}}">{{e.nombre_est}}  {{e.ape_p_est}}  {{e.ape_m_est}}</option>
+              </optgroup>
+            </select> -->
+            </div>
+            <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CARRERA: </label>
+            <select class="custom-select" type="text" formControlName="id_carre" disabled>
+              <optgroup label="Seleccione su Carrera " >
+                  <option *ngFor="let c of carre " value="{{c.id_carre}}">{{c.nombre_carre}} </option>
+              </optgroup>
+            </select>
+        </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NÚMERO DE REGISTRO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="nro_registro">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOMBRE DEL DOCUMENTO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="documen">
+          </div>
+          <div class="form-group row">
+            <label for="nombre" class="col-sm-2 col-form-label text-right">TIPO DEL DOCUMENTO: </label>
+            <div class="col-sm-10">
+            <select class="custom-select"   type="text" formControlName="tipo_documen">
+              <optgroup label="Seleccione el tipo de Documento">
+                <option value="PRIMARIO">PRIMARIO </option>
+                <option value="OPCIONAL">OPCIONAL </option>
+              </optgroup>
+            </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <!-- <button type="button" class="btn btn-primary" data-dismiss="modal">Guardar</button> -->
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="AgregarRegisdocumento()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL_DE_MODIFICACION Facultad-->
+<div class="modal fade" id="ModalModificacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">MODIFICAR FACULTAD</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="frmform" class="mb-4">
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">ESTUDIANTE: </label>
+            <div [formGroup]="filterEstudianteForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control" value="{{EstudianteSelect.NomC }}"/>
+              </div>
+              <div *ngIf="filtroEstudiante" class="lcch-options" >
+                <span *ngFor="let a of estFiltrado" class="form-control" (click)="EstudianteSelect.NomC=a.ape_p_est+' '+a.ape_m_est+' '+a.nombre_est; RegisdocumentoSeleccionado.id_est=a.id_est" (click)="filtroEstudiante=false">{{a.NomC}}</span>
+              </div>
+            </div>
+            <!-- <select class="custom-select" type="text" [(ngModel)]="RegisdocumentoSeleccionado.id_est">
+              <optgroup label="Seleccione Estudiante " >
+                  <option *ngFor="let e of est " value="{{e.id_est}}">{{e.nombre_est}}  {{e.ape_p_est}}  {{e.ape_m_est}}</option>
+              </optgroup>
+            </select> -->
+            </div>
+            <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CARRERA: </label>
+            <select class="custom-select" type="text" [(ngModel)]="RegisdocumentoSeleccionado.id_carre" disabled>
+              <optgroup label="Seleccione su Carrera " >
+                  <option *ngFor="let c of carre " value="{{c.id_carre}}">{{c.nombre_carre}} </option>
+              </optgroup>
+            </select>
+        </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NÚMERO DE REGISTRO: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="RegisdocumentoSeleccionado.nro_registro">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOMBRE DEL DOCUMENTO: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="RegisdocumentoSeleccionado.documen">
+          </div>
+          <div class="form-group row">
+            <label for="nombre" class="col-sm-2 col-form-label text-right">TIPO DEL DOCUMENTO: </label>
+            <div class="col-sm-10">
+            <select class="custom-select"   type="text" [(ngModel)]="RegisdocumentoSeleccionado.tipo_documen">
+              <optgroup label="Seleccione el tipo de Documento">
+                <option value="PRIMARIO">PRIMARIO </option>
+                <option value="OPCIONAL">OPCIONAL </option>
+              </optgroup>
+            </select>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="ModificarRegisdocumento(RegisdocumentoSeleccionado)">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE VISUALIZACION -->
+<div class="modal fade" id="ModalVisualizacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> VISUALIZANDO DOCUMENTO</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="frmform" class="mb-4">
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">ESTUDIANTE: </label>
+            <select class="custom-select" type="text" [(ngModel)]="RegisdocumentoSeleccionado.id_est">
+              <optgroup label="Seleccione Estudiante " >
+                  <option *ngFor="let e of est " value="{{e.id_est}}">{{e.nombre_est}}  {{e.ape_p_est}}  {{e.ape_m_est}}</option>
+              </optgroup>
+            </select>
+            </div>
+            <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CARRERA: </label>
+            <select class="custom-select" type="text" [(ngModel)]="RegisdocumentoSeleccionado.id_carre">
+              <optgroup label="Seleccione su Carrera " >
+                  <option *ngFor="let c of carre " value="{{c.id_carre}}">{{c.nombre_carre}} </option>
+              </optgroup>
+            </select>
+        </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NÚMERO DE REGISTRO: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="RegisdocumentoSeleccionado.nro_registro">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOMBRE DEL DOCUMENTO: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="RegisdocumentoSeleccionado.documen">
+          </div>
+          <div class="form-group row">
+            <label for="nombre" class="col-sm-2 col-form-label text-right">TIPO DEL DOCUMENTO: </label>
+            <div class="col-sm-10">
+            <select class="custom-select"   type="text" [(ngModel)]="RegisdocumentoSeleccionado.tipo_documen">
+              <optgroup label="Seleccione el tipo de Documento">
+                <option value="PRIMARIO">PRIMARIO </option>
+                <option value="OPCIONAL">OPCIONAL </option>
+              </optgroup>
+            </select>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalMod" data-toggle="modal"
+  data-target="#ModalModificacion" style="width: 0px;">Abrir Modal Modificacion</button>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalMos" data-toggle="modal"
+  data-target="#ModalVisualizacion" style="width: 0px;">Abrir Modal Visualizacion</button>
+
+
+<!----------------------------------->
+
+<!-- <br>
+<br>
+
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel"> REGISTRAR NUEVO DOCUMENTO DE ESTUDIANTE</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="mb-4" [formGroup]="newRegisdocumento">
+
+      <div class="form-group row">
+        <label class="form-label text-right col-sm-2">CODIGO ESTUDIANTE: </label>
+        <input type="text" class="form-control col-sm-4" formControlName="id_est">
+      </div>
+      <div class="form-group row">
+      <label class="form-label text-right col-sm-2">CÓDIGO DE CARRERA: </label>
+      <input type="text" class="form-control col-sm-10" formControlName="id_carre">
+      </div>
+      <div class="form-group row">
+        <label class="form-label text-right col-sm-2">NÚMERO DE REGISTROS: </label>
+        <input type="text" class="form-control col-sm-10" formControlName="nro_registro">
+      </div>
+      <div class="form-group row">
+        <label class="form-label text-right col-sm-2">NOMBRE DEL DOCUMENTO: </label>
+        <input type="text" class="form-control col-sm-10" formControlName="documen_est">
+      </div>
+      <div class="form-group row">
+        <label class="form-label text-right col-sm-2">TIPO DEL DOCUMENTO: </label>
+        <input type="text" class="form-control col-sm-10" formControlName="tipo_documen_est">
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+
+    <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="AgregarRegisdocumento()">Guardar</button>
+  </div>
+</div> -->

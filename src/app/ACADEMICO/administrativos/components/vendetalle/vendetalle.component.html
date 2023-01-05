@@ -1,0 +1,120 @@
+<strong>
+    <h2 class="text-center text-bold text-light">GESTIONAR Vendetalle</h2>
+  </strong>
+<hr class="border-warning">
+<!-- CRUD V3: idPK=> id_ven_detalle, TITULO=> DETALLE, nombreCRUD=> Vendetalle,  dataP=> vendet -->
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalCrudVendetalle"
+  data-whatever="@getbootstrap">AGREGAR DETALLE</button>
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input"
+      aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Fecha Materia</th>
+        <th scope="col">Fecha 1</th>
+        <th scope="col">Fecha 2</th>
+        <th scope="col">Fecha 3</th>
+        <th scope="col">Fecha 4</th>
+        <th scope="col">Fecha 5</th>
+        <th scope="col">Fecha 6</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of vendet; let i= index">
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>
+            <spam> *ngIf="!a.Editando">{{a.fec_materia}} </spam>
+        </td>
+        <td>
+            <spam> *ngIf="!a.Editando">{{a.fec_c1}} </spam>
+        </td>
+        <td>
+            <spam> *ngIf="!a.Editando">{{a.fec_c2}} </spam>
+        </td>
+        <td>
+            <spam> *ngIf="!a.Editando">{{a.fec_c3}} </spam>
+        </td>
+        <td>
+            <spam> *ngIf="!a.Editando">{{a.fec_c4}} </spam>
+        </td>
+        <td>
+            <spam> *ngIf="!a.Editando">{{a.fec_c5}} </spam>
+        </td>
+        <td>
+            <spam> *ngIf="!a.Editando">{{a.fec_c6}} </spam>
+        </td>
+        <td style="width: 200px;">
+          <button (click)="SeleccionarVendetalle(a.id_ven_detalle)"
+            class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+          <button type="button" class="btn btn-danger" (click)="EliminarVendetalle(a.id_ven_detalle)">
+            <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- MODAL DE CRUD ADD MOD DE CODIGO DE Vendetalle-->
+<div class="modal fade" id="ModalCrudVendetalle" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{!newVendetalle.get('id_ven_detalle').value ? 'REGISTRAR' : 'MODIFICAR'}} DETALLE</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newVendetalle">
+          <div class="form-group row">
+            <label class="form-label col-sm-2">MATERIA: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="fec_materia">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">FECHA 1: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="fec_c1">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">FECHA 2: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="fec_c2">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">FECHA 3: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="fec_c3">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">FECHA 4: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="fec_c4">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">FECHA 5: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="fec_c5">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">FECHA 6: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="fec_c6">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="resetVendetalle()">Cancelar</button>
+        <button type="button" class="btn {{!newVendetalle.get('id_ven_detalle').value ? 'btn-success' : 'btn-warning'}}" data-dismiss="modal" [disabled]="!newVendetalle.valid"
+          (click)="AgregarModificarVendetalle()">{{!newVendetalle.get('id_ven_detalle').value ? 'CREAR DETALLE' : 'MODIFICAR DETALLE'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudVendetalle" data-toggle="modal"
+  data-target="#ModalCrudVendetalle" style="width: 0px;">Abrir Modal Crud</button>

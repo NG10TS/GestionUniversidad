@@ -1,0 +1,561 @@
+<aside class="main-sidebar sidebar-light-danger elevation-4" style="">
+  <!-- Brand Logo -->
+  <a routerLink="index3.html" class="brand-link">
+    <img [src]="ruta+'fijos/escudoUnior.png'"  alt="Unior Escudo" class="brand-image img-circle elevation-3" style="opacity: .8">
+    <span class="brand-text font-weight-light" style="font-size: 15px;">Universidad Privada de Oruro</span>
+  </a>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <!-- Sidebar user panel (optional) -->
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+      <div class="image">
+        <img [src]="ruta+'fijos/foto.jpeg'" class="img-circle elevation-2" alt="User Image">
+      </div>
+      <div class="info">
+        <a routerLink="/" class="d-block">Alejandra Mamani</a>
+      </div>
+    </div>
+
+    <!-- SidebarSearch Form -->
+    <div class="form-inline">
+      <div class="input-group" data-widget="sidebar-search">
+        <input class="form-control form-control-sidebar" type="search" placeholder="Buscar Estudiante" aria-label="Search">
+        <div class="input-group-append">
+          <button class="btn btn-sidebar">
+            <i class="fas fa-search fa-fw"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <!-- Add icons to the links using the .nav-icon class
+             with font-awesome or any other icon font library -->
+        <li class="nav-item menu-open">
+          <a class="nav-link active">
+            <i class="nav-icon fas fa-list-alt"></i>
+            <p>
+              Gestionar
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a routerLink="/admin/administrativos" class="nav-link active">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Gestionar Administrativos</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a routerLink="/admin/docentes" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Gestionar Docentes</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a routerLink="/admin/estudiantes" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Gestionar Estudiantes</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a routerLink="/admin/Universidades" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Gestionar Universidades</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a routerLink="/admin/facultades" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Gestionar Facultades</p>
+              </a>
+            </li>
+            <!-- <li class="nav-item">
+              <a routerLink="/" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Gestionar Cursos</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a routerLink="/" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Gestionar Calificaciones</p>
+              </a>
+            </li> -->
+            <li class="nav-item">
+              <a routerLink="/admin/Categorias" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Gestionar Categorias</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a routerLink="/admin/Eventos" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Gestionar Publicaciones</p>
+              </a>
+            </li>
+
+          </ul>
+
+        </li>
+
+
+          <li class="nav-item menu-close">
+            <a class="nav-link active">
+              <i class="nav-icon fas fa-list-alt"></i>
+              <p>
+                Planes de Estudios
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+
+              <li class="nav-item">
+                <a routerLink="/admin/carrera" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Crear Carrera</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a routerLink="/admin/plan-e" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Crear Plan de Estudios</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a routerLink="/admin/planrs" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Crear Plan de Estudios Rediseño</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a routerLink="/admin/semestre" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Crear Semestre</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a routerLink="/admin/materias" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Crear Materias</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a routerLink="/admin/prerrequisito" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Crear Prerrequisitos</p>
+                </a>
+              </li>
+            </ul>
+
+        </li>
+        <li class="nav-item menu-close">
+          <a class="nav-link active">
+            <i class="nav-icon fas fa-list-alt"></i>
+            <p>
+              Calendario Academico
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+
+            <li class="nav-item">
+              <a routerLink="/admin/FechaEvaluas" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Crear Fechas de Evaluación</p>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a routerLink="/admin/Cronogramas" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Crear Cronogramas</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a routerLink="/admin/Calendarios" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Crear Calendarios</p>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a routerLink="/admin/DetalleCalendarios" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Detalle de Calendario</p>
+              </a>
+            </li>
+
+            <!-- <li class="nav-item">
+              <a routerLink="/admin/prerrequisito" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Crear Prerrequisitos</p>
+              </a>
+            </li> -->
+          </ul>
+
+      </li>
+        <li class="nav-item menu-close">
+          <a class="nav-link active">
+            <i class="nav-icon fas fa-list-alt"></i>
+            <p>
+              Convalidaciones
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+
+            <li class="nav-item">
+              <a routerLink="/admin/ConvRegistrar" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Registrar Convalidación</p>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a routerLink="/admin/ConvContenidos" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Convalidar Contenidos</p>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a routerLink="/admin/ConvConvalidar" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Convalidar Materias</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a routerLink="/admin/ConvEstudiantes" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Convalidar Estudiantes</p>
+              </a>
+            </li>
+          </ul>
+
+      </li>
+      <li class="nav-item menu-close">
+        <a class="nav-link active">
+          <i class="nav-icon fas fa-list-alt"></i>
+          <p>
+            Asignaciones de Materias
+            <i class="right fas fa-angle-left"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+
+          <li class="nav-item">
+            <a routerLink="/admin/AsignacionDocentes" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Asignación de Docentes</p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a routerLink="/admin/asignacionmat" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Asignación de Materias</p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a routerLink="/admin/AsignacionEstudiantes" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Asignación de Estudiantes</p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a routerLink="/admin/Docenteseguimineto" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Seguimiento Docente</p>
+            </a>
+          </li>
+
+        </ul>
+
+    </li>
+        <li class="nav-item menu-close">
+          <a class="nav-link active">
+            <i class="nav-icon fas fa-list-alt"></i>
+            <p>
+              Designaciones
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+
+            <li class="nav-item">
+              <a routerLink="inscripcionantiguo" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Inscripciones Antiguos</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a routerLink="inscripcionesnuevos" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Inscripciones Nuevos</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a routerLink="/admin/Planinscripcion" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Plan de Inscripciones</p>
+              </a>
+            </li>
+            <!-- <li class="nav-item">
+              <a routerLink="/admin/boletin" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Boletin</p>
+              </a>
+            </li> -->
+            <li class="nav-item">
+              <a routerLink="/admin/Revalidas" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Revalidas</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a routerLink="/admin/becas" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Becas</p>
+              </a>
+            </li>
+          </ul>
+
+      </li>
+      <li class="nav-item menu-close">
+        <a class="nav-link active">
+          <i class="nav-icon fas fa-list-alt"></i>
+          <p>
+            Archivos
+            <i class="right fas fa-angle-left"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+
+          <li class="nav-item">
+            <a routerLink="/facultades" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Facultades</p>
+            </a>
+          </li>
+           <li class="nav-item">
+          <a routerLink="/pdfmake" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>PDFs</p>
+          </a>
+          </li>
+          <!-- <li class="nav-item">
+            <a routerLink="/admin/FileEstudiante" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>File Estudiante</p>
+            </a>
+          </li> -->
+          <li class="nav-item">
+            <a routerLink="/admin/regisdocumento" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Registro de Documentos Estudiantes</p>
+            </a>
+          </li>
+
+        <li class="nav-item">
+            <a routerLink="/admin/regisdocumentodocente" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Registro de Documentos Docentes</p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a routerLink="/admin/RegistroDocumentoDetalle" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Detalle de Registros</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/admin/Quejas" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Quejas</p>
+            </a>
+          </li>
+        </ul>
+
+    </li>
+    <li class="nav-item menu-close">
+      <a class="nav-link active">
+        <i class="nav-icon fas fa-list-alt"></i>
+        <p>
+          Aréa Estudiantil
+          <i class="right fas fa-angle-left"></i>
+        </p>
+      </a>
+      <ul class="nav nav-treeview">
+
+        <li class="nav-item">
+          <a routerLink="/admin/Estudiantebeca" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Estudiantes Becados</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/admin/Egresados" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Estudiantes Egresados</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/admin/Egresadotitulos" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Estudiantes Egresados con Titulo</p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a routerLink="/admin/Estudiantediscapacitado" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Estudiantes Discapacitados</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/admin/Estudiantedesercion" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Deserción Estudiantil</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/admin/Congelados" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Estudiantes Congelados</p>
+          </a>
+        </li>
+      <li class="nav-item">
+          <a routerLink="/admin/Estudianteabandono" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Abandono Estudiantil</p>
+          </a>
+        </li>
+      <li class="nav-item">
+          <a routerLink="/admin/NotasEvaluas" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Notas de Evaluación</p>
+          </a>
+        </li>
+        <!-- <li class="nav-item">
+          <a routerLink="/pdfmake" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Estadísticas</p>
+          </a>
+        </li> -->
+        <li class="nav-item">
+          <a routerLink="/admin/FileEstudiante" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>File de Estudiante</p>
+          </a>
+        </li>
+
+      </ul>
+
+  </li>
+        <li class="nav-item menu-close">
+          <a class="nav-link active">
+            <i class="nav-icon fas fa-list-alt"></i>
+            <p>
+              Generar
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <style>
+            ul li{
+              cursor:pointer;
+            }
+          </style>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a (click)="GenerarPlanEstudios()" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Plan de Estudios</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a (click)="GenerarSeguimientoAcademico()" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Generar Seguimiento Academico
+                </p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a (click)="GenerarListaEstudiantes()" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Listado de Alumnos</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a (click)="GenerarFormulario()" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Formulario de Inscripcion</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a routerLink="/PDF" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Abrir un PDF</p>
+              </a>
+            </li>
+          </ul>
+
+        </li>
+        <li class="nav-item menu-close">
+          <a class="nav-link active">
+            <i class="nav-icon fas fa-list-alt"></i>
+            <p>
+              Información
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a routerLink="/admin/InicioE" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Pagina Inicial</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a routerLink="/admin/modulo1" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Materias Registradas</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a routerLink="/admin/modulo2" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Materia</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a routerLink="/admin/modulo3" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Notas</p>
+              </a>
+            </li>
+
+          </ul>
+        <li class="nav-item">
+          <a routerLink="/" class="nav-link">
+            <i class="nav-icon fas fa-th"></i>
+            <p>
+              Horariof
+            </p>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <!-- /.sidebar-menu -->
+  </div>
+  <!-- /.sidebar -->
+</aside>

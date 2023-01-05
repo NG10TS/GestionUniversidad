@@ -1,0 +1,205 @@
+<!-- INTRODUCIR nombre CRUD, nombreID,nombre dataPrincipal, TITULOS(Empresa,id_empresa,empresa,EMPRESA)-->
+<strong>
+  <h2 class="text-center text-bold text-light">GESTIONAR EMPRESA</h2>
+</strong>
+<hr class="border-warning">
+
+<button type="button" class="btn btn-outline-light font-weight-bold" #btnOpenAgregar data-toggle="modal" data-target="#ModalAddEmpresa" data-whatever="@getbootstrap">AGREGAR Empresa</button>
+
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">NOMBRE EMPRESA</th>
+        <th scope="col">NIT </th>
+        <th scope="col">TELEFONO</th>
+        <th scope="col">CELULAR</th>
+        <th scope="col">EMAIL</th>
+         <th scope="col">IMAGEN</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of empresa; let i= index"  >
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>{{a.nombre_emp}} </td>
+        <td>{{a.nit_emp}} </td>
+        <td>{{a.tel_emp}} </td>
+        <td>{{a.cel_emp}} </td>
+        <td>{{a.email_emp}} </td>
+        <td>
+          <img [src]="ruta+a.img_logo_emp"  width="40px" height="40px">
+          <!-- <span>{{ruta+a.img_logo_emp}}</span> -->
+        </td>
+        <td style="width: 200px;">
+          <button class="btn btn-success" (click)="SeleccionarEmpresa(a.id_empresa,'Mostrar')" type="button">
+          <i class="bi bi-eye"></i></button>
+
+          <button type="button" class="btn btn-warning"
+          (click)="SeleccionarEmpresa(a.id_empresa,'Editar')" style="margin-right: 10px;"><i class="bi bi-pencil"></i></button>
+
+         <button type="button" class="btn btn-danger" (click)="EliminarEmpresa(a.id_empresa)">
+           <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- MODAL DE ADICION Empresa-->
+<div class="modal fade" id="ModalAddEmpresa" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> REGISTRAR EMPRESA</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newEmpresa" >
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">NOMBRE EMPRESA: </label>
+              <input type="text" class="form-control col-sm-10" formControlName="nombre_emp">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">NIT: </label>
+              <input type="number" class="form-control col-sm-10" formControlName="nit_emp">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">TELEFONO: </label>
+              <input type="number" class="form-control col-sm-10" formControlName="tel_emp">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">CELULAR: </label>
+              <input type="number" class="form-control col-sm-10" formControlName="cel_emp">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">EMAIL: </label>
+              <input type="email" class="form-control col-sm-10" formControlName="email_emp">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">FOTO: </label>
+              <input type="file" class="form-control col-sm-10" title="FOTO" #FOTO_IMG_ADD accept="image/jpg, image/png, image/jpeg" (change)="VerificarTamanioFoto(FOTO_IMG_ADD)" (change)="onFileChangeFoto($event)">
+            </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="AgregarEmpresa()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE MODIFICACION Empresa-->
+<div class="modal fade" id="ModalModificacionEmpresa" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">MODIFICAR EMPRESA</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">NOMBRE EMPRESA: </label>
+              <input type="text" class="form-control col-sm-10" [(ngModel)]="EmpresaSeleccionado.nombre_emp">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">NIT: </label>
+              <input type="number" class="form-control col-sm-10" [(ngModel)]="EmpresaSeleccionado.nit_emp">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">TELEFONO: </label>
+              <input type="number" class="form-control col-sm-10" [(ngModel)]="EmpresaSeleccionado.tel_emp">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">CELULAR: </label>
+              <input type="number" class="form-control col-sm-10" [(ngModel)]="EmpresaSeleccionado.cel_emp">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">EMAIL: </label>
+              <input type="email" class="form-control col-sm-10" [(ngModel)]="EmpresaSeleccionado.email_emp">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">FOTO: </label>
+              <input type="file" class="form-control col-sm-10" title="NOM_ATRIBUTO" #FOTO_IMG_MOD accept="image/jpg, image/png, image/jpeg" (change)="VerificarTamanioFoto(FOTO_IMG_MOD)" (change)="onFileChangeFoto($event)">
+            </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="ModificarEmpresa(EmpresaSeleccionado)">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE VISUALIZACION Empresa-->
+<div class="modal fade" id="ModalVisualizacionEmpresa" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"> VISUALIZANDO EMPRESA</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+          <div class="mb-4">
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">NOMBRE EMPRESA: </label>
+              <input type="text" class="form-control col-sm-10" [(ngModel)]="EmpresaSeleccionado.nombre_emp">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">NIT: </label>
+              <input type="number" class="form-control col-sm-10" [(ngModel)]="EmpresaSeleccionado.nit_emp">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">TELEFONO: </label>
+              <input type="number" class="form-control col-sm-10" [(ngModel)]="EmpresaSeleccionado.tel_emp">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">CELULAR: </label>
+              <input type="number" class="form-control col-sm-10" [(ngModel)]="EmpresaSeleccionado.cel_emp">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">EMAIL: </label>
+              <input type="email" class="form-control col-sm-10" [(ngModel)]="EmpresaSeleccionado.email_emp">
+            </div>
+            <!-- <div class="form-group row">
+              <label class="form-label text-right col-sm-2">NOM_ATRIBUTO: </label>
+              <input type="file" class="form-control col-sm-10" title="NOM_ATRIBUTO" #FOTO_IMG_MOD accept="image/jpg, image/png, image/jpeg" (change)="VerificarFormatoFoto(FOTO_IMG_MOD);"  (change)="onFileChangeFoto(event)">
+            </div> -->
+
+        </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalModEmpresa" data-toggle="modal"
+  data-target="#ModalModificacionEmpresa" style="width: 0px;">Abrir Modal Modificacion</button>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalMosEmpresa" data-toggle="modal"
+  data-target="#ModalVisualizacionEmpresa" style="width: 0px;">Abrir Modal Visualizacion</button>
+

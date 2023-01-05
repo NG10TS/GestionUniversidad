@@ -1,0 +1,164 @@
+<strong>
+  <h2 class="text-center text-bold text-light">CONVALIDACIONES</h2>
+</strong>
+<button class="btn btn-outline-info botonInfo" (click)="MensajeInformacion('INFORMACION DE USO',
+'EN ESTA PAGINA SE PUEDE CONVALIDAR','info')"><abbr title="SOBRE ESTA PAGINA"
+style="text-decoration: none">?</abbr></button>
+<button class="btn btn-outline-info botonInfo" (click)="MensajeInformacion('ACLARACIONES',
+'EN EL CASO QUE NO ENCUENTRE LA INFORMACION DESEADA PUEDE AGREGAR MAS INFORMACION HACIENDO CLICK EN EL BOTON ACCIONES','info')">
+<abbr title="¿FALTA DE DATOS?" style="text-decoration: none">?</abbr></button>
+<button class="btn btn-outline-info botonInfo" (click)="MensajeInformacion('PASOS PARA AGREGAR CORRECTAMENTE',
+'PARA AGREGAR EN EL BOTON AGREGAR CONVALIDACION','info')">
+<abbr title="¿Agregar Info Correctamente?" style="text-decoration: none">?</abbr></button>
+
+<hr class="border-warning">
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal"
+  data-target="#ModalCrudConvalidacion" data-whatever="@getbootstrap">AGREGAR CONVALIDACIONES</button>
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3"  [formGroup]="filterSearchConvForm">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text"  oninput="this.value= this.value.toUpperCase()" class="form-control" aria-label="Sizing example input"
+      aria-describedby="inputGroup-sizing-default" formControlName="txt">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">NOMBRE ESTUDIANTE DE CONVALIDACION</th>
+        <th scope="col">PLANES DE CONVALIDACION CARRERAS</th>
+        <th scope="col">MATERIA ORIGEN</th>
+        <th scope="col">MATERIA UNIOR</th>
+        <th scope="col">NOTA</th>
+        <th scope="col">FECHA CONVALIDACION</th>
+        <th scope="col">OBSERVACION</th>
+
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of conv; let i= index">
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>{{a.ape_p_est}} {{a.ape_m_est}} {{a.nombre_est}}</td>
+        <td>{{a.nombre_plan_conv}}</td>
+        <td>{{a.nombre_mater_conv}} - {{a.sigla_mater_conv}}</td>
+        <td>{{a.nombre_mat}} - {{a.codigo_mat}}</td>
+        <td>{{a.nota_conv}}</td>
+        <td>{{a.fec_conv}}</td>
+        <td>{{a.obs_conv}}</td>
+        <td style="width: 200px;">
+          <button (click)="SeleccionarConvalidacion(a.id_convalidacion)" class="btn btn-warning"><i
+              class="bi bi-pencil"></i></button>
+          <button type="button" class="btn btn-danger" (click)="EliminarConvalidacion(a.id_convalidacion)">
+            <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- CRUD V3: idPK=> id_convalidacion, TITULO=> CONVALIDACION, nombreCRUD=> Convalidacion,  dataP=> conv -->
+<!-- MODAL DE CRUD ADD MOD DE CODIGO DE Convalidacion-->
+<div class="modal fade" id="ModalCrudConvalidacion" tabindex="-1" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          {{!newConvalidacion.get('id_convalidacion').value ? 'REGISTRAR' : 'MODIFICAR'}} CONVALIDACION</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newConvalidacion">
+          <div class="form-group row">
+            <label class="form-label col-sm-2">ESTUDIANTE: </label>
+            <div [formGroup]="filterEstudianteForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control" />
+              </div>
+              <div *ngIf="filtroEstudiante" class="lcch-options">
+                <span *ngFor="let a of estFiltrado" class="form-control"
+                  (click)="filterEstudianteForm.patchValue({txt:a.ape_p_est+' '+a.ape_m_est+' '+a.nombre_est}); newConvalidacion.patchValue({id_conv_est:a.id_conv_est}) "
+                  (click)="filtroEstudiante=false">{{a.NomC}}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label col-sm-2">PLAN DESCRIPCION: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_plandesc_conv">
+              <optgroup label="SELECCIONE PLAN DESCRIPCION">
+                <option *ngFor="let a of planDesc" value="{{a.id_plandesc_conv}}">{{a.nombre_plan_conv}}</option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">MATERIA ORIGEN: </label>
+            <!-- FILTRADOR V3: NombreFiltro => MateriaOrigen-->
+            <div [formGroup]="filterMateriaOrigenForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control"
+                  value="{{MateriaOrigenSelect.nombre_mater_conv }}" />
+              </div>
+              <div *ngIf="filtroMateriaOrigen" class="lcch-options">
+                <span *ngFor="let a of matOFiltrado" class="form-control"
+                  (click)="MateriaOrigenSelect=a; newConvalidacion.patchValue({id_univ_carre_mater:a.id_univ_carre_mater}) "
+                  (click)="filtroMateriaOrigen=false">{{a.nombre_mater_conv}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">MATERIA UNIOR: </label>
+            <div [formGroup]="filterMateriaUniorForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control" value="{{MateriaUniorSelect.nombre_mat }}"/>
+              </div>
+              <div *ngIf="filtroMateriaUnior" class="lcch-options" >
+                <span *ngFor="let a of matUFiltrado" class="form-control" (click)="MateriaUniorSelect=a" (click)="filtroMateriaUnior=false">{{a.nombre_mat}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">NOTA DE CONVALIDACION: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="nota_conv">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">FECHA DE CONVALIDACION: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="fec_conv">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">AP DE CONVALIDACION: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="ap_conv">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">RESOLUCION DE CONVALIDACION: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="resol_conv">
+          </div>
+          <div class="form-group row">
+            <label class="form-label col-sm-2">OBSERVACION: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="obs_conv">
+          </div>
+
+
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="resetConvalidacion()">Cancelar</button>
+        <button type="button" class="btn {{!newConvalidacion.get('id_convalidacion').value ? 'btn-succes' : 'btn-warning'}}" data-dismiss="modal" [disabled]="!newConvalidacion.valid"
+          (click)="AgregarModificarConvalidacion()">{{!newConvalidacion.get('id_convalidacion').value ? 'CREAR PLAN' : 'MODIFICAR PLAN'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudConvalidacion" data-toggle="modal"
+  data-target="#ModalCrudConvalidacion" style="width: 0px;">Abrir Modal Crud</button>
+
+
+

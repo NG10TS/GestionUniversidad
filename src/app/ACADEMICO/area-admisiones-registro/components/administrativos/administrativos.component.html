@@ -1,0 +1,392 @@
+<strong>
+  <h2 class="text-center text-bold text-light">GESTIONAR PLANTEL ADMINISTRATIVO</h2>
+</strong>
+<hr class="border-warning">
+<button type="button" (click)="LimpiarAdministrativos()" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalAdd" data-whatever="@getbootstrap">AGREGAR ADMINISTRATIVO</button>
+
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nombre Completo</th>
+        <th scope="col">Carnet</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of admin; let i= index"  >
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.ape_p_admin}}⠀</span>
+          <span *ngIf="!a.Editando">{{a.ape_m_admin}}⠀</span>
+          <span *ngIf="!a.Editando">{{a.nombre_admin}}</span>
+          <!-- <span *ngIf="!a.Editando">{{a.NombreCompleto}}⠀</span> -->
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.ci_admin}}</span>
+        </td>
+        <td style="width: 200px;">
+          <div class="btn-group">
+            <button class="btn btn-success" (click)="SeleccionarAdministrativo(a.id_administrativo,'Mostrar')" type="button">
+              <i class="bi bi-eye"></i>
+            </button>
+
+            <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false">
+            </button>
+            <div class="dropdown-menu">
+              <!-- <button class="dropdown-item" data-toggle="modal" data-target="#ModalModificacion">Editar Datos Personales</button> -->
+              <button class="dropdown-item" data-toggle="modal" >Agregar Datos Curriculares</button>
+              <button class="dropdown-item" data-toggle="modal" >Hoja de Datos de Docente</button>
+              <button class="dropdown-item" data-toggle="modal" data-target="#ModalHitorialDesig">Historial de Designaciones</button>
+            </div>
+          </div>
+          <button type="button" class="btn btn-warning" (click)="LimpiarInputFotoMod()"
+          (click)="SeleccionarAdministrativo(a.id_administrativo,'Editar')" style="margin-right: 10px;"><i class="bi bi-pencil"></i></button>
+
+         <button type="button" class="btn btn-danger" (click)="EliminarAdministrativo(a.id_administrativo)">
+           <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- MODAL DE ADICION Administrativo-->
+<div class="modal fade" id="ModalAdd" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> REGISTRAR ADMINISTRATIVO NUEVO</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newAdministrativo" >
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOMBRE: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="nombre_admin"
+            oninput="this.value= this.value.toUpperCase()"placeholder="EJ. JAIME">
+            </div>
+          <div class="form-group row">
+          <label class="form-label text-right col-sm-2">A. PATERNO: </label>
+          <input type="text" class="form-control col-sm-10" formControlName="ape_p_admin"
+          oninput="this.value= this.value.toUpperCase()"placeholder="ALARCON">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">A. MATERNO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="ape_m_admin"
+            oninput="this.value= this.value.toUpperCase()"placeholder="GUZMAN">
+          </div>
+
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CI: </label>
+            <input type="number" class="form-control col-sm-4" formControlName="ci_admin"
+            oninput="this.value= this.value.toUpperCase()"placeholder="NUMERO DE CI">
+            <label class="form-label text-right col-sm-2">FECHA DE NACIMIENTO: </label>
+            <input type="date" class="form-control col-sm-4" formControlName="fec_nac_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">SEXO: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="sexo_admin"
+            oninput="this.value= this.value.toUpperCase()"placeholder="M o F">
+            <label class="form-label text-right col-sm-2">DIRECCIÓN: </label>
+            <input type="text" class="form-control col-sm-4" formControlName="dir_admin"
+            oninput="this.value= this.value.toUpperCase()"placeholder="CALLE ENTRE CALLE 1 Y CALLE 2">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TELEFONO: </label>
+            <input type="number" class="form-control col-sm-4" formControlName="tel_admin"
+            oninput="this.value= this.value.toUpperCase()"placeholder="2 5212345">
+            <label class="form-label text-right col-sm-2">CELULAR: </label>
+            <input type="number" class="form-control col-sm-4" formControlName="cel_admin"
+            oninput="this.value= this.value.toUpperCase()"placeholder="NUM. DE CELULAR EJ: 71234567">
+          </div>
+          <div class="form-group row">
+            <label class="form-label  text-right col-sm-2">E-MAIL: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="email_admin"
+            oninput="this.value= this.value.toUpperCase()"placeholder="CORREO: Ej: EJEMPLO@GMAIL.COM">
+          </div>
+         <!-- <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA DE NACIMIENTO: </label>
+            <input type="date" class="form-control col-sm-4" formControlName="fec_nac_admin">
+          </div>-->
+
+          <div class="form-group row">
+            <label class="form-label  text-right col-sm-2">VIGENTE: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="vigente_admin"
+            oninput="this.value= this.value.toUpperCase()"placeholder="CARGO QUE OCUPA SI ESTA ACTIVO O INACTIVO">
+          </div>
+          <!-- <div class="form-group row">
+            <label class="form-label  text-right col-sm-2">FECHA DE NACIMIENTO: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="fec_ingreso_admin">
+          </div>-->
+          <div class="form-group row">
+            <label class="form-label  text-right col-sm-2">FECHA DE INGRESO: </label>
+            <input type="date" class="form-control col-sm-10" formControlName="fec_ingreso_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label  text-right col-sm-2">No. ASEGURADO: </label>
+            <input type="number" class="form-control col-sm-10" formControlName="nro_asegurado_admin"
+            oninput="this.value= this.value.toUpperCase()"placeholder="NUM. DE SEGURO SOCIAL O SALUD 123456789">
+          </div>
+          <div class="form-group row">
+            <label class="form-label  text-right col-sm-2">CARGO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="cargo_admin"
+            oninput="this.value= this.value.toUpperCase()"placeholder="CARGO QUE OCUPA EN LA UNIOR">
+          </div>
+
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FOTO: </label>
+            <input type="file" class="form-control col-sm-4" title="Foto de Perfil." #FOTO_IMG_ADD accept="image/jpg, image/png, image/jpeg" (change)="VerificarFormatoFoto(FOTO_IMG_ADD);"  (change)="onFileChangeFoto($event)">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">OBSERVACIONES </label>
+            <input name="obs" type="text" class="form-control col-lg-" formControlName="obs_admin">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="AgregarAdministrativo()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL_DE_MODIFICACION Administrativo-->
+<div class="modal fade" id="ModalModificacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">MODIFICAR Administrativo</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOMBRE: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="AdministrativoSeleccionado.nombre_admin"
+            oninput="this.value= this.value.toUpperCase()"placeholder="EJ. JAIME">
+          </div>
+          <div class="form-group row">
+          <label class="form-label text-right col-sm-2">A. PATERNO: </label>
+          <input type="text" class="form-control col-sm-10" [(ngModel)]="AdministrativoSeleccionado.ape_p_admin"
+          oninput="this.value= this.value.toUpperCase()"placeholder="ALARCON">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">A. MATERNO: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="AdministrativoSeleccionado.ape_m_admin"
+            oninput="this.value= this.value.toUpperCase()"placeholder="GUZMAN">
+          </div>
+
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CI: </label>
+            <input type="number" class="form-control col-sm-4" [(ngModel)]="AdministrativoSeleccionado.ci_admin"
+            oninput="this.value= this.value.toUpperCase()"placeholder="NUMERO DE CI">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">SEXO: </label>
+            <input type="text" class="form-control col-sm-4" [(ngModel)]="AdministrativoSeleccionado.sexo_admin"
+            oninput="this.value= this.value.toUpperCase()"placeholder="M o F">
+            <label class="form-label text-right col-sm-2">DIRECCIÓN: </label>
+            <input type="text" class="form-control col-sm-4" [(ngModel)]="AdministrativoSeleccionado.dir_admin"
+            oninput="this.value= this.value.toUpperCase()"placeholder="CALLE ENTRE CALLE 1 Y CALLE 2">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TELEFONO: </label>
+            <input type="number" class="form-control col-sm-4" [(ngModel)]="AdministrativoSeleccionado.tel_admin"
+            oninput="this.value= this.value.toUpperCase()"placeholder="2 5212345">
+            <label class="form-label text-right col-sm-2">CELULAR: </label>
+            <input type="number" class="form-control col-sm-4" [(ngModel)]="AdministrativoSeleccionado.cel_admin"
+            oninput="this.value= this.value.toUpperCase()"placeholder="NUM. DE CELULAR EJ: 71234567">
+          </div>
+          <div class="form-group row">
+            <label class="form-label  text-right col-sm-2">E-MAIL: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="AdministrativoSeleccionado.email_admin"
+            oninput="this.value= this.value.toUpperCase()"placeholder="CORREO: Ej: EJEMPLO@GMAIL.COM">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA DE NACIMIENTO: </label>
+            <input type="date" class="form-control col-sm-4" [(ngModel)]="AdministrativoSeleccionado.fec_nac_admin">
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label  text-right col-sm-2">VIGENTE: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="AdministrativoSeleccionado.vigente_admin"
+            oninput="this.value= this.value.toUpperCase()"placeholder="CARGO QUE OCUPA SI ESTA ACTIVO O INACTIVO">
+          </div>
+          <div class="form-group row">
+            <label class="form-label  text-right col-sm-2">FECHA DE NACIMIENTO: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="AdministrativoSeleccionado.fec_ingreso_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label  text-right col-sm-2">FECHA DE INGRESO: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="AdministrativoSeleccionado.fec_ingreso_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label  text-right col-sm-2">No. ASEGURADO: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="AdministrativoSeleccionado.nro_asegurado_admin"
+            oninput="this.value= this.value.toUpperCase()"placeholder="NUM. DE SEGURO SOCIAL O SALUD 123456789">
+          </div>
+          <div class="form-group row">
+            <label class="form-label  text-right col-sm-2">CARGO: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="AdministrativoSeleccionado.cargo_admin"
+            oninput="this.value= this.value.toUpperCase()"placeholder="CARGO QUE OCUPA EN LA UNIOR">
+          </div>
+
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FOTO: </label>
+            <input type="file" class="form-control col-sm-4" title="Foto de Perfil." #FOTO_IMG_MOD accept="image/jpg, image/png, image/jpeg" (change)="VerificarFormatoFoto(FOTO_IMG_MOD);"  (change)="onFileChangeFoto($event)">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">OBSERVACIONES </label>
+            <input name="obs" type="text" class="form-control col-sm-10" [(ngModel)]="AdministrativoSeleccionado.obs_admin">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="ModificarAdministrativo(AdministrativoSeleccionado)">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE VISUALIZACION -->
+<div class="modal fade" id="ModalVisualizacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> VISUALIZANDO DOCENTE</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOMBRE: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="AdministrativoSeleccionado.nombre_admin">
+          </div>
+          <div class="form-group row">
+          <label class="form-label text-right col-sm-2">A. PATERNO: </label>
+          <input type="text" class="form-control col-sm-10" [(ngModel)]="AdministrativoSeleccionado.ape_p_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">A. MATERNO: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="AdministrativoSeleccionado.ape_m_admin">
+          </div>
+
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CI: </label>
+            <input type="number" class="form-control col-sm-4" [(ngModel)]="AdministrativoSeleccionado.ci_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">SEXO: </label>
+            <input type="text" class="form-control col-sm-4" [(ngModel)]="AdministrativoSeleccionado.sexo_admin">
+            <label class="form-label text-right col-sm-2">DIRECCIÓN: </label>
+            <input type="text" class="form-control col-sm-4" [(ngModel)]="AdministrativoSeleccionado.dir_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">TELEFONO: </label>
+            <input type="number" class="form-control col-sm-4" [(ngModel)]="AdministrativoSeleccionado.tel_admin">
+            <label class="form-label text-right col-sm-2">CELULAR: </label>
+            <input type="number" class="form-control col-sm-4" [(ngModel)]="AdministrativoSeleccionado.cel_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label  text-right col-sm-2">E-MAIL: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="AdministrativoSeleccionado.email_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FECHA DE NACIMIENTO: </label>
+            <input type="date" class="form-control col-sm-4" [(ngModel)]="AdministrativoSeleccionado.fec_nac_admin">
+          </div>
+
+          <div class="form-group row">
+            <label class="form-label  text-right col-sm-2">VIGENTE: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="AdministrativoSeleccionado.vigente_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label  text-right col-sm-2">FECHA DE NACIMIENTO: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="AdministrativoSeleccionado.fec_ingreso_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label  text-right col-sm-2">FECHA DE INGRESO: </label>
+            <input type="date" class="form-control col-sm-10" [(ngModel)]="AdministrativoSeleccionado.fec_ingreso_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label  text-right col-sm-2">No. ASEGURADO: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="AdministrativoSeleccionado.nro_asegurado_admin">
+          </div>
+          <div class="form-group row">
+            <label class="form-label  text-right col-sm-2">CARGO: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="AdministrativoSeleccionado.cargo_admin">
+          </div>
+
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">FOTO: </label>
+            <input type="file" class="form-control col-sm-4" title="Foto de Perfil." #InputFoto accept="image/jpg, image/png, image/jpeg" (change)="VerificarFormatoFoto(InputFoto);"  (change)="onFileChangeFoto($event)">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">OBSERVACIONES </label>
+            <input name="obs" type="text" class="form-control col-sm-10" [(ngModel)]="AdministrativoSeleccionado.obs_admin">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- MODAL DE VALIDACION -->
+<div class="modal fade black" id="modalformato" tabindex="-1" aria-labelledby="modalformatoLabel" aria-hidden="true">
+  <div class="modal-dialog  modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color: rgb(168, 4, 4);">
+        <h5 class="modal-title text-center text-bold" style="color: lightcyan; font-size: 25px; font-weight: bold;">¡ADVERTENCIA!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="background-color: lightcoral;">
+        <label class="text-center" style="font-size: 15px; font-weight: bold;">{{Mensaje}}</label>
+      </div>
+      <div class="modal-footer" style="background-color: rgb(141, 12, 12);">
+        <button type="button" class="btn btn-warning" data-dismiss="modal" >ENTENDIDO</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalMod" data-toggle="modal"
+  data-target="#ModalModificacion" style="width: 0px;">Abrir Modala de Modificacion</button>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalMos" data-toggle="modal"
+  data-target="#ModalVisualizacion" style="width: 0px;">Abrir Modala de Visualizacion</button>
+
+
+<!-- MENSAJE SUPERIOR DERECHA (Invocar por su id) -->
+<button id="BotonSuccess" type="button" class="invisible btn btn-success swalDefaultSuccess" style="position: absolute; top:100%">Success</button>
+<button id="BotonInfo" type="button" class="invisible btn btn-info swalDefaultInfo" style="position: absolute; top:100%">Info</button>
+<button id="BotonError" type="button" class="invisible btn btn-danger swalDefaultError" style="position: absolute; top:100%">Error </button>
+<button id="BotonWarning" type="button" class="invisible btn btn-warning swalDefaultWarning" style="position: absolute; top:100%">Warning</button>
+<button id="BotonQuestion" type="button" class="invisible btn btn-default swalDefaultQuestion" style="position: absolute; top:100%">Question</button>

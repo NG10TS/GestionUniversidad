@@ -1,0 +1,56 @@
+
+
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel"> BOLETIN DE CALIFICACIONES</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <div class="mb-4">
+     <!--<div class="mb-4" [formGroup]="newAdministrativo">-->
+      <div class="form-group row">
+        <label class="form-label text-right col-sm-2">CODIGO:</label>
+        <input type="text" class="form-control col-sm-4" formControlName="cod_est"
+        oninput="this.value= this.value.toUpperCase()"placeholder="">
+      </div>
+      <div class="form-group row">
+         <label class="form-label text-right col-sm-2">MATRICULA:</label>
+        <input type="text" class="form-control col-sm-4" formControlName="matricula_est"
+        oninput="this.value= this.value.toUpperCase()"placeholder="">
+      </div>
+      <div class="form-group row">
+        <label class="form-label text-right col-sm-2">FOTO:</label>
+        <input type="image" class="form-control col-sm-4" formControlName="foto_est"
+        oninput="this.value= this.value.toUpperCase()"placeholder="">
+        </div>
+      <div class="form-group row">
+      <label class="form-label text-right col-sm-2">NOMBRE: </label>
+      <input type="text" class="form-control col-sm-10" formControlName="nombre_est"
+      oninput="this.value= this.value.toUpperCase()"placeholder="">
+      </div>
+      <div class="form-group row">
+        <label class="form-label text-right col-sm-2">CARRERA: </label>
+        <input type="text" class="form-control col-sm-10" formControlName="nombre_carre"
+        oninput="this.value= this.value.toUpperCase()"placeholder="">
+      </div>
+      <div class="form-group row">
+        <label class="form-label text-right col-sm-2">PERIODO:</label>
+        <input type="text" class="form-control col-sm-10" formControlName="periodo"
+        oninput="this.value= this.value.toUpperCase()"placeholder="">
+        </div>
+      <div class="form-group row">
+        <label class="form-label text-right col-sm-2">GESTIÓN: </label>
+        <input type="text" class="form-control col-sm-10" formControlName="gestion"
+        oninput="this.value= this.value.toUpperCase()"placeholder="">
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Vista previa de Impresión</button>
+    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+    <!-- <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="AddAdministrativo()">Guardar</button>-->
+  </div>
+</div>

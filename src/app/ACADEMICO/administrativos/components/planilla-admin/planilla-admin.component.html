@@ -1,0 +1,171 @@
+<strong>
+    <h2 class="text-center text-bold text-light">GESTIONAR PLANILLA - ADMINISTRATIVOS</h2>
+  </strong>
+<!-- CRUD V3: idPK=> id_planilla_admin, TITULO=> PLANILLA ADMINISTRATIVOS, nombreCRUD=> PlanillaAdmins,  dataP=> plan_adm -->
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalCrudPlanillaAdmins"
+  data-whatever="@getbootstrap">AGREGAR PLANILLA ADMINISTRATIVOS</button>
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input"
+      aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nombre Completo</th>
+        <th scope="col">Carnet</th>
+        <th scope="col">Numero Planilla</th>
+        <th scope="col">Mes</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of plan_adm; let i= index">
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>
+            <span *ngIf="!a.Editando">{{a.ape_p_admin}} {{a.ape_m_admin}} {{a.nombre_admin}}</span>
+          </td>
+          <td>
+            <span *ngIf="!a.Editando">{{a.ci_adm}}-{{a.expedido}}</span>
+          </td>
+          <td>
+            <span *ngIf="!a.Editando">{{a.nro_planilla}} </span>
+          </td>
+          <td>
+            <span *ngIf="!a.Editando">{{a.mes_planilla}}</span>
+          </td>
+        <td style="width: 200px;">
+          <button (click)="SeleccionarPlanillaAdmins(a.id_planilla_admin)"
+            class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+          <button type="button" class="btn btn-danger" (click)="EliminarPlanillaAdmins(a.id_planilla_admin)">
+            <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- MODAL DE CRUD ADD MOD DE CODIGO DE PlanillaAdmins-->
+<div class="modal fade" id="ModalCrudPlanillaAdmins" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{!newPlanillaAdmins.get('id_planilla_admin').value ? 'REGISTRAR' : 'MODIFICAR'}} PLANILLA ADMINISTRATIVOS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newPlanillaAdmins">
+            <div class="form-group row">
+              <label class="form-label col-sm-2">NUMERO DE PLANILLA: </label>
+              <input type="text" class="form-control col-sm-10" formControlName="nro_planilla">
+            </div>  
+            <div class="form-group row">
+              <label class="form-label col-sm-2">FECHA: </label>
+              <input type="text" class="form-control col-sm-10" formControlName="fec_planilla_admin">
+            </div>
+            <div class="form-group row">
+              <label class="form-label col-sm-2">CONST ADMIN: </label>
+              <input type="text" class="form-control col-sm-10" formControlName="cons_admin">
+            </div>   
+                <!-- <div class="form-group row">
+                    <label class="form-label col-sm-2">NOMBRE ADMINISTRATIVO: </label>
+                    <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_administrativo">
+                    <optgroup label="SELECCIONE NOMBRE ADMINISTRATIVO" >
+                        <option *ngFor="let a of adm" value="{{a.id_administrativo}}">{{a.data}}</option>
+                    </optgroup>
+                    </select>
+                </div>
+              <div class="form-group row">
+                <label class="form-label col-sm-2">CARGO: </label>
+                <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_cargo_admin">
+                  <optgroup label="SELECCIONE CARGO" >
+                    <option *ngFor="let a of carg" value="{{a.id_cargo_admin}}">{{a.nombre_cargo_admin}}</option>
+                  </optgroup>
+                 </select>
+              </div>
+            <div class="form-group row">
+              <label class="form-label col-sm-2">EGRESO ADMINISTRATIVO: </label>
+              <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_egreso_admin">
+                <optgroup label="SELECCIONE EGRESO ADMINISTRATIVO" >
+                  <option *ngFor="let a of egre_adm" value="{{a.id_egreso_admin}}">{{a.id_egre_admin}}</option>
+                </optgroup>
+               </select>
+            </div> -->
+            <div class="form-group row">
+              <label class="form-label col-sm-2">LIQUIDO PAGABLE: </label>
+              <input type="number" class="form-control col-sm-10" formControlName="liquido_admin">
+            </div>
+            <div class="form-group row">
+              <label class="form-label col-sm-2">OBSERVACIONES: </label>
+              <input type="text" class="form-control col-sm-10" formControlName="obs_admin">
+            </div>
+            
+              <div class="form-group row">
+              <label class="form-label text-right col-sm-2">HABERES: </label>
+              <input type="text" class="form-control col-sm-10" formControlName="haberes_admin" oninput="this.value= this.value.toUpperCase()"placeholder="">
+              </div>
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-2">HABILES 1: </label>
+                <input type="text" class="form-control col-sm-10" formControlName="hb1_admin">
+                <label class="form-label text-right col-sm-2">INCREMENTO: </label>
+                <select class="custom-select col-sm-10 form-control" type="text" formControlName="incremento">
+                    <optgroup label="SELECCIONE INCREMENTO">
+                      <option value="0.03">3%</option>
+                      <option value="0.04">4%</option>
+                    </optgroup>
+                   </select>
+              </div>
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-2">HABILES 2: </label>
+                <input type="number" class="form-control col-sm-4" formControlName="hb2_admin"> 
+                <label class="form-label text-right col-sm-2">AFP: </label>
+                <input type="text" class="form-control col-sm-4" formControlName="afp_admin">
+              </div>
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-2">CAJA: </label>
+                <input type="text" class="form-control col-sm-4" formControlName="caja_admin"
+                oninput="this.value= this.value.toUpperCase()"placeholder="NUMERO DE CAJA QUE COBRO">
+                <label class="form-label text-right col-sm-2">OTRO D: </label>
+                <input type="text" class="form-control col-sm-4" formControlName="otroi_admin"
+                oninput="this.value= this.value.toUpperCase()"placeholder="SI TIENE OTRO CARGO">
+              </div>
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-2">BONO ANTIGUEDAD DE INGRESO: </label>
+                <input type="text" class="form-control col-sm-4" formControlName="bant_admin">
+                <label class="form-label text-right col-sm-2">BOTRO 1: </label>
+                <input type="number" class="form-control col-sm-3" formControlName="botro1_admin">
+              </div>
+              <div class="form-group row">
+                <label class="form-label text-right col-sm-2">BONO ANTIGUEDAD DE AFILIACION: </label>
+                <input type="text" class="form-control col-sm-4" formControlName="bafi_admin">
+                <label class="form-label  text-right col-sm-2">BOTRO 2: </label>
+                <input type="text" class="form-control col-sm-3" formControlName="botro2_admin">
+              </div>
+             
+              <div class="form-group row">
+                <label class="form-label col-sm-2">LIQUIDO PAGABLE: </label>
+                <input type="number" class="form-control col-sm-10" formControlName="liquido_admin">
+              </div>
+              
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="resetPlanillaAdmins()">Cancelar</button>
+        <button type="button" class="btn {{!newPlanillaAdmins.get('id_planilla_admin').value ? 'btn-success' : 'btn-warning'}}" data-dismiss="modal" [disabled]="!newPlanillaAdmins.valid"
+          (click)="AgregarModificarPlanillaAdmins()">{{!newPlanillaAdmins.get('id_planilla_admin').value ? 'CREAR PLANILLA ADMINISTRATIVOS' : 'MODIFICAR PLANILLA ADMINISTRATIVOS'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudPlanillaAdmins" data-toggle="modal"
+  data-target="#ModalCrudPlanillaAdmins" style="width: 0px;">Abrir Modal Crud</button>

@@ -1,0 +1,222 @@
+<strong>
+  <h2 class="text-center text-bold text-light">GESTIONAR PLAN DE INSCRIPCIONES</h2>
+</strong>
+<hr class="border-warning">
+
+<button type="button" (click)="LimpiarPlanInscripcions()" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalAdd" data-whatever="@getbootstrap">AGREGAR PLAN DE INSCRIPCIÓN</button>
+
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+
+        <th scope="col">#</th>
+        <th scope="col">NOMBRE DE PLAN</th>
+        <th scope="col">PLAN VIGENTE</th>
+        <th scope="col">PLAN EN BS</th>
+        <th scope="col">ARRANCEL 1</th>
+        <th scope="col">ARRANCEL 2</th>
+        <th scope="col">ACCIONES</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of planins let i= index"  >
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.nombre_plan}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.plan_vigente}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.plan_bs}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.arr_2011}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.arr_2012}}</span>
+        </td>
+
+        <td style="width: 200px;">
+          <div class="btn-group">
+            <button class="btn btn-success btn-sm" (click)="SeleccionarPlanInscripcion(a.id_plan_ins,'Mostrar')" type="button">
+              <i class="bi bi-eye"></i>
+            </button>
+
+            <button type="button" class="btn btn-sm btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false">
+            </button>
+            <div class="dropdown-menu">
+              <!-- <button class="dropdown-item" data-toggle="modal" data-target="#ModalModificacion">Editar Datos Asignacionmatles</button> -->
+              <button class="dropdown-item" data-toggle="modal" >Agregar Datos Curriculares</button>
+              <button class="dropdown-item" data-toggle="modal" >Hoja de Datos de Docente</button>
+              <button class="dropdown-item" data-toggle="modal" data-target="#ModalHitorialDesig">Historial de Designaciones</button>
+            </div>
+          </div>
+          <button type="button" class="btn btn-warning"
+          (click)="SeleccionarPlanInscripcion(a.id_plan_ins,'Editar')" style="margin-right: 10px;"><i class="bi bi-pencil"></i></button>
+
+         <button type="button" class="btn btn-danger" (click)="EliminarPlanInscripcion(a.id_plan_ins)">
+           <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<BR>
+  <BR>
+
+<div class="modal fade" id="ModalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLabel"> REGISTRAR PLAN DE INSCRIPCIÓN</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="mb-4"[formGroup]="newPlanInscripcion">
+
+        <div class="form-group row">
+        <label class="form-label text-right col-sm-2">NOMBRE DE PLAN: </label>
+        <input type="text" class="form-control col-sm-10" formControlName="nombre_plan">
+        </div>
+        <div class="form-group row">
+          <label class="form-label text-right col-sm-2">VIGENTE: </label>
+          <input type="text" class="form-control col-sm-10" formControlName="plan_vigente">
+        </div>
+        <div class="form-group row">
+          <label class="form-label text-right col-sm-2">BS: </label>
+          <input type="number" class="form-control col-sm-10" formControlName="plan_bs">
+        </div>
+
+        <div class="form-group row">
+          <label class="form-label text-right col-sm-2">ARRANCEL 2011: </label>
+          <input type="text" class="form-control col-sm-4" formControlName="arr_2011">
+             </div>
+        <div class="form-group row">
+          <label class="form-label text-right col-sm-2">ARRANCEL 2012: </label>
+          <input type="text" class="form-control col-sm-4" formControlName="arr_2012">
+              </div>
+
+
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+      <!-- <button type="button" class="btn btn-primary" data-dismiss="modal">Guardar</button> -->
+      <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="AgregarPlanInscripcion()">Guardar</button>
+    </div>
+  </div>
+
+</div>
+</div>
+</div>
+
+<!-- MODAL_DE_MODIFICACION -->
+<div class="modal fade" id="ModalModificacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">MODIFICAR PLAN</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="frmform" class="mb-4">
+
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOMBRE DE PLAN: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="PlanInscripcionSeleccionado.nombre_plan">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">VIGENTE: </label>
+              <input type="text" class="form-control col-sm-10" [(ngModel)]="PlanInscripcionSeleccionado.plan_vigente">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">BS: </label>
+              <input type="number" class="form-control col-sm-10" [(ngModel)]="PlanInscripcionSeleccionado.plan_bs">
+            </div>
+
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">ARRANCEL 2011: </label>
+              <input type="text" class="form-control col-sm-4" [(ngModel)]="PlanInscripcionSeleccionado.arr_2011">
+                 </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">ARRANCEL 2012: </label>
+              <input type="text" class="form-control col-sm-4" [(ngModel)]="PlanInscripcionSeleccionado.arr_2012">
+            </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="ModificarPlanInscripcion(PlanInscripcionSeleccionado)">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE VISUALIZACION -->
+<div class="modal fade" id="ModalVisualizacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> VISUALIZANDO PLAN</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="frmform" class="mb-4">
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOMBRE DE PLAN: </label>
+            <input type="text" class="form-control col-sm-10" [(ngModel)]="PlanInscripcionSeleccionado.nombre_plan">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">VIGENTE: </label>
+              <input type="text" class="form-control col-sm-10" [(ngModel)]="PlanInscripcionSeleccionado.plan_vigente">
+            </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">BS: </label>
+              <input type="number" class="form-control col-sm-10" [(ngModel)]="PlanInscripcionSeleccionado.plan_bs ">
+            </div>
+
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">ARRANCEL 2011: </label>
+              <input type="text" class="form-control col-sm-4" [(ngModel)]="PlanInscripcionSeleccionado.arr_2011">
+                 </div>
+            <div class="form-group row">
+              <label class="form-label text-right col-sm-2">ARRANCEL 2012: </label>
+              <input type="text" class="form-control col-sm-4" [(ngModel)]="PlanInscripcionSeleccionado.arr_2012">
+            </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalMod" data-toggle="modal"
+  data-target="#ModalModificacion" style="width: 0px;">Abrir Modal Modificacion</button>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalMos" data-toggle="modal"
+  data-target="#ModalVisualizacion" style="width: 0px;">Abrir Modal Visualizacion</button>
+

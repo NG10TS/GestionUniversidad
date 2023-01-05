@@ -1,0 +1,240 @@
+<strong>
+  <h2 class="text-center text-bold text-light">GESTIONAR ESTUDIANTES BECARIOS</h2>
+</strong>
+<hr class="border-warning">
+
+<button type="button" (click)="LimpiarEstudiantebeca()" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalAdd" data-whatever="@getbootstrap">AGREGAR ESTUDIANTE BECARIO</button>
+
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">NOMBRE</th>
+        <th scope="col">BECA</th>
+        <th scope="col">PROMEDIO</th>
+        <th scope="col">CARRERA</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let a of esta; let i= index"  >
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.NombreCompleto}}⠀</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.id_beca}} - {{a.nombre_beca}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.prom_beca}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.id_carre}} - {{a.nombre_carre}}</span>
+        </td>
+        <td style="width: 200px;">
+          <div class="btn-group">
+            <button class="btn btn-success" (click)="SeleccionarEstudiantebeca(a,'Mostrar')" type="button">
+              <i class="bi bi-eye"></i>
+            </button>
+
+            <button style="margin-right: 10px;" type="button" class="btn btn-sm btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false">
+            </button>
+            <div class="dropdown-menu">
+              <!-- <button class="dropdown-item" data-toggle="modal" data-target="#ModalModificacion">Editar Datos Personales</button> -->
+              <button class="dropdown-item" data-toggle="modal" >Agregar Datos Curriculares</button>
+              <button class="dropdown-item" data-toggle="modal" >Hoja de Datos de Docente</button>
+              <button class="dropdown-item" data-toggle="modal" data-target="#ModalHitorialDesig">Historial de Designaciones</button>
+            </div>
+          </div>
+          <button  type="button" class="btn btn-warning"
+          (click)="SeleccionarEstudiantebeca(a,'Editar')" style="margin-right: 10px;"><i class="bi bi-pencil"></i></button>
+
+         <button type="button" class="btn btn-danger" (click)="EliminarEstudiantebeca(a.id_becado)" >
+           <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- MODAL DE ADICION Estudiantebeca-->
+<div class="modal fade" id="ModalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> REGISTRAR ESTUDIANTE BECA NUEVA</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="frmform" class="mb-4" [formGroup]="newEstudiantebeca" >
+          <div class="form-group row">
+            <label class="form-label  col-sm-3">NOMBRE ESTUDIANTE: </label>
+            <!-- FILTRADOR V3: NombreFiltro => Estudiante-->
+            <div [formGroup]="filterEstudianteForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control" value="{{EstudianteSelect.NomC }}"/>
+              </div>
+              <div *ngIf="filtroEstudiante" class="lcch-options" >
+                <span *ngFor="let a of estFiltrado" class="form-control" (click)="autoCompletar(a)" (click)="filtroEstudiante=false">{{a.NomC}}</span>
+              </div>
+            </div>
+            <!-- <select class="custom-select col-sm-9" type="text" formControlName="id_est">
+              <optgroup label="Seleccione Estudiante " >
+                  <option *ngFor="let e of est " value="{{e.id_est}}">{{e.NombreCompleto}}</option>
+              </optgroup>
+            </select> -->
+            </div>
+            <div class="form-group row">
+              <label class="form-label  col-sm-3">CARRERA: </label>
+              <select class="custom-select col-sm-9" type="text" formControlName="id_carre">
+                <optgroup label="Seleccione su Carrera " >
+                    <option *ngFor="let c of carre " value="{{c.id_carre}}">{{c.nombre_carre}} </option>
+                </optgroup>
+              </select>
+            </div>
+          <div class="form-group row">
+            <label class="form-label  col-sm-3">BECA: </label>
+            <select class="custom-select col-sm-9" type="text" formControlName="id_beca">
+              <optgroup label="Seleccione su Beca " >
+                  <option *ngFor="let b of beca " value="{{b.id_beca}}">{{b.nombre_beca}}, PROMEDIO: {{b.prom_beca}}, DESCUENTO: {{b.desc_beca}}% </option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label  col-sm-3">PROMEDIO: </label>
+            <input type="number" class="form-control col-sm-9" formControlName="prom_beca" oninput="this.value= this.value.toUpperCase()"placeholder="INGRESE PROMEDIO DE LA BECA">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="AgregarEstudiantebeca()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL_DE_MODIFICACION Estudiantebeca-->
+<div class="modal fade" id="ModalModificacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">MODIFICAR ESTUDIANTE BECA</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="frmform" class="mb-4">
+          <div class="form-group row">
+            <label class="form-label  col-sm-2">NOMBRE ESTUDIANTE: </label>
+            <!-- FILTRADOR V3: NombreFiltro => EstudianteMod-->
+            <!-- FILTRADOR V3: NombreFiltro => Estudiante-->
+            <div [formGroup]="filterEstudianteForm" class="lcch-select col-sm-10">
+              <div>
+                <input formControlName="txt" type="text" class="form-control" value="{{EstudianteSelect.NomC }}"/>
+              </div>
+              <div *ngIf="filtroEstudiante" class="lcch-options" >
+                <span *ngFor="let a of estFiltrado" class="form-control" (click)="EstudianteSelect.NomC=a.ape_p_est+' '+a.ape_m_est+ ' '+a.nombre_est; EstudiantebecaSeleccionado.id_est=a.id_est " (click)="filtroEstudiante=false">{{a.NomC}}</span>
+              </div>
+            </div>
+            </div>
+            <div class="form-group row">
+              <label class="form-label  col-sm-2">CARRERA: </label>
+              <select class="custom-select col-sm-10" type="text" [(ngModel)]="EstudiantebecaSeleccionado.id_carre" disabled>
+                <optgroup label="Seleccione su Carrera " >
+                    <option *ngFor="let c of carre " value="{{c.id_carre}}">{{c.nombre_carre}} </option>
+                </optgroup>
+              </select>
+            </div>
+          <div class="form-group row">
+            <label class="form-label  col-sm-2">BECA: </label>
+            <select class="custom-select col-sm-10" type="text" [(ngModel)]="EstudiantebecaSeleccionado.id_beca">
+              <optgroup label="Seleccione su Beca">
+                  <option *ngFor="let b of beca " value="{{b.id_beca}}">{{b.nombre_beca}}, PROMEDIO: {{b.prom_beca}}, DESCUENTO: {{b.desc_beca}}%  </option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label  col-sm-2">PROMEDIO: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EstudiantebecaSeleccionado.prom_beca" oninput="this.value= this.value.toUpperCase()"placeholder="INGRESE PROMEDIO DE LA BECA">
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="ModificarEstudiantebeca(EstudiantebecaSeleccionado)">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE VISUALIZACION -->
+<div class="modal fade" id="ModalVisualizacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> VISUALIZANDO DOCENTE</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="frmform" class="mb-4">
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOMBRE ESTUDIANTE: </label>
+            <select class="custom-select" type="text" [(ngModel)]="EstudiantebecaSeleccionado.id_est">
+              <optgroup label="Seleccione Estudiante " >
+                  <option *ngFor="let e of est " value="{{e.id_est}}">{{e.NombreCompleto}}</option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="form-group row">
+              <label class="form-label text-right col-sm-2">CARRERA: </label>
+              <select class="custom-select" type="text" [(ngModel)]="EstudiantebecaSeleccionado.id_carre">
+                <optgroup label="Seleccione su Carrera " >
+                    <option *ngFor="let c of carre " value="{{c.id_carre}}">{{c.nombre_carre}} </option>
+                </optgroup>
+              </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">BECA: </label>
+            <select class="custom-select" type="text" [(ngModel)]="EstudiantebecaSeleccionado.id_beca">
+              <optgroup label="Seleccione su Beca " >
+                  <option *ngFor="let b of beca " value="{{b.id_beca}}">{{b.nombre_beca}}, PROMEDIO: {{b.prom_beca}}, DESCUENTO: {{b.desc_beca}}%  </option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">PROMEDIO: </label>
+            <input type="number" class="form-control col-sm-10" [(ngModel)]="EstudiantebecaSeleccionado.prom_beca">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalMod" data-toggle="modal"
+  data-target="#ModalModificacion" style="width: 0px;">Abrir Modal Modificacion</button>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnOpenModalMos" data-toggle="modal"
+  data-target="#ModalVisualizacion" style="width: 0px;">Abrir Modal Visualizacion</button>
+
+

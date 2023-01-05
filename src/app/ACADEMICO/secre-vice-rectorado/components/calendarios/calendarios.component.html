@@ -1,0 +1,137 @@
+<strong>
+  <h2 class="text-center text-bold text-light">GESTIONAR CALENDARIOS</h2>
+</strong>
+<hr class="border-warning">
+<!-- CRUD V3: idPK=> id_calend, TITULO=> CALENDARIOS, nombreCRUD=> Calendarios,  dataP=> calend -->
+<button type="button" class="btn btn-outline-light font-weight-bold" data-toggle="modal" data-target="#ModalCrudCalendarios"
+  data-whatever="@getbootstrap">AGREGAR CALENDARIOS</button>
+<form method="GET" action="" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-warning" id="inputGroup-sizing-default">Búsqueda</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Sizing example input"
+      aria-describedby="inputGroup-sizing-default">
+  </div>
+</form>
+<br>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover table-danger">
+    <thead class="bg-danger ">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">NOMBRE </th>
+        <th scope="col">CRONOGRAMA</th>
+        <th scope="col">MODULO</th>
+        <th scope="col">CARRERA</th>
+        <th scope="col">SEMESTRE</th>
+        <th scope="col">MATERIA</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of calend; let i= index">
+        <td style="width: 20px;">{{i+1}}</td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.nombre_calend}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.id_crono}} {{a.nombre_crono}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.nro_modulo}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.id_carre}} {{a.nombre_carre}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.id_sem}} {{a.desc_sem}}</span>
+        </td>
+        <td>
+          <span *ngIf="!a.Editando">{{a.id_materia}} {{a.codigo_mat}} {{a.nombre_mat}}</span>
+        </td>
+
+        <td style="width: 200px;">
+          <button class="btn btn-success btn-sm" (click)="SeleccionarCalendarios(a.id_calend,'Mostrar')" type="button">
+            <i class="bi bi-eye"></i>
+          </button>
+          <button type="button" class="btn btn-sm btn-success dropdown-toggle dropdown-toggle-split"
+            data-toggle="dropdown" aria-expanded="false">
+          </button>
+          <button (click)="SeleccionarCalendarios(a.id_calend)"
+            class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+          <button type="button" class="btn btn-danger" (click)="EliminarCalendarios(a.id_calend)">
+            <i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- MODAL DE CRUD ADD MOD DE CODIGO DE Calendarios-->
+<div class="modal fade" id="ModalCrudCalendarios" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          {{!newCalendarios.get('id_calend').value ? 'REGISTRAR' : 'MODIFICAR'}} CALENDARIOS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4" [formGroup]="newCalendarios">
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">NOMBRE DE CALENDARIO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="nombre_calend">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CRONOGRAMA: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_crono">
+              <optgroup label="SELECCIONE CRONOGRAMA" >
+                <option *ngFor="let a of crono" value="{{a.id_crono}}">{{a.nombre_crono}}</option>
+              </optgroup>
+             </select>
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">MÓDULO: </label>
+            <input type="text" class="form-control col-sm-10" formControlName="nro_modulo">
+          </div>
+          <div class="form-group row">
+            <label class="form-label text-right col-sm-2">CARRERA: </label>
+            <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_carre">
+              <optgroup label="SELECCIONE CARRERA" >
+                <option *ngFor="let a of carre" value="{{a.id_carre}}">{{a.nombre_carre}}</option>
+              </optgroup>
+             </select>
+          </div>
+         <div class="form-group row">
+           <label class="form-label text-right col-sm-2">SEMESTRE: </label>
+           <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_sem">
+             <optgroup label="SELECCIONE SEMESTRE" >
+               <option *ngFor="let a of sem" value="{{a.id_sem}}">{{a.desc_sem}}</option>
+             </optgroup>
+            </select>
+         </div>
+         <div class="form-group row">
+           <label class="form-label text-right col-sm-2">MATERIA: </label>
+           <select class="custom-select col-sm-10 form-control" type="text" formControlName="id_materia">
+             <optgroup label="SELECCIONE MATERIA" >
+               <option *ngFor="let a of mat" value="{{a.id_materia}}">{{a.codigo_mat}} {{a.nombre_mat}}</option>
+             </optgroup>
+            </select>
+         </div>
+
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="resetCalendarios()">Cancelar</button>
+        <button type="button" class="btn {{!newCalendarios.get('id_calend').value ? 'btn-success' : 'btn-warning'}}" data-dismiss="modal" [disabled]="!newCalendarios.valid"
+          (click)="AgregarModificarCalendarios()">{{!newCalendarios.get('id_calend').value ? 'CREAR PLAN' : 'MODIFICAR PLAN'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="invisible" style="position: absolute; top:100%" id="btnCrudCalendarios" data-toggle="modal"
+  data-target="#ModalCrudCalendarios" style="width: 0px;">Abrir Modal Crud</button>
